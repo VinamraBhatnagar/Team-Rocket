@@ -431,3 +431,37 @@ class GraphEngine:
         stats["largest_community_size"] = max((c["size"] for c in communities), default=0)
 
         return stats
+
+    def add_person_node(self, suspect):
+        """Dynamically add or update a person node and its known associates in the graph."""
+        sid = suspect["id"]
+        name = suspect.get("name", sid)
+        risk = suspect.get("risk_level", "MEDIUM")
+        org = suspect.get("organization", "")
+        self.G.add_node(sid, label=name, type="PERSON", risk_level=risk, organization=org)
+
+        if org:
+            if not self.G.has_node(org):
+                self.G.add_node(org, label=org, type="ORGANIZATION")
+            self.G.add_edge(sid, org, relation="MEMBER_OF", weight=2)
+
+        for assoc in suspect.get("known_associates", []):
+            if self.G.has_node(assoc):
+                self.G.add_edge(sid, assoc, relation="KNOWN_ASSOCIATE", weight=3)
+
+        self._communities = None
+        self._centrality_cache = {}
+
+    def add_incident_edge(self, incident):
+        """Dynamically add or update co-incident edges in the graph."""
+        s1 = str(incident.get("suspect1_id", ""))
+        s2 = str(incident.get("suspect2_id", ""))
+        if s1 and s2 and s1 != s2:
+            if self.G.has_node(s1) and self.G.has_node(s2):
+                if self.G.has_edge(s1, s2):
+                    self.G[s1][s2]["weight"] += 1
+                else:
+                    self.G.add_edge(s1, s2, relation="CO_INCIDENT", weight=1, co_incidents=1)
+        self._communities = None
+        self._centrality_cache = {}
+

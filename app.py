@@ -140,6 +140,43 @@ def api_entity_detail(entity_id):
     })
 
 
+# ── Add Suspect / Crime Ingestion API ─────────────────────────
+@app.route("/api/suspects/add", methods=["POST"])
+def api_add_suspect():
+    data = request.get_json()
+    if not data or not data.get("name"):
+        return jsonify({"error": "Suspect name is required"}), 400
+
+    new_suspect = data_processor.add_suspect(data)
+    graph_engine.add_person_node(new_suspect)
+    # Refresh pattern analysis
+    pattern_detector.analyze_all(data_processor)
+
+    return jsonify({
+        "success": True,
+        "message": f"Suspect '{new_suspect['name']}' ({new_suspect['id']}) added to intelligence graph",
+        "suspect": new_suspect
+    }), 201
+
+
+@app.route("/api/incidents/add", methods=["POST"])
+def api_add_incident():
+    data = request.get_json()
+    if not data or not data.get("crime_type"):
+        return jsonify({"error": "Crime type is required"}), 400
+
+    new_incident = data_processor.add_incident(data)
+    graph_engine.add_incident_edge(new_incident)
+    # Refresh pattern analysis
+    pattern_detector.analyze_all(data_processor)
+
+    return jsonify({
+        "success": True,
+        "message": f"Incident '{new_incident['incident_id']}' logged successfully",
+        "incident": new_incident
+    }), 201
+
+
 # ── Prediction API ────────────────────────────────────────────
 @app.route("/api/predict/crime-type", methods=["POST"])
 def api_predict_crime():

@@ -9,7 +9,11 @@ let allNetworkData = null;
 let physicsEnabled = true;
 let chartInstances = {};
 let lastDashboardData = null;
-let currentTheme = localStorage.getItem('crimenet-theme') || 'bright';
+let currentTheme = localStorage.getItem('crimenet-theme');
+if (!currentTheme || currentTheme === 'bright' || currentTheme === 'light') {
+    currentTheme = 'cyber';
+    localStorage.setItem('crimenet-theme', 'cyber');
+}
 
 // ═══ Initialize ═══════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,7 +29,7 @@ function initTheme() {
     const toggleBtn = document.getElementById('theme-toggle-btn');
     if (toggleBtn) {
         toggleBtn.addEventListener('click', () => {
-            currentTheme = (currentTheme === 'bright') ? 'dark' : 'bright';
+            currentTheme = (currentTheme === 'cyber' || currentTheme === 'dark') ? 'light' : 'cyber';
             localStorage.setItem('crimenet-theme', currentTheme);
             applyTheme(currentTheme);
             if (lastDashboardData) {
@@ -43,12 +47,12 @@ function applyTheme(theme) {
     const icon = document.getElementById('theme-toggle-icon');
     const text = document.getElementById('theme-toggle-text');
     if (icon && text) {
-        if (theme === 'bright') {
-            icon.textContent = '🌙';
-            text.textContent = 'Dark Mode';
-        } else {
+        if (theme === 'cyber' || theme === 'dark') {
             icon.textContent = '☀️';
-            text.textContent = 'Bright Mode';
+            text.textContent = 'Light Mode';
+        } else {
+            icon.textContent = '⚡';
+            text.textContent = 'Cyber Forensics';
         }
     }
 }
@@ -80,6 +84,7 @@ function switchTab(tab) {
         communities: ['Communities', 'Detected Criminal Clusters'],
         patterns: ['Patterns & Alerts', 'Suspicious Activity Detection'],
         influencers: ['Key Influencers', 'Network Centrality Analysis'],
+        ingest: ['Add Intel & Records', 'Register Criminals & Log Crime Incidents'],
         predict: ['Prediction Console', 'ML-Powered Crime Prediction'],
         nlp: ['NLP Analyzer', 'Text Entity Extraction']
     };
@@ -215,16 +220,20 @@ function formatAmount(amount) {
 
 function renderCharts(data) {
     const s = data.stats;
-    const isBright = currentTheme === 'bright';
-    const chartColors = [
+    const isBright = currentTheme === 'light' || currentTheme === 'bright';
+    const chartColors = isBright ? [
         '#2563eb', '#059669', '#10b981', '#f59e0b', '#ef4444',
         '#8b5cf6', '#ec4899', '#14b8a6', '#f97316', '#6366f1',
         '#84cc16', '#e11d48', '#0891b2', '#7c3aed', '#d946ef'
+    ] : [
+        '#00f0ff', '#10b981', '#ffb703', '#ff2e5b', '#a855f7',
+        '#38bdf8', '#fb923c', '#f43f5e', '#34d399', '#818cf8',
+        '#fbbf24', '#f87171', '#2dd4bf', '#c084fc', '#e879f9'
     ];
     const textColor = isBright ? '#334155' : '#94a3b8';
     const tickColor = isBright ? '#475569' : '#64748b';
-    const gridColor = isBright ? 'rgba(0, 0, 0, 0.06)' : 'rgba(148, 163, 184, 0.06)';
-    const donutBorder = isBright ? '#ffffff' : '#0a0e17';
+    const gridColor = isBright ? 'rgba(0, 0, 0, 0.06)' : 'rgba(0, 240, 255, 0.07)';
+    const donutBorder = isBright ? '#ffffff' : '#0b1122';
 
     // Destroy existing charts
     Object.values(chartInstances).forEach(c => c?.destroy());
@@ -264,6 +273,8 @@ function renderCharts(data) {
     if (monthCtx && s.monthly_trend) {
         const labels = Object.keys(s.monthly_trend);
         const values = Object.values(s.monthly_trend);
+        const lineAccent = isBright ? '#2563eb' : '#00f0ff';
+        const lineFill = isBright ? 'rgba(37, 99, 235, 0.08)' : 'rgba(0, 240, 255, 0.12)';
         chartInstances.monthly = new Chart(monthCtx, {
             type: 'line',
             data: {
@@ -271,12 +282,12 @@ function renderCharts(data) {
                 datasets: [{
                     label: 'Incidents',
                     data: values,
-                    borderColor: '#2563eb',
-                    backgroundColor: isBright ? 'rgba(37, 99, 235, 0.08)' : 'rgba(59, 130, 246, 0.1)',
+                    borderColor: lineAccent,
+                    backgroundColor: lineFill,
                     fill: true,
                     tension: 0.4,
                     pointRadius: 4,
-                    pointBackgroundColor: '#2563eb',
+                    pointBackgroundColor: lineAccent,
                     pointBorderColor: donutBorder,
                     pointBorderWidth: 2
                 }]
@@ -397,10 +408,10 @@ function renderNetwork(data) {
     const container = document.getElementById('network-container');
     container.innerHTML = '';
 
-    const isBright = currentTheme === 'bright';
-    const fontColor = isBright ? '#0f172a' : '#e2e8f0';
-    const strokeColor = isBright ? '#ffffff' : '#0a0e17';
-    const edgeFontColor = isBright ? '#475569' : '#64748b';
+    const isBright = currentTheme === 'light' || currentTheme === 'bright';
+    const fontColor = isBright ? '#0f172a' : '#f8fafc';
+    const strokeColor = isBright ? '#ffffff' : '#060a14';
+    const edgeFontColor = isBright ? '#475569' : '#94a3b8';
 
     const nodes = new vis.DataSet(data.nodes);
     const edges = new vis.DataSet(data.edges);
@@ -691,24 +702,36 @@ function renderCommunities(communities) {
 }
 
 // ═══ Patterns & Alerts ════════════════════════════════════════
+let fullPatternsList = [];
+let patternFiltersInitialized = false;
+
 async function loadPatterns() {
     try {
         const res = await fetch(`${API}/api/patterns`);
         const data = await res.json();
-        renderPatterns(data.patterns || []);
-        setupPatternFilters(data.patterns || []);
+        fullPatternsList = data.patterns || [];
+        const activeBtn = document.querySelector('.filter-btn.active');
+        const activeFilter = activeBtn ? activeBtn.dataset.filter : 'all';
+        applyPatternFilter(activeFilter);
+        setupPatternFilters();
     } catch (e) {
         console.error('Patterns error:', e);
     }
 }
 
-let allPatterns = [];
+function applyPatternFilter(filter) {
+    if (!filter || filter === 'all') {
+        renderPatterns(fullPatternsList);
+    } else {
+        const filtered = fullPatternsList.filter(p => (p.severity || '').toUpperCase() === filter.toUpperCase());
+        renderPatterns(filtered);
+    }
+}
 
 function renderPatterns(patterns) {
-    allPatterns = patterns;
     const container = document.getElementById('patterns-container');
-    if (!patterns.length) {
-        container.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>No patterns detected</p></div>';
+    if (!patterns || !patterns.length) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>No patterns detected for this filter</p></div>';
         return;
     }
 
@@ -729,17 +752,16 @@ function renderPatterns(patterns) {
     `).join('');
 }
 
-function setupPatternFilters(patterns) {
+function setupPatternFilters() {
+    if (patternFiltersInitialized) return;
+    patternFiltersInitialized = true;
+
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             const filter = btn.dataset.filter;
-            if (filter === 'all') {
-                renderPatterns(allPatterns);
-            } else {
-                renderPatterns(allPatterns.filter(p => p.severity === filter));
-            }
+            applyPatternFilter(filter);
         });
     });
 }
@@ -1015,3 +1037,97 @@ function renderNLPResults(data, container) {
         </div>
     `;
 }
+
+// ═══ Ingest Intel (Add Criminal & Crime) ══════════════════════
+async function handleAddSuspect(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btn-submit-suspect');
+    const msg = document.getElementById('suspect-status-msg');
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳ Injecting Suspect into Graph...</span>';
+    msg.innerHTML = '';
+
+    const payload = {
+        name: document.getElementById('suspect-name').value.trim(),
+        risk_level: document.getElementById('suspect-risk').value,
+        age: document.getElementById('suspect-age').value,
+        gender: document.getElementById('suspect-gender').value,
+        organization: document.getElementById('suspect-org').value.trim(),
+        phone: document.getElementById('suspect-phone').value.trim(),
+        known_associates: document.getElementById('suspect-associates').value.trim(),
+        address: document.getElementById('suspect-address').value.trim(),
+        prior_records: document.getElementById('suspect-records').value
+    };
+
+    try {
+        const res = await fetch(`${API}/api/suspects/add`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            msg.innerHTML = `<div style="color:var(--accent-emerald);font-weight:600;padding:10px;border-radius:6px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3)">
+                ✅ ${data.message} — Node successfully active in Network Graph!
+            </div>`;
+            document.getElementById('form-add-suspect').reset();
+            loadDashboard();
+            allNetworkData = null;
+        } else {
+            msg.innerHTML = `<div style="color:var(--accent-red);padding:10px;border-radius:6px;background:rgba(239,68,68,0.1)">❌ ${data.error || 'Failed to add suspect'}</div>`;
+        }
+    } catch (err) {
+        msg.innerHTML = `<div style="color:var(--accent-red);padding:10px;border-radius:6px;background:rgba(239,68,68,0.1)">❌ Network error: ${err.message}</div>`;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>➕ Add Suspect to Graph Network</span>';
+    }
+}
+
+async function handleAddIncident(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btn-submit-incident');
+    const msg = document.getElementById('incident-status-msg');
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳ Linking Crime to Network...</span>';
+    msg.innerHTML = '';
+
+    const dtVal = document.getElementById('incident-datetime').value;
+    const datePart = dtVal ? dtVal.split('T')[0] : new Date().toISOString().split('T')[0];
+    const timePart = dtVal ? dtVal.split('T')[1] : '12:00:00';
+
+    const payload = {
+        crime_type: document.getElementById('incident-type').value,
+        date: datePart,
+        time: timePart,
+        location: document.getElementById('incident-location').value.trim(),
+        suspect1_id: document.getElementById('incident-suspect1').value.trim(),
+        suspect2_id: document.getElementById('incident-suspect2').value.trim(),
+        narrative: document.getElementById('incident-narrative').value.trim()
+    };
+
+    try {
+        const res = await fetch(`${API}/api/incidents/add`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+            msg.innerHTML = `<div style="color:var(--accent-cyan);font-weight:600;padding:10px;border-radius:6px;background:rgba(5,150,105,0.1);border:1px solid rgba(5,150,105,0.3)">
+                ✅ ${data.message} — Incident linked to suspects and timeline updated!
+            </div>`;
+            document.getElementById('form-add-incident').reset();
+            loadDashboard();
+            allNetworkData = null;
+        } else {
+            msg.innerHTML = `<div style="color:var(--accent-red);padding:10px;border-radius:6px;background:rgba(239,68,68,0.1)">❌ ${data.error || 'Failed to log incident'}</div>`;
+        }
+    } catch (err) {
+        msg.innerHTML = `<div style="color:var(--accent-red);padding:10px;border-radius:6px;background:rgba(239,68,68,0.1)">❌ Network error: ${err.message}</div>`;
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>🚨 Log Crime & Link Accomplices</span>';
+    }
+}
+

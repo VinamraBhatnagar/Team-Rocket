@@ -5,7 +5,7 @@
 [![scikit-learn](https://img.shields.io/badge/ML-scikit--learn-F7931E.svg?style=flat&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![NetworkX](https://img.shields.io/badge/Graph-NetworkX-blue.svg?style=flat)](https://networkx.org/)
 [![spaCy](https://img.shields.io/badge/NLP-spaCy-09A3D5.svg?style=flat&logo=spacy&logoColor=white)](https://spacy.io/)
-[![UI Theme](https://img.shields.io/badge/Theme-Vibrant%20Bright%20%7C%20Dark-2563eb.svg?style=flat)](#)
+[![UI Theme](https://img.shields.io/badge/Theme-Cyber--Forensics%20Tactical%20HUD-00f0ff.svg?style=flat)](#)
 [![Hackathon](https://img.shields.io/badge/Hackathon-KAYA-purple.svg?style=flat)](#)
 
 > **Autonomous Multi-Source Intelligence Fusion & Graph Analytics Engine for Law Enforcement & Investigative Agencies.**
@@ -77,21 +77,24 @@ A transparent, comprehensive breakdown of what has been built and delivered in t
   - **Network Brokers**: Highlights bridge nodes connecting otherwise disjoint criminal factions.
 
 #### 6. Investigator Command Center UI
-- [x] **Vibrant Bright Color Theme (Default)** with dynamic **Dark Mode Toggle**:
-  - Crisp, modern high-contrast design with clean white cards, soft borders (`#e2e8f0`), deep obsidian text (`#0f172a`), and vivid electric blue and elegant emerald green accents (`#2563eb`, `#059669`).
+- [x] **Cyber-Forensics Tactical Intelligence Command Theme (Default)** with **Light Mode Toggle**:
+  - Purpose-built tactical HUD aesthetics reflecting modern cyber crime labs and national intelligence operations.
+  - Deep obsidian canvas (`#060a14`), glowing cyber cyan (`#00f0ff`), radar emerald (`#10b981`), alert amber (`#ffb703`), and hazard crimson (`#ff2e5b`).
+  - Frosted glassmorphism card panels (`rgba(11, 18, 35, 0.8)`), glowing border accents, and high-tech cyber radar grid backdrop on the network canvas.
   - Interactive Theme Toggle in top bar persisting user preference in `localStorage`.
-- [x] **8 Specialized Intelligence Tabs**:
+- [x] **9 Specialized Intelligence Tabs**:
   1. **Dashboard**: Executive KPIs, monthly crime trend line, risk level distribution, and crime type doughnut chart.
   2. **Network Graph**: Interactive force-directed canvas powered by **vis.js** with zoom, drag, physics toggle, community coloring, and node detail modals.
-  3. **Entity Explorer**: Searchable and filterable suspect dossier registry.
+  3. **Entity Explorer**: Searchable and filterable suspect dossier registry with quick-action profile inspection.
   4. **Communities**: Clustered view of detected syndicates with membership lists and threat ratings.
-  5. **Patterns & Alerts**: Real-time triage feed of 180+ detected suspicious activities with severity filters.
-  6. **Key Influencers**: Leaderboard ranking prime targets by network centrality.
-  7. **Prediction Console**: Form to test hypothetical crime scenarios against the ML models.
-  8. **NLP Analyzer**: Live text area to paste FIR reports and visualize extracted entities instantly.
+  5. **Patterns & Alerts**: Real-time triage feed of 200+ detected suspicious activities with non-destructive severity filters (All, Critical, High, Medium, Low).
+  6. **Key Influencers**: Leaderboard ranking prime targets by composite network centrality.
+  7. **Add Criminal / Crime (Live Ingest Console)**: Form to register new suspects and log FIR incidents with real-time graph node injection and accomplice linking.
+  8. **Prediction Console**: Form to test hypothetical crime scenarios against the ML models.
+  9. **NLP Analyzer**: Live text area to paste FIR reports and visualize extracted entities instantly.
 
 #### 7. REST API & Architecture
-- [x] **13 REST API Endpoints** in Flask (`app.py`) with structured JSON contracts.
+- [x] **15 REST API Endpoints** in Flask (`app.py`) with structured JSON contracts (including live suspect & incident ingestion).
 - [x] Complete test suite verification across all endpoints and data pipelines.
 - [x] GitHub repository synchronization and `.gitignore` setup preventing large model binary bloat.
 
@@ -215,7 +218,7 @@ Open your browser and navigate to:
 http://localhost:5001
 ```
 
-> **Theme Customization**: CrimeNet AI opens with the **Vibrant Bright Theme** by default. Click the **🌙 Dark Mode** button in the top-right header anytime to toggle between Bright and Dark themes!
+> **Theme Customization**: CrimeNet AI opens with the **Cyber-Forensics Tactical Command Theme** by default. Click the **☀️ Light Mode** button in the top-right header anytime to switch between Cyber and Light modes!
 
 ---
 
@@ -230,6 +233,8 @@ http://localhost:5001
 | `GET` | `/api/network/path?source=<ID>&target=<ID>` | Shortest connection path between any two targets |
 | `GET` | `/api/entities` | Searchable registry of suspects, orgs, and locations (`?q=term`) |
 | `GET` | `/api/entity/<id>` | Full intelligence dossier, associates, records, and history |
+| `POST`| `/api/suspects/add` | Dynamically register a new suspect & inject into the graph |
+| `POST`| `/api/incidents/add` | Log a new crime incident/FIR & link co-suspects in real-time |
 | `POST`| `/api/predict/crime-type` | Multi-class crime category prediction from spatiotemporal inputs |
 | `POST`| `/api/predict/arrest` | Binary arrest likelihood prediction |
 | `GET` | `/api/patterns` | Feed of detected behavioral, financial, and geographic anomalies |
@@ -263,11 +268,11 @@ KAYA-HACKTHON/
 │   ├── prediction_engine.py        # Random Forest inference & heuristic risk scoring
 │   └── pattern_detector.py         # Temporal, financial, geographic & network anomaly detection
 └── static/
-    ├── index.html                  # 8-tab investigator dashboard interface
+    ├── index.html                  # 9-tab investigator command dashboard & ingest console
     ├── css/
-    │   └── styles.css              # Vibrant Bright theme (default) + Dark mode styles
+    │   └── styles.css              # Cyber-Forensics Tactical theme (default) + Light HUD
     └── js/
-        └── app.js                  # Application state, Chart.js, vis.js & theme switcher
+        └── app.js                  # Application state, Chart.js, vis.js, dynamic ingest & theme switcher
 ```
 
 ---

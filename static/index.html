@@ -55,7 +55,11 @@
                     <span>Key Influencers</span>
                 </div>
 
-                <div class="nav-section-title">Tools</div>
+                <div class="nav-section-title">Tools & Ingestion</div>
+                <div class="nav-item" data-tab="ingest" id="nav-ingest">
+                    <span class="nav-icon">➕</span>
+                    <span>Add Criminal / Crime</span>
+                </div>
                 <div class="nav-item" data-tab="predict" id="nav-predict">
                     <span class="nav-icon">🤖</span>
                     <span>Prediction Console</span>
@@ -87,9 +91,9 @@
                         <span class="search-icon">🔎</span>
                         <input type="text" id="global-search" placeholder="Search suspects, organizations, locations...">
                     </div>
-                    <button class="top-bar-btn" id="theme-toggle-btn" title="Toggle Theme (Bright / Dark)">
-                        <span id="theme-toggle-icon">🌙</span>
-                        <span id="theme-toggle-text">Dark Mode</span>
+                    <button class="top-bar-btn" id="theme-toggle-btn" title="Toggle Theme (Cyber Forensics / Light Mode)">
+                        <span id="theme-toggle-icon">☀️</span>
+                        <span id="theme-toggle-text">Light Mode</span>
                     </button>
                 </div>
             </header>
@@ -162,7 +166,10 @@
                 <div class="tab-content" id="tab-entities">
                     <div class="card" style="margin-bottom:16px">
                         <div class="card-header">
-                            <h3>👤 Suspect Database</h3>
+                            <div style="display:flex;align-items:center;gap:12px">
+                                <h3>👤 Suspect Database</h3>
+                                <button class="btn-primary" style="padding:6px 14px;font-size:0.8rem;border-radius:6px" onclick="switchTab('ingest')">➕ Add Criminal / Crime</button>
+                            </div>
                             <span class="card-badge badge-low" id="entity-count">0 entities</span>
                         </div>
                         <div class="entities-scroll">
@@ -229,6 +236,124 @@
                                 <tbody id="influencer-table-body">
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ Ingest Intel Tab ═══ -->
+                <div class="tab-content" id="tab-ingest">
+                    <div class="ingest-grid">
+                        <!-- Add Suspect Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>👤 Register New Criminal / Suspect</h3>
+                                <span class="card-badge badge-critical">Live Graph Node</span>
+                            </div>
+                            <form id="form-add-suspect" onsubmit="handleAddSuspect(event)">
+                                <div class="form-group">
+                                    <label>Full Legal Name *</label>
+                                    <input type="text" id="suspect-name" required placeholder="e.g. Vikram 'Blade' Malhotra">
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                                    <div class="form-group">
+                                        <label>Risk Classification *</label>
+                                        <select id="suspect-risk">
+                                            <option value="CRITICAL">🔴 CRITICAL (Kingpin / Violent)</option>
+                                            <option value="HIGH">🟠 HIGH (Enforcer / Structuring)</option>
+                                            <option value="MEDIUM" selected>🟡 MEDIUM (Associate / Mule)</option>
+                                            <option value="LOW">🟢 LOW (Person of Interest)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Age & Gender</label>
+                                        <div style="display:flex;gap:8px">
+                                            <input type="number" id="suspect-age" placeholder="Age" style="width:70px" value="32">
+                                            <select id="suspect-gender">
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                                    <div class="form-group">
+                                        <label>Syndicate / Organization</label>
+                                        <input type="text" id="suspect-org" placeholder="e.g. D-Company or leave empty">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Primary Phone Number</label>
+                                        <input type="text" id="suspect-phone" placeholder="e.g. +91-98112-99881">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Known Associate IDs or Names</label>
+                                    <input type="text" id="suspect-associates" placeholder="e.g. SUSP_001, SUSP_002, Prakash Shah">
+                                </div>
+                                <div class="form-group">
+                                    <label>Base / Known Address</label>
+                                    <input type="text" id="suspect-address" placeholder="e.g. Sector 18, Block B, Metro Area">
+                                </div>
+                                <div class="form-group">
+                                    <label>Prior Criminal Charges / Convictions Count</label>
+                                    <input type="number" id="suspect-records" placeholder="0" value="2">
+                                </div>
+                                <button type="submit" class="btn-primary" id="btn-submit-suspect">
+                                    <span>➕ Add Suspect to Graph Network</span>
+                                </button>
+                                <div id="suspect-status-msg" style="margin-top:12px;font-size:0.85rem"></div>
+                            </form>
+                        </div>
+
+                        <!-- Add Incident Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>🚨 Log New Crime Incident / FIR</h3>
+                                <span class="card-badge badge-low">Live Graph Edge</span>
+                            </div>
+                            <form id="form-add-incident" onsubmit="handleAddIncident(event)">
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                                    <div class="form-group">
+                                        <label>Crime Category *</label>
+                                        <select id="incident-type" required>
+                                            <option value="ARMED ROBBERY">ARMED ROBBERY</option>
+                                            <option value="NARCOTICS">NARCOTICS TRAFFICKING</option>
+                                            <option value="HOMICIDE">HOMICIDE</option>
+                                            <option value="WEAPONS VIOLATION">WEAPONS VIOLATION</option>
+                                            <option value="EXTORTION">EXTORTION / RACKETEERING</option>
+                                            <option value="FINANCIAL FRAUD">FINANCIAL FRAUD / HAWALA</option>
+                                            <option value="THEFT">THEFT / BURGLARY</option>
+                                            <option value="CYBER CRIME">CYBER CRIME</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Incident Date & Time</label>
+                                        <input type="datetime-local" id="incident-datetime">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Location / Street Address *</label>
+                                    <input type="text" id="incident-location" required placeholder="e.g. 1200 N Michigan Ave, Downtown">
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                                    <div class="form-group">
+                                        <label>Primary Suspect ID / Name</label>
+                                        <input type="text" id="incident-suspect1" placeholder="e.g. SUSP_001 or Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Accomplice Suspect ID (Co-incident link)</label>
+                                        <input type="text" id="incident-suspect2" placeholder="e.g. SUSP_002 (optional)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>FIR Narrative & Tactical Details</label>
+                                    <textarea id="incident-narrative" placeholder="Enter FIR narrative, seized contraband, weapons recovered, or modus operandi..."></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary" id="btn-submit-incident">
+                                    <span>🚨 Log Crime & Link Accomplices</span>
+                                </button>
+                                <div id="incident-status-msg" style="margin-top:12px;font-size:0.85rem"></div>
+                            </form>
                         </div>
                     </div>
                 </div>

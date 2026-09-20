@@ -308,3 +308,101 @@ class DataProcessor:
 
         events.sort(key=lambda x: f"{x['date']} {x['time']}")
         return events[:200]
+
+    def add_suspect(self, data):
+        """Dynamically add a new suspect to the dataset and update the index."""
+        # Determine unique ID
+        if not data.get("id"):
+            existing = [int(s.get("id", "SUSP_0").split("_")[-1]) for s in self.suspects
+                        if s.get("id", "").startswith("SUSP_") and s.get("id", "").split("_")[-1].isdigit()]
+            next_num = max(existing, default=0) + 1
+            data["id"] = f"SUSP_{next_num:03d}"
+
+        sid = data["id"]
+        # Format lists
+        if isinstance(data.get("known_associates"), str):
+            data["known_associates"] = [a.strip() for a in data["known_associates"].split(",") if a.strip()]
+        elif not data.get("known_associates"):
+            data["known_associates"] = []
+
+        if isinstance(data.get("vehicles"), str):
+            data["vehicles"] = [v.strip() for v in data["vehicles"].split(",") if v.strip()]
+        elif not data.get("vehicles"):
+            data["vehicles"] = []
+
+        self.suspects.append(data)
+
+        # Index person
+        self.entity_index["persons"][sid] = {
+            "id": sid,
+            "name": data.get("name", "Unknown Suspect"),
+            "type": "PERSON",
+            "phone": data.get("phone", ""),
+            "phone2": data.get("phone2", ""),
+            "organization": data.get("organization", ""),
+            "address": data.get("address", ""),
+            "risk_level": data.get("risk_level", "MEDIUM"),
+            "age": int(data.get("age", 30)) if str(data.get("age", "")).isdigit() else 30,
+            "gender": data.get("gender", "Male"),
+            "incidents": [],
+            "calls_made": 0,
+            "calls_received": 0,
+            "total_sent": 0,
+            "total_received": 0,
+            "criminal_records": int(data.get("prior_records", 0)) if str(data.get("prior_records", "")).isdigit() else 0,
+            "known_associates": data.get("known_associates", []),
+            "vehicles": data.get("vehicles", [])
+        }
+
+        # Index phone
+        if data.get("phone"):
+            self.entity_index["phones"][data["phone"]] = sid
+
+        # Index organization
+        org = data.get("organization")
+        if org:
+            if org not in self.entity_index["organizations"]:
+                self.entity_index["organizations"][org] = {"name": org, "type": "ORGANIZATION", "members": []}
+            if sid not in self.entity_index["organizations"][org]["members"]:
+                self.entity_index["organizations"][org]["members"].append(sid)
+
+        # Index location
+        loc = data.get("address")
+        if loc:
+            if loc not in self.entity_index["locations"]:
+                self.entity_index["locations"][loc] = {"name": loc, "type": "LOCATION", "associated_persons": []}
+            if sid not in self.entity_index["locations"][loc]["associated_persons"]:
+                self.entity_index["locations"][loc]["associated_persons"].append(sid)
+
+        return self.entity_index["persons"][sid]
+
+    def add_incident(self, data):
+        """Dynamically add a new crime incident and link suspects."""
+        if not data.get("incident_id"):
+            existing = [int(i.get("incident_id", "INC_0").split("_")[-1]) for i in self.incidents
+                        if i.get("incident_id", "").startswith("INC_") and i.get("incident_id", "").split("_")[-1].isdigit()]
+            next_num = max(existing, default=0) + 1
+            data["incident_id"] = f"INC_{next_num:04d}"
+
+        iid = data["incident_id"]
+        self.incidents.append(data)
+
+        # Link suspects
+        for key in ["suspect1_id", "suspect2_id"]:
+            sid = str(data.get(key, ""))
+            if sid in self.entity_index["persons"]:
+                if iid not in self.entity_index["persons"][sid]["incidents"]:
+                    self.entity_index["persons"][sid]["incidents"].append(iid)
+
+        # Link location
+        loc = data.get("location")
+        if loc:
+            if loc not in self.entity_index["locations"]:
+                self.entity_index["locations"][loc] = {"name": loc, "type": "LOCATION", "associated_persons": []}
+            for key in ["suspect1_id", "suspect2_id"]:
+                sid = str(data.get(key, ""))
+                if sid and sid not in self.entity_index["locations"][loc]["associated_persons"]:
+                    self.entity_index["locations"][loc]["associated_persons"].append(sid)
+
+        return data
+
