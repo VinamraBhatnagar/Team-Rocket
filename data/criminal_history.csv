@@ -1,0 +1,236 @@
+record_id,suspect_id,suspect_name,date,crime_type,case_id,court,status,sentence,location,co_accused
+CR-00001,S0066,Imran Joshi,2020-05-21,BATTERY,FIR-2024-70238,District Court,UNDER_TRIAL,"Fine ₹1,00,000",Railway Station Complex,"[""Kiran Ali"", ""Ramesh Mishra""]"
+CR-00002,S0073,Rahul Martinez,2023-11-25,OTHER OFFENSE,FIR-2024-71940,High Court,ON_BAIL,"Fine ₹50,000",45th Street Warehouse,"[""Arjun Roy"", ""Rekha Das""]"
+CR-00003,S0013,Tariq Hernandez,2022-05-21,BURGLARY,FIR-2024-53326,High Court,ON_BAIL,None,45th Street Warehouse,"[""Rekha Thakur"", ""Carlos Reddy"", ""Manoj Sharma""]"
+CR-00004,S0013,Tariq Hernandez,2019-09-11,THEFT,FIR-2024-82787,High Court,ACQUITTED,10 years,"Velachery, Chennai",[]
+CR-00005,S0013,Tariq Hernandez,2020-08-24,OFFENSE INVOLVING CHILDREN,FIR-2024-65986,District Court,CASE_CLOSED,"Fine ₹50,000",45th Street Warehouse,[]
+CR-00006,S0013,Tariq Hernandez,2019-04-16,OFFENSE INVOLVING CHILDREN,FIR-2023-37437,Sessions Court,PENDING,6 months,"Anna Nagar, Chennai","[""Pooja Pandey""]"
+CR-00007,S0013,Tariq Hernandez,2022-01-10,WEAPONS VIOLATION,FIR-2023-72100,Metropolitan Magistrate,UNDER_TRIAL,Community service,Industrial Zone B-12,"[""Rizwan Ali"", ""Farooq Saxena""]"
+CR-00008,S0050,Hassan Qureshi,2023-04-23,CYBER CRIME,FIR-2024-12701,District Court,CONVICTED,2 years,Highway NH-48 Rest Stop,"[""Arjun Verma""]"
+CR-00009,S0050,Hassan Qureshi,2022-03-18,MOTOR VEHICLE THEFT,FIR-2023-92439,Metropolitan Magistrate,CASE_CLOSED,Community service,"Andheri West, Mumbai",[]
+CR-00010,S0050,Hassan Qureshi,2019-06-28,HUMAN TRAFFICKING,FIR-2023-48932,High Court,ACQUITTED,3 years,Airport Cargo Terminal,[]
+CR-00011,S0050,Hassan Qureshi,2022-04-11,BATTERY,FIR-2024-32459,Special Court,CASE_CLOSED,"Fine ₹1,00,000",Airport Cargo Terminal,"[""Sanjay Khan"", ""Yusuf Joshi""]"
+CR-00012,S0054,Tariq Pandey,2021-09-07,OFFENSE INVOLVING CHILDREN,FIR-2024-79419,Sessions Court,PENDING,"Fine ₹50,000","Anna Nagar, Chennai","[""Geeta Hernandez""]"
+CR-00013,S0054,Tariq Pandey,2023-05-10,WEAPONS VIOLATION,FIR-2024-78801,High Court,ON_BAIL,2 years,"Aundh, Pune","[""Yusuf Joshi""]"
+CR-00014,S0054,Tariq Pandey,2022-07-07,DECEPTIVE PRACTICE,FIR-2023-10611,District Court,CASE_CLOSED,6 months,"Malviya Nagar, Jaipur",[]
+CR-00015,S0011,Hassan Qureshi,2020-04-21,MONEY LAUNDERING,FIR-2024-98491,District Court,ON_BAIL,Community service,Highway NH-48 Rest Stop,"[""Farooq Joshi"", ""Ramesh Lopez""]"
+CR-00016,S0011,Hassan Qureshi,2020-05-04,ROBBERY,FIR-2023-97718,Metropolitan Magistrate,ON_BAIL,Community service,"Aundh, Pune","[""Imran Martinez""]"
+CR-00017,S0011,Hassan Qureshi,2024-11-03,MOTOR VEHICLE THEFT,FIR-2024-23776,District Court,ACQUITTED,3 years,Railway Station Complex,"[""Miguel Gupta"", ""Pooja Lopez""]"
+CR-00018,S0011,Hassan Qureshi,2019-03-15,CRIMINAL TRESPASS,FIR-2023-17403,Metropolitan Magistrate,ON_BAIL,Community service,45th Street Warehouse,"[""Vikram Chauhan""]"
+CR-00019,S0011,Hassan Qureshi,2018-05-02,ROBBERY,FIR-2023-17159,Metropolitan Magistrate,UNDER_TRIAL,2 years,"Velachery, Chennai","[""Rekha Das"", ""Rahul Agarwal"", ""Arjun Verma""]"
+CR-00020,S0017,Naveen Kumar,2021-06-07,NARCOTICS,FIR-2023-11614,Sessions Court,UNDER_TRIAL,"Fine ₹1,00,000","Malviya Nagar, Jaipur","[""Rizwan Ali"", ""Miguel Gupta""]"
+CR-00021,S0017,Naveen Kumar,2020-10-02,BATTERY,FIR-2023-89738,Special Court,CASE_CLOSED,"Fine ₹1,00,000","Park Street, Kolkata","[""Kiran Qureshi""]"
+CR-00022,S0017,Naveen Kumar,2019-06-18,BATTERY,FIR-2023-19340,Sessions Court,ACQUITTED,Community service,"Salt Lake, Kolkata","[""Manoj Sharma"", ""Hassan Qureshi""]"
+CR-00023,S0077,Anil Pandey,2022-05-31,ROBBERY,FIR-2023-67983,Special Court,ON_BAIL,Community service,"Navrangpura, Ahmedabad",[]
+CR-00024,S0067,Rajesh Ali,2019-01-18,CRIMINAL TRESPASS,FIR-2024-14113,Metropolitan Magistrate,ABSCONDING,7 years,"Park Street, Kolkata","[""Vikram Chauhan""]"
+CR-00025,S0067,Rajesh Ali,2023-12-12,CYBER CRIME,FIR-2024-12685,District Court,CONVICTED,Community service,Abandoned Factory Block C,"[""Prakash Yadav"", ""Imran Martinez"", ""Abdul Chauhan""]"
+CR-00026,S0067,Rajesh Ali,2018-05-15,BATTERY,FIR-2024-30685,Metropolitan Magistrate,ABSCONDING,None,Abandoned Factory Block C,[]
+CR-00027,S0067,Rajesh Ali,2023-09-12,ROBBERY,FIR-2024-84020,High Court,UNDER_TRIAL,2 years,"Marine Drive, Mumbai","[""Farooq Saxena"", ""Anil Chauhan"", ""Imran Martinez""]"
+CR-00028,S0067,Rajesh Ali,2022-03-25,THEFT,FIR-2023-46327,District Court,ACQUITTED,3 years,"Malviya Nagar, Jaipur","[""Rekha Das""]"
+CR-00029,S0014,Yusuf Patel,2021-04-12,OFFENSE INVOLVING CHILDREN,FIR-2024-33066,Special Court,CASE_CLOSED,"Fine ₹1,00,000",Port District Dock 7,"[""Prakash Shah""]"
+CR-00030,S0014,Yusuf Patel,2022-10-27,ROBBERY,FIR-2023-42238,High Court,CONVICTED,1 year,Port District Dock 7,"[""Anil Pandey"", ""Abdul Garcia"", ""Kiran Ahmed""]"
+CR-00031,S0014,Yusuf Patel,2020-02-19,MOTOR VEHICLE THEFT,FIR-2024-51033,Special Court,ABSCONDING,5 years,"Navrangpura, Ahmedabad","[""Ravi Ali""]"
+CR-00032,S0015,Arjun Mishra,2022-04-24,OTHER OFFENSE,FIR-2024-59924,District Court,CASE_CLOSED,2 years,"Connaught Place, New Delhi",[]
+CR-00033,S0015,Arjun Mishra,2023-02-17,KIDNAPPING,FIR-2024-54179,High Court,CONVICTED,Community service,"Aundh, Pune","[""Sanjay Ahmed"", ""Rajesh Ali""]"
+CR-00034,S0015,Arjun Mishra,2023-02-21,ROBBERY,FIR-2023-28270,Special Court,ON_BAIL,2 years,"Sector 15, New Delhi","[""Ramesh Patel"", ""Prakash Shah""]"
+CR-00035,S0015,Arjun Mishra,2018-11-30,BATTERY,FIR-2023-29073,District Court,CASE_CLOSED,5 years,"Indiranagar, Bangalore",[]
+CR-00036,S0069,Mohan Das,2019-04-23,NARCOTICS,FIR-2023-52637,Metropolitan Magistrate,UNDER_TRIAL,Community service,"Civil Lines, Lucknow",[]
+CR-00037,S0024,Anita Lopez,2023-05-14,ROBBERY,FIR-2024-82153,Special Court,CASE_CLOSED,None,"Salt Lake, Kolkata","[""Sunil Hussain"", ""Neha Reddy""]"
+CR-00038,S0024,Anita Lopez,2023-10-28,HUMAN TRAFFICKING,FIR-2023-96832,Metropolitan Magistrate,CASE_CLOSED,"Fine ₹1,00,000",Bus Terminal Underground,"[""Saleem Thakur"", ""Farooq Saxena""]"
+CR-00039,S0024,Anita Lopez,2024-08-02,MONEY LAUNDERING,FIR-2024-77691,Sessions Court,ON_BAIL,2 years,"Jubilee Hills, Hyderabad","[""Rizwan Ali"", ""Pooja Pandey""]"
+CR-00040,S0024,Anita Lopez,2019-01-15,KIDNAPPING,FIR-2023-92697,Metropolitan Magistrate,UNDER_TRIAL,1 year,Airport Cargo Terminal,[]
+CR-00041,S0024,Anita Lopez,2024-02-15,EXTORTION,FIR-2024-81675,Sessions Court,PENDING,5 years,"Aundh, Pune",[]
+CR-00042,S0040,Farooq Saxena,2022-06-06,OTHER OFFENSE,FIR-2023-33246,Special Court,CASE_CLOSED,6 months,Bus Terminal Underground,"[""Ravi Ali"", ""Arjun Shah"", ""Kiran Ali""]"
+CR-00043,S0025,Yusuf Joshi,2018-04-22,OTHER OFFENSE,FIR-2023-92965,High Court,ABSCONDING,10 years,Highway NH-48 Rest Stop,"[""Kavita Thakur""]"
+CR-00044,S0025,Yusuf Joshi,2019-08-08,CRIMINAL TRESPASS,FIR-2023-65739,District Court,CASE_CLOSED,2 years,Airport Cargo Terminal,[]
+CR-00045,S0020,Ajay Yadav,2019-11-10,CRIMINAL TRESPASS,FIR-2023-58757,Metropolitan Magistrate,CASE_CLOSED,3 years,"Park Street, Kolkata","[""Saleem Hernandez""]"
+CR-00046,S0020,Ajay Yadav,2024-06-30,CRIMINAL TRESPASS,FIR-2023-44983,Metropolitan Magistrate,CONVICTED,"Fine ₹1,00,000","MG Road, Bangalore","[""Mohan Das"", ""Kiran Ahmed"", ""Sanjay Khan""]"
+CR-00047,S0020,Ajay Yadav,2024-04-06,EXTORTION,FIR-2023-53860,Metropolitan Magistrate,ACQUITTED,2 years,"Anna Nagar, Chennai","[""Arjun Mishra"", ""Arjun Verma"", ""Suresh Sharma""]"
+CR-00048,S0028,Ajay Agarwal,2023-04-05,WEAPONS VIOLATION,FIR-2023-49999,High Court,ON_BAIL,1 year,"Indiranagar, Bangalore",[]
+CR-00049,S0028,Ajay Agarwal,2018-08-21,BURGLARY,FIR-2023-88820,District Court,CASE_CLOSED,None,Bus Terminal Underground,"[""Ramesh Patel"", ""Arjun Roy""]"
+CR-00050,S0075,Imran Martinez,2024-05-01,OTHER OFFENSE,FIR-2023-72799,Sessions Court,ON_BAIL,"Fine ₹1,00,000","Anna Nagar, Chennai","[""Sanjay Agarwal""]"
+CR-00051,S0022,Abdul Chauhan,2024-06-30,MOTOR VEHICLE THEFT,FIR-2024-48761,Metropolitan Magistrate,CONVICTED,1 year,"Anna Nagar, Chennai",[]
+CR-00052,S0022,Abdul Chauhan,2023-03-05,EXTORTION,FIR-2023-19536,Special Court,UNDER_TRIAL,6 months,"Velachery, Chennai","[""Farooq Joshi"", ""Neha Reddy""]"
+CR-00053,S0021,Saleem Hernandez,2023-10-10,EXTORTION,FIR-2024-74893,High Court,UNDER_TRIAL,7 years,"Navrangpura, Ahmedabad","[""Neha Reddy"", ""Saleem Thakur"", ""Geeta Hernandez""]"
+CR-00054,S0021,Saleem Hernandez,2020-03-29,CRIMINAL TRESPASS,FIR-2024-70938,Sessions Court,CASE_CLOSED,3 years,"Sector 15, New Delhi",[]
+CR-00055,S0030,Prakash Lopez,2024-09-19,OFFENSE INVOLVING CHILDREN,FIR-2023-11129,Special Court,ON_BAIL,5 years,"Connaught Place, New Delhi","[""Arjun Mishra"", ""Sanjay Khan"", ""Rahul Agarwal""]"
+CR-00056,S0030,Prakash Lopez,2022-02-22,CRIMINAL TRESPASS,FIR-2023-41092,High Court,ON_BAIL,"Fine ₹1,00,000","Anna Nagar, Chennai",[]
+CR-00057,S0030,Prakash Lopez,2023-02-28,KIDNAPPING,FIR-2024-87842,Special Court,ON_BAIL,"Fine ₹50,000","Malviya Nagar, Jaipur","[""Rajesh Ali"", ""Manoj Malik"", ""Sanjay Agarwal""]"
+CR-00058,S0030,Prakash Lopez,2023-07-18,HUMAN TRAFFICKING,FIR-2024-98546,Metropolitan Magistrate,CASE_CLOSED,7 years,45th Street Warehouse,"[""Ramesh Lopez""]"
+CR-00059,S0030,Prakash Lopez,2021-05-29,OTHER OFFENSE,FIR-2023-27478,Metropolitan Magistrate,ABSCONDING,10 years,"Salt Lake, Kolkata",[]
+CR-00060,S0042,Rekha Thakur,2023-05-26,OFFENSE INVOLVING CHILDREN,FIR-2024-13953,Special Court,CONVICTED,None,"Kothrud, Pune",[]
+CR-00061,S0042,Rekha Thakur,2020-04-30,WEAPONS VIOLATION,FIR-2024-28758,Special Court,UNDER_TRIAL,7 years,"Koregaon Park, Pune","[""Tariq Hernandez""]"
+CR-00062,S0042,Rekha Thakur,2019-09-21,CYBER CRIME,FIR-2024-24720,Special Court,ACQUITTED,6 months,Railway Station Complex,"[""Manoj Malik"", ""Hassan Rodriguez"", ""Vikram Chauhan""]"
+CR-00063,S0042,Rekha Thakur,2018-02-16,ASSAULT,FIR-2024-98074,Special Court,UNDER_TRIAL,"Fine ₹1,00,000","Andheri West, Mumbai","[""Ajay Mehta""]"
+CR-00064,S0042,Rekha Thakur,2018-01-17,OFFENSE INVOLVING CHILDREN,FIR-2024-79216,District Court,CASE_CLOSED,None,"Park Street, Kolkata",[]
+CR-00065,S0019,Hassan Rodriguez,2022-02-22,BATTERY,FIR-2024-79007,High Court,UNDER_TRIAL,7 years,"Kothrud, Pune","[""Ramesh Lopez"", ""Ashok Saxena"", ""Mohan Hussain""]"
+CR-00066,S0019,Hassan Rodriguez,2019-05-25,THEFT,FIR-2024-91317,Special Court,CONVICTED,"Fine ₹1,00,000","Velachery, Chennai","[""Ajay Yadav"", ""Anita Malik""]"
+CR-00067,S0058,Arjun Roy,2018-05-28,CRIMINAL DAMAGE,FIR-2023-92329,Special Court,ACQUITTED,Community service,Industrial Zone B-12,[]
+CR-00068,S0058,Arjun Roy,2020-02-04,NARCOTICS,FIR-2023-48952,Special Court,UNDER_TRIAL,10 years,"Navrangpura, Ahmedabad","[""Prakash Shah""]"
+CR-00069,S0058,Arjun Roy,2018-06-19,ASSAULT,FIR-2023-86306,Metropolitan Magistrate,ACQUITTED,6 months,"Indiranagar, Bangalore","[""Rajesh Joshi"", ""Arjun Verma""]"
+CR-00070,S0065,Prakash Mehta,2023-10-23,CRIMINAL DAMAGE,FIR-2024-59600,Sessions Court,ABSCONDING,2 years,Port District Dock 7,"[""Sanjay Khan"", ""Yusuf Patel"", ""Vinod Qureshi""]"
+CR-00071,S0065,Prakash Mehta,2018-05-23,HUMAN TRAFFICKING,FIR-2024-85758,District Court,ACQUITTED,"Fine ₹1,00,000","Marine Drive, Mumbai","[""Rekha Das"", ""Ajay Mehta"", ""Kiran Ali""]"
+CR-00072,S0065,Prakash Mehta,2024-01-26,CRIMINAL DAMAGE,FIR-2023-39076,High Court,ABSCONDING,6 months,45th Street Warehouse,"[""Yusuf Patel"", ""Yusuf Joshi"", ""Neha Reddy""]"
+CR-00073,S0062,Rizwan Ali,2023-06-28,CRIMINAL TRESPASS,FIR-2024-81882,Sessions Court,ON_BAIL,"Fine ₹1,00,000","Anna Nagar, Chennai","[""Geeta Hernandez"", ""Priya Martinez""]"
+CR-00074,S0062,Rizwan Ali,2020-03-06,ASSAULT,FIR-2023-63466,Special Court,ACQUITTED,"Fine ₹1,00,000",Industrial Zone B-12,"[""Ramesh Lopez""]"
+CR-00075,S0062,Rizwan Ali,2022-11-01,CRIMINAL TRESPASS,FIR-2023-70256,Sessions Court,UNDER_TRIAL,7 years,Abandoned Factory Block C,"[""Pooja Pandey"", ""Vinod Hussain"", ""Sanjay Agarwal""]"
+CR-00076,S0041,Anil Chauhan,2022-05-01,OTHER OFFENSE,FIR-2024-56707,Metropolitan Magistrate,ABSCONDING,6 months,"Salt Lake, Kolkata","[""Kiran Ahmed"", ""Suman Agarwal""]"
+CR-00077,S0041,Anil Chauhan,2022-03-16,ASSAULT,FIR-2023-75907,Sessions Court,CASE_CLOSED,3 years,"Marine Drive, Mumbai","[""Tariq Hernandez""]"
+CR-00078,S0041,Anil Chauhan,2018-05-12,NARCOTICS,FIR-2023-71012,District Court,ACQUITTED,7 years,"Salt Lake, Kolkata",[]
+CR-00079,S0027,Ramesh Patel,2019-04-18,MONEY LAUNDERING,FIR-2023-61176,High Court,ACQUITTED,Community service,45th Street Warehouse,[]
+CR-00080,S0027,Ramesh Patel,2020-04-29,OFFENSE INVOLVING CHILDREN,FIR-2023-44542,Sessions Court,ABSCONDING,3 years,"Aundh, Pune","[""Anil Chauhan"", ""Rajesh Joshi""]"
+CR-00081,S0027,Ramesh Patel,2020-11-03,BATTERY,FIR-2024-55062,Special Court,UNDER_TRIAL,6 months,"Banjara Hills, Hyderabad","[""Rahul Thakur"", ""Suman Mishra""]"
+CR-00082,S0027,Ramesh Patel,2024-04-11,CRIMINAL DAMAGE,FIR-2024-91072,District Court,ON_BAIL,"Fine ₹50,000",Port District Dock 7,"[""Yusuf Khan""]"
+CR-00083,S0027,Ramesh Patel,2020-04-21,MONEY LAUNDERING,FIR-2024-98249,Special Court,CONVICTED,None,Bus Terminal Underground,"[""Tariq Pandey"", ""Saleem Hernandez"", ""Abdul Chauhan""]"
+CR-00084,S0038,Ashok Patel,2023-07-24,ROBBERY,FIR-2023-11380,Sessions Court,CONVICTED,Community service,"Velachery, Chennai","[""Saleem Thakur"", ""Naveen Kumar""]"
+CR-00085,S0038,Ashok Patel,2019-01-03,CRIMINAL TRESPASS,FIR-2024-90411,District Court,CASE_CLOSED,6 months,Highway NH-48 Rest Stop,"[""Yusuf Patel"", ""Vinod Hussain"", ""Mohan Joshi""]"
+CR-00086,S0038,Ashok Patel,2022-02-23,THEFT,FIR-2023-22341,Sessions Court,CASE_CLOSED,5 years,"MG Road, Bangalore","[""Ajay Agarwal"", ""Kiran Reddy"", ""Ravi Ali""]"
+CR-00087,S0038,Ashok Patel,2018-12-14,MONEY LAUNDERING,FIR-2024-13899,Sessions Court,CASE_CLOSED,1 year,"Velachery, Chennai","[""Yusuf Patel""]"
+CR-00088,S0016,Arjun Shah,2022-05-13,CRIMINAL TRESPASS,FIR-2023-42544,High Court,ON_BAIL,"Fine ₹1,00,000",Railway Station Complex,"[""Ramesh Mishra""]"
+CR-00089,S0068,Kiran Reddy,2019-11-29,BATTERY,FIR-2023-31194,High Court,CONVICTED,None,"Andheri West, Mumbai","[""Yusuf Patel""]"
+CR-00090,S0068,Kiran Reddy,2019-06-29,CYBER CRIME,FIR-2024-82017,High Court,PENDING,Community service,"Anna Nagar, Chennai","[""Manoj Sharma"", ""Kiran Ali"", ""Kiran Qureshi""]"
+CR-00091,S0035,Mohan Joshi,2021-05-12,CRIMINAL TRESPASS,FIR-2024-43154,Metropolitan Magistrate,ACQUITTED,"Fine ₹1,00,000","Kothrud, Pune",[]
+CR-00092,S0035,Mohan Joshi,2021-04-07,MOTOR VEHICLE THEFT,FIR-2023-98187,Metropolitan Magistrate,ABSCONDING,1 year,"Sector 15, New Delhi","[""Arjun Roy"", ""Kiran Reddy"", ""Rahul Agarwal""]"
+CR-00093,S0035,Mohan Joshi,2019-11-05,CRIMINAL TRESPASS,FIR-2023-27560,District Court,UNDER_TRIAL,Community service,"Park Street, Kolkata","[""Farooq Saxena""]"
+CR-00094,S0035,Mohan Joshi,2019-05-08,NARCOTICS,FIR-2024-24165,Sessions Court,ACQUITTED,"Fine ₹1,00,000","Andheri West, Mumbai","[""Suman Mishra"", ""Arjun Verma""]"
+CR-00095,S0035,Mohan Joshi,2019-10-28,THEFT,FIR-2024-41009,District Court,CONVICTED,5 years,"Kothrud, Pune","[""Farooq Saxena"", ""Abdul Joshi"", ""Rizwan Ali""]"
+CR-00096,S0070,Ajay Mehta,2022-11-19,KIDNAPPING,FIR-2024-36092,Special Court,CONVICTED,2 years,"Anna Nagar, Chennai","[""Kavita Thakur"", ""Suman Agarwal"", ""Pooja Hussain""]"
+CR-00097,S0070,Ajay Mehta,2021-10-12,NARCOTICS,FIR-2024-46241,District Court,ABSCONDING,2 years,"Koregaon Park, Pune","[""Kavita Thakur"", ""Hassan Rodriguez""]"
+CR-00098,S0070,Ajay Mehta,2024-04-24,CRIMINAL TRESPASS,FIR-2024-16096,Special Court,PENDING,1 year,"Connaught Place, New Delhi","[""Rahul Agarwal""]"
+CR-00099,S0070,Ajay Mehta,2020-01-25,DECEPTIVE PRACTICE,FIR-2023-28166,High Court,ABSCONDING,5 years,"Aundh, Pune","[""Rahul Thakur"", ""Sanjay Khan"", ""Hassan Kumar""]"
+CR-00100,S0070,Ajay Mehta,2019-09-30,CYBER CRIME,FIR-2023-99216,High Court,PENDING,10 years,Bus Terminal Underground,[]
+CR-00101,S0079,Ravi Singh,2023-01-01,EXTORTION,FIR-2024-52843,Sessions Court,ABSCONDING,7 years,"Satellite, Ahmedabad","[""Ajay Mehta""]"
+CR-00102,S0079,Ravi Singh,2020-11-28,NARCOTICS,FIR-2024-72741,Metropolitan Magistrate,CONVICTED,6 months,"Koregaon Park, Pune","[""Manoj Malik""]"
+CR-00103,S0079,Ravi Singh,2020-06-24,MOTOR VEHICLE THEFT,FIR-2023-58766,District Court,UNDER_TRIAL,"Fine ₹50,000","Kothrud, Pune","[""Ravi Ali"", ""Ashok Patel"", ""Anita Malik""]"
+CR-00104,S0079,Ravi Singh,2022-10-03,EXTORTION,FIR-2023-68795,High Court,ABSCONDING,None,"Malviya Nagar, Jaipur","[""Anil Chauhan"", ""Saleem Hernandez""]"
+CR-00105,S0079,Ravi Singh,2024-11-13,ASSAULT,FIR-2024-21994,Metropolitan Magistrate,ABSCONDING,7 years,Old Market Area,"[""Ramesh Patel"", ""Anita Lopez""]"
+CR-00106,S0074,Ramesh Mishra,2022-12-01,ASSAULT,FIR-2023-24191,Metropolitan Magistrate,CASE_CLOSED,10 years,45th Street Warehouse,"[""Suman Agarwal"", ""Ravi Singh"", ""Vinod Qureshi""]"
+CR-00107,S0005,Arjun Verma,2022-04-03,CYBER CRIME,FIR-2024-89204,Sessions Court,CONVICTED,Community service,"Koregaon Park, Pune","[""Rahul Agarwal"", ""Ajay Mehta"", ""Rekha Das""]"
+CR-00108,S0005,Arjun Verma,2022-12-24,DECEPTIVE PRACTICE,FIR-2023-85461,Special Court,ON_BAIL,1 year,"Salt Lake, Kolkata","[""Ajay Agarwal"", ""Neha Reddy""]"
+CR-00109,S0005,Arjun Verma,2024-12-01,BATTERY,FIR-2023-58645,Special Court,PENDING,5 years,Abandoned Factory Block C,"[""Miguel Gupta""]"
+CR-00110,S0004,Hassan Kumar,2022-08-15,ROBBERY,FIR-2024-47026,District Court,CONVICTED,10 years,"Malviya Nagar, Jaipur","[""Abdul Garcia"", ""Ramesh Mishra""]"
+CR-00111,S0078,Ashok Saxena,2024-10-17,MOTOR VEHICLE THEFT,FIR-2024-35303,Metropolitan Magistrate,CONVICTED,1 year,"Koregaon Park, Pune",[]
+CR-00112,S0078,Ashok Saxena,2018-07-03,NARCOTICS,FIR-2023-57785,Special Court,UNDER_TRIAL,2 years,"Aundh, Pune",[]
+CR-00113,S0078,Ashok Saxena,2018-07-16,EXTORTION,FIR-2024-25444,Metropolitan Magistrate,ACQUITTED,10 years,Abandoned Factory Block C,[]
+CR-00114,S0078,Ashok Saxena,2020-10-23,EXTORTION,FIR-2023-90900,Metropolitan Magistrate,CONVICTED,1 year,Old Market Area,[]
+CR-00115,S0078,Ashok Saxena,2018-11-03,HUMAN TRAFFICKING,FIR-2023-34360,Special Court,CASE_CLOSED,10 years,"Marine Drive, Mumbai","[""Arjun Roy"", ""Ramesh Mishra""]"
+CR-00116,S0063,Mohan Hussain,2019-06-08,ASSAULT,FIR-2023-46811,Sessions Court,UNDER_TRIAL,Community service,Port District Dock 7,"[""Vinod Qureshi""]"
+CR-00117,S0063,Mohan Hussain,2020-10-01,OTHER OFFENSE,FIR-2023-77620,High Court,UNDER_TRIAL,7 years,Railway Station Complex,[]
+CR-00118,S0064,Carlos Reddy,2024-09-05,MOTOR VEHICLE THEFT,FIR-2024-23417,Sessions Court,CONVICTED,"Fine ₹50,000","Navrangpura, Ahmedabad","[""Ramesh Patel"", ""Rajesh Joshi""]"
+CR-00119,S0064,Carlos Reddy,2021-02-15,NARCOTICS,FIR-2024-38883,District Court,CONVICTED,7 years,Railway Station Complex,"[""Rahul Martinez""]"
+CR-00120,S0064,Carlos Reddy,2019-01-20,CRIMINAL DAMAGE,FIR-2023-46426,Special Court,ON_BAIL,7 years,"Aundh, Pune","[""Rizwan Ali"", ""Sunil Hussain"", ""Abdul Chauhan""]"
+CR-00121,S0064,Carlos Reddy,2023-07-30,ASSAULT,FIR-2023-25414,District Court,CONVICTED,Community service,Highway NH-48 Rest Stop,"[""Priya Martinez"", ""Hassan Kumar""]"
+CR-00122,S0060,Kiran Ahmed,2024-10-24,NARCOTICS,FIR-2024-31418,Metropolitan Magistrate,UNDER_TRIAL,5 years,"Connaught Place, New Delhi",[]
+CR-00123,S0060,Kiran Ahmed,2021-03-12,HUMAN TRAFFICKING,FIR-2024-11633,Sessions Court,ABSCONDING,"Fine ₹50,000",Railway Station Complex,"[""Kiran Ali"", ""Anil Chauhan""]"
+CR-00124,S0060,Kiran Ahmed,2023-04-17,EXTORTION,FIR-2024-51738,Sessions Court,CASE_CLOSED,3 years,"Velachery, Chennai","[""Kiran Reddy""]"
+CR-00125,S0060,Kiran Ahmed,2020-09-23,NARCOTICS,FIR-2023-48755,District Court,CASE_CLOSED,"Fine ₹50,000",45th Street Warehouse,[]
+CR-00126,S0060,Kiran Ahmed,2020-11-26,CRIMINAL DAMAGE,FIR-2023-13194,Sessions Court,ON_BAIL,6 months,"Marine Drive, Mumbai",[]
+CR-00127,S0036,Ravi Ali,2019-11-18,DECEPTIVE PRACTICE,FIR-2024-14557,High Court,PENDING,None,Industrial Zone B-12,"[""Neha Reddy"", ""Kiran Ahmed""]"
+CR-00128,S0039,Yusuf Khan,2022-04-06,BURGLARY,FIR-2024-43246,High Court,UNDER_TRIAL,3 years,Bus Terminal Underground,"[""Ravi Singh"", ""Farooq Joshi"", ""Vinod Hussain""]"
+CR-00129,S0072,Priya Martinez,2024-02-11,MONEY LAUNDERING,FIR-2024-41702,Special Court,UNDER_TRIAL,7 years,"Jubilee Hills, Hyderabad","[""Vikram Chauhan"", ""Abdul Chauhan""]"
+CR-00130,S0076,Rahul Qureshi,2021-02-20,BURGLARY,FIR-2023-76100,High Court,CASE_CLOSED,2 years,"Gomti Nagar, Lucknow",[]
+CR-00131,S0076,Rahul Qureshi,2020-01-01,MOTOR VEHICLE THEFT,FIR-2023-21479,District Court,PENDING,6 months,"Sector 15, New Delhi",[]
+CR-00132,S0076,Rahul Qureshi,2024-09-26,EXTORTION,FIR-2023-86091,High Court,ON_BAIL,Community service,"MG Road, Bangalore","[""Neha Reddy"", ""Anil Chauhan"", ""Rahul Thakur""]"
+CR-00133,S0076,Rahul Qureshi,2018-08-04,DECEPTIVE PRACTICE,FIR-2023-69579,Sessions Court,CONVICTED,5 years,"Indiranagar, Bangalore",[]
+CR-00134,S0076,Rahul Qureshi,2020-02-17,KIDNAPPING,FIR-2023-26205,District Court,UNDER_TRIAL,"Fine ₹50,000","Jubilee Hills, Hyderabad",[]
+CR-00135,S0053,Vinod Hussain,2023-02-03,BATTERY,FIR-2024-43773,Special Court,ACQUITTED,1 year,"Marine Drive, Mumbai","[""Saleem Thakur"", ""Abdul Garcia"", ""Vinod Qureshi""]"
+CR-00136,S0053,Vinod Hussain,2019-06-07,ROBBERY,FIR-2023-86776,High Court,ABSCONDING,3 years,Airport Cargo Terminal,"[""Tariq Hernandez"", ""Yusuf Joshi""]"
+CR-00137,S0053,Vinod Hussain,2018-10-19,HUMAN TRAFFICKING,FIR-2024-97124,Special Court,CASE_CLOSED,3 years,Highway NH-48 Rest Stop,"[""Sunil Hussain"", ""Rizwan Ali"", ""Pooja Pandey""]"
+CR-00138,S0053,Vinod Hussain,2023-07-22,ASSAULT,FIR-2023-21262,High Court,UNDER_TRIAL,None,"Park Street, Kolkata","[""Anil Pandey""]"
+CR-00139,S0053,Vinod Hussain,2024-08-14,MONEY LAUNDERING,FIR-2024-54330,Special Court,ABSCONDING,3 years,"Indiranagar, Bangalore","[""Neha Reddy"", ""Saleem Hernandez"", ""Pooja Pandey""]"
+CR-00140,S0008,Pooja Lopez,2021-07-13,ASSAULT,FIR-2024-80276,District Court,CASE_CLOSED,None,River Bridge Underpass,"[""Anil Pandey"", ""Prakash Yadav"", ""Arjun Mishra""]"
+CR-00141,S0034,Manoj Malik,2024-03-03,MOTOR VEHICLE THEFT,FIR-2024-39489,High Court,CASE_CLOSED,10 years,Bus Terminal Underground,[]
+CR-00142,S0034,Manoj Malik,2019-01-16,ROBBERY,FIR-2023-50885,Metropolitan Magistrate,UNDER_TRIAL,None,"Civil Lines, Lucknow","[""Sanjay Agarwal"", ""Imran Martinez"", ""Vikram Chauhan""]"
+CR-00143,S0051,Vinod Qureshi,2020-03-02,HUMAN TRAFFICKING,FIR-2023-94999,Sessions Court,ABSCONDING,2 years,"Andheri West, Mumbai","[""Ramesh Mishra""]"
+CR-00144,S0051,Vinod Qureshi,2024-09-22,CRIMINAL DAMAGE,FIR-2024-61545,Sessions Court,ACQUITTED,1 year,Abandoned Factory Block C,[]
+CR-00145,S0001,Manoj Sharma,2023-11-20,DECEPTIVE PRACTICE,FIR-2024-15879,Special Court,CASE_CLOSED,2 years,Abandoned Factory Block C,[]
+CR-00146,S0044,Sanjay Khan,2024-05-20,HUMAN TRAFFICKING,FIR-2023-73262,Sessions Court,ON_BAIL,6 months,"Civil Lines, Lucknow","[""Vinod Qureshi"", ""Rahul Thakur""]"
+CR-00147,S0044,Sanjay Khan,2021-04-12,NARCOTICS,FIR-2024-72321,District Court,PENDING,1 year,"Indiranagar, Bangalore","[""Vinod Qureshi"", ""Saleem Thakur""]"
+CR-00148,S0044,Sanjay Khan,2020-08-04,MONEY LAUNDERING,FIR-2023-71777,Sessions Court,CONVICTED,1 year,Railway Station Complex,"[""Sanjay Ahmed"", ""Ramesh Mishra""]"
+CR-00149,S0044,Sanjay Khan,2022-05-16,CRIMINAL DAMAGE,FIR-2024-61240,Special Court,PENDING,7 years,"Park Street, Kolkata","[""Abdul Chauhan"", ""Neha Reddy""]"
+CR-00150,S0026,Ramesh Lopez,2018-09-10,MOTOR VEHICLE THEFT,FIR-2023-84476,Sessions Court,ON_BAIL,None,"Aundh, Pune","[""Manoj Sharma""]"
+CR-00151,S0026,Ramesh Lopez,2018-03-06,HUMAN TRAFFICKING,FIR-2023-87231,Metropolitan Magistrate,CASE_CLOSED,6 months,River Bridge Underpass,"[""Carlos Reddy"", ""Anil Chauhan""]"
+CR-00152,S0026,Ramesh Lopez,2021-03-31,DECEPTIVE PRACTICE,FIR-2023-82310,Special Court,CONVICTED,Community service,Airport Cargo Terminal,[]
+CR-00153,S0026,Ramesh Lopez,2023-09-20,OTHER OFFENSE,FIR-2023-86704,Special Court,ON_BAIL,Community service,"Anna Nagar, Chennai",[]
+CR-00154,S0009,Pooja Pandey,2018-07-27,ROBBERY,FIR-2023-96484,Special Court,UNDER_TRIAL,6 months,Railway Station Complex,[]
+CR-00155,S0010,Kavita Thakur,2021-03-17,CYBER CRIME,FIR-2024-82056,Special Court,ABSCONDING,2 years,"Navrangpura, Ahmedabad","[""Rahul Thakur"", ""Yusuf Joshi"", ""Hassan Kumar""]"
+CR-00156,S0010,Kavita Thakur,2020-01-13,WEAPONS VIOLATION,FIR-2024-40289,Special Court,UNDER_TRIAL,5 years,Highway NH-48 Rest Stop,"[""Manoj Sharma"", ""Anita Lopez""]"
+CR-00157,S0010,Kavita Thakur,2023-03-29,KIDNAPPING,FIR-2024-99263,Metropolitan Magistrate,CONVICTED,10 years,"Civil Lines, Lucknow",[]
+CR-00158,S0010,Kavita Thakur,2022-09-09,CYBER CRIME,FIR-2023-92926,District Court,ACQUITTED,3 years,"Connaught Place, New Delhi","[""Tariq Hernandez"", ""Priya Martinez""]"
+CR-00159,S0049,Rahul Agarwal,2022-02-15,CYBER CRIME,FIR-2023-22915,Metropolitan Magistrate,PENDING,Community service,"Marine Drive, Mumbai",[]
+CR-00160,S0049,Rahul Agarwal,2024-07-05,KIDNAPPING,FIR-2023-43844,Special Court,CASE_CLOSED,"Fine ₹50,000","Sector 15, New Delhi",[]
+CR-00161,S0049,Rahul Agarwal,2024-08-07,DECEPTIVE PRACTICE,FIR-2023-47920,Special Court,ACQUITTED,"Fine ₹50,000",Railway Station Complex,"[""Hassan Qureshi"", ""Prakash Lopez"", ""Anita Malik""]"
+CR-00162,S0029,Kiran Ali,2020-09-17,CRIMINAL DAMAGE,FIR-2024-96727,Special Court,ACQUITTED,Community service,Airport Cargo Terminal,"[""Prakash Mehta"", ""Pooja Hussain"", ""Rahul Thakur""]"
+CR-00163,S0029,Kiran Ali,2021-12-19,DECEPTIVE PRACTICE,FIR-2024-50000,High Court,UNDER_TRIAL,5 years,"Anna Nagar, Chennai","[""Saleem Hernandez"", ""Arjun Shah"", ""Yusuf Joshi""]"
+CR-00164,S0029,Kiran Ali,2020-05-14,MONEY LAUNDERING,FIR-2024-10943,Sessions Court,CONVICTED,3 years,"Park Street, Kolkata","[""Suman Mishra"", ""Mohan Das""]"
+CR-00165,S0037,Suman Agarwal,2018-08-02,CRIMINAL DAMAGE,FIR-2024-48871,Metropolitan Magistrate,ACQUITTED,6 months,"Anna Nagar, Chennai",[]
+CR-00166,S0037,Suman Agarwal,2019-09-06,MOTOR VEHICLE THEFT,FIR-2023-20577,District Court,ON_BAIL,"Fine ₹1,00,000",Airport Cargo Terminal,[]
+CR-00167,S0002,Suresh Sharma,2024-08-05,CRIMINAL TRESPASS,FIR-2023-28386,High Court,ON_BAIL,Community service,"Malviya Nagar, Jaipur",[]
+CR-00168,S0002,Suresh Sharma,2024-08-25,BURGLARY,FIR-2023-18132,District Court,ABSCONDING,6 months,"Navrangpura, Ahmedabad","[""Rahul Agarwal""]"
+CR-00169,S0002,Suresh Sharma,2020-02-22,CRIMINAL DAMAGE,FIR-2023-87123,District Court,ON_BAIL,3 years,"Andheri West, Mumbai","[""Farooq Joshi""]"
+CR-00170,S0002,Suresh Sharma,2018-02-22,MOTOR VEHICLE THEFT,FIR-2023-76465,High Court,CONVICTED,2 years,Bus Terminal Underground,"[""Abdul Garcia""]"
+CR-00171,S0080,Abdul Joshi,2022-01-26,ASSAULT,FIR-2023-43800,Metropolitan Magistrate,PENDING,"Fine ₹50,000","Banjara Hills, Hyderabad","[""Pooja Hussain"", ""Hassan Kumar""]"
+CR-00172,S0018,Sanjay Agarwal,2021-03-02,KIDNAPPING,FIR-2023-50354,District Court,CONVICTED,None,"Navrangpura, Ahmedabad","[""Manoj Malik"", ""Sunil Hussain"", ""Rahul Martinez""]"
+CR-00173,S0018,Sanjay Agarwal,2022-10-20,BATTERY,FIR-2024-93338,High Court,CONVICTED,1 year,"Salt Lake, Kolkata","[""Ravi Ali"", ""Ashok Saxena"", ""Mohan Hussain""]"
+CR-00174,S0071,Rajesh Joshi,2021-01-20,MOTOR VEHICLE THEFT,FIR-2024-60313,District Court,CONVICTED,"Fine ₹1,00,000",Highway NH-48 Rest Stop,"[""Pooja Hussain""]"
+CR-00175,S0071,Rajesh Joshi,2024-05-13,THEFT,FIR-2024-30551,Special Court,CASE_CLOSED,10 years,Airport Cargo Terminal,[]
+CR-00176,S0071,Rajesh Joshi,2021-01-06,CYBER CRIME,FIR-2023-96722,Sessions Court,PENDING,6 months,"Indiranagar, Bangalore","[""Anil Pandey"", ""Tariq Hernandez"", ""Abdul Joshi""]"
+CR-00177,S0071,Rajesh Joshi,2019-07-27,BURGLARY,FIR-2023-65462,Special Court,PENDING,10 years,Old Market Area,[]
+CR-00178,S0071,Rajesh Joshi,2022-05-06,MONEY LAUNDERING,FIR-2023-19653,District Court,CONVICTED,10 years,"Malviya Nagar, Jaipur","[""Kavita Thakur"", ""Imran Martinez""]"
+CR-00179,S0046,Miguel Gupta,2019-03-01,BATTERY,FIR-2024-41289,Special Court,CASE_CLOSED,"Fine ₹1,00,000","Connaught Place, New Delhi","[""Carlos Reddy""]"
+CR-00180,S0046,Miguel Gupta,2019-05-03,KIDNAPPING,FIR-2023-43675,Sessions Court,CONVICTED,10 years,"Indiranagar, Bangalore","[""Kiran Ali""]"
+CR-00181,S0031,Rahul Thakur,2020-04-03,ROBBERY,FIR-2024-11055,Sessions Court,CASE_CLOSED,3 years,"Gomti Nagar, Lucknow","[""Ravi Singh"", ""Hassan Qureshi"", ""Tariq Pandey""]"
+CR-00182,S0056,Anil Chauhan,2021-11-21,WEAPONS VIOLATION,FIR-2024-64907,Sessions Court,ACQUITTED,1 year,Port District Dock 7,[]
+CR-00183,S0056,Anil Chauhan,2022-06-11,NARCOTICS,FIR-2024-22807,Special Court,UNDER_TRIAL,5 years,"Navrangpura, Ahmedabad","[""Sanjay Agarwal""]"
+CR-00184,S0033,Anita Malik,2021-02-17,MOTOR VEHICLE THEFT,FIR-2024-28815,Sessions Court,PENDING,None,"Aundh, Pune","[""Yusuf Joshi""]"
+CR-00185,S0033,Anita Malik,2022-09-25,KIDNAPPING,FIR-2024-21771,Special Court,CASE_CLOSED,6 months,"Salt Lake, Kolkata","[""Ramesh Patel""]"
+CR-00186,S0033,Anita Malik,2018-01-21,NARCOTICS,FIR-2024-15357,Metropolitan Magistrate,ABSCONDING,Community service,Airport Cargo Terminal,"[""Ajay Mehta"", ""Ashok Saxena"", ""Hassan Qureshi""]"
+CR-00187,S0033,Anita Malik,2018-06-26,HUMAN TRAFFICKING,FIR-2024-30980,Special Court,CASE_CLOSED,1 year,"Civil Lines, Lucknow","[""Rahul Qureshi""]"
+CR-00188,S0033,Anita Malik,2024-06-13,BATTERY,FIR-2024-36357,Special Court,CASE_CLOSED,7 years,"Velachery, Chennai","[""Kiran Ali"", ""Ashok Saxena"", ""Kiran Ali""]"
+CR-00189,S0032,Saleem Thakur,2020-01-19,CRIMINAL TRESPASS,FIR-2023-26199,Sessions Court,UNDER_TRIAL,"Fine ₹50,000",Industrial Zone B-12,"[""Rahul Thakur""]"
+CR-00190,S0032,Saleem Thakur,2019-01-15,THEFT,FIR-2023-15775,District Court,UNDER_TRIAL,6 months,Port District Dock 7,[]
+CR-00191,S0057,Sanjay Ahmed,2022-07-26,BURGLARY,FIR-2024-49645,High Court,CASE_CLOSED,"Fine ₹50,000","Marine Drive, Mumbai","[""Yusuf Khan"", ""Hassan Qureshi"", ""Prakash Yadav""]"
+CR-00192,S0007,Vikram Chauhan,2024-11-04,EXTORTION,FIR-2023-13147,High Court,PENDING,"Fine ₹1,00,000","Aundh, Pune",[]
+CR-00193,S0007,Vikram Chauhan,2024-11-17,ROBBERY,FIR-2024-17385,Sessions Court,CONVICTED,"Fine ₹50,000","Park Street, Kolkata","[""Anil Pandey""]"
+CR-00194,S0007,Vikram Chauhan,2024-07-30,EXTORTION,FIR-2024-82096,Special Court,CONVICTED,None,Industrial Zone B-12,[]
+CR-00195,S0043,Rekha Das,2023-01-28,ASSAULT,FIR-2024-36831,Special Court,PENDING,7 years,45th Street Warehouse,"[""Kiran Ali""]"
+CR-00196,S0043,Rekha Das,2024-01-26,NARCOTICS,FIR-2024-99441,Metropolitan Magistrate,ABSCONDING,3 years,Port District Dock 7,[]
+CR-00197,S0043,Rekha Das,2019-04-02,HUMAN TRAFFICKING,FIR-2024-28908,Metropolitan Magistrate,PENDING,"Fine ₹50,000","Indiranagar, Bangalore","[""Hassan Qureshi"", ""Kiran Ali"", ""Vinod Qureshi""]"
+CR-00198,S0043,Rekha Das,2022-04-24,KIDNAPPING,FIR-2023-83625,Metropolitan Magistrate,ACQUITTED,3 years,River Bridge Underpass,"[""Rajesh Joshi"", ""Farooq Joshi""]"
+CR-00199,S0023,Kiran Ali,2019-06-22,CYBER CRIME,FIR-2023-19827,District Court,ON_BAIL,1 year,"Park Street, Kolkata","[""Imran Joshi"", ""Suman Mishra"", ""Anil Pandey""]"
+CR-00200,S0023,Kiran Ali,2018-02-12,ROBBERY,FIR-2024-97023,District Court,ACQUITTED,5 years,"Aundh, Pune","[""Ravi Ali""]"
+CR-00201,S0023,Kiran Ali,2024-03-11,ASSAULT,FIR-2024-86726,Special Court,CASE_CLOSED,6 months,"Civil Lines, Lucknow","[""Hassan Kumar"", ""Anil Pandey"", ""Ajay Yadav""]"
+CR-00202,S0023,Kiran Ali,2022-06-16,BATTERY,FIR-2024-46279,Special Court,CASE_CLOSED,1 year,River Bridge Underpass,"[""Prakash Mehta""]"
+CR-00203,S0045,Suman Mishra,2022-03-19,MOTOR VEHICLE THEFT,FIR-2024-74497,Special Court,ACQUITTED,7 years,Railway Station Complex,[]
+CR-00204,S0045,Suman Mishra,2024-04-09,NARCOTICS,FIR-2024-20730,District Court,CONVICTED,7 years,"Gomti Nagar, Lucknow","[""Vinod Qureshi"", ""Abdul Joshi"", ""Mohan Das""]"
+CR-00205,S0045,Suman Mishra,2024-10-15,THEFT,FIR-2024-20013,Metropolitan Magistrate,ABSCONDING,None,Airport Cargo Terminal,"[""Kiran Qureshi"", ""Miguel Gupta""]"
+CR-00206,S0045,Suman Mishra,2018-06-10,NARCOTICS,FIR-2023-74196,Metropolitan Magistrate,ACQUITTED,"Fine ₹50,000","Salt Lake, Kolkata","[""Saleem Thakur"", ""Suman Agarwal"", ""Pooja Hussain""]"
+CR-00207,S0045,Suman Mishra,2020-07-31,ASSAULT,FIR-2024-74621,District Court,ACQUITTED,6 months,Old Market Area,"[""Yusuf Patel"", ""Hassan Qureshi""]"
+CR-00208,S0055,Prakash Yadav,2021-01-19,WEAPONS VIOLATION,FIR-2023-52846,Special Court,CASE_CLOSED,3 years,"Anna Nagar, Chennai","[""Sanjay Ahmed"", ""Arjun Roy""]"
+CR-00209,S0055,Prakash Yadav,2018-08-26,DECEPTIVE PRACTICE,FIR-2024-11550,High Court,ACQUITTED,10 years,Port District Dock 7,"[""Mohan Hussain""]"
+CR-00210,S0055,Prakash Yadav,2018-10-11,ROBBERY,FIR-2024-61977,Special Court,ON_BAIL,"Fine ₹50,000","MG Road, Bangalore",[]
+CR-00211,S0061,Farooq Joshi,2020-10-28,THEFT,FIR-2024-41085,District Court,ABSCONDING,1 year,"Koregaon Park, Pune","[""Rizwan Ali"", ""Pooja Lopez"", ""Yusuf Patel""]"
+CR-00212,S0047,Pooja Hussain,2023-08-23,CRIMINAL DAMAGE,FIR-2023-56852,High Court,ACQUITTED,1 year,"MG Road, Bangalore",[]
+CR-00213,S0047,Pooja Hussain,2019-06-27,THEFT,FIR-2023-55507,District Court,UNDER_TRIAL,"Fine ₹1,00,000","Banjara Hills, Hyderabad","[""Carlos Reddy"", ""Abdul Garcia"", ""Farooq Joshi""]"
+CR-00214,S0047,Pooja Hussain,2022-10-18,BURGLARY,FIR-2023-16074,District Court,ACQUITTED,5 years,"Gomti Nagar, Lucknow","[""Ashok Patel""]"
+CR-00215,S0047,Pooja Hussain,2019-10-21,CYBER CRIME,FIR-2023-60098,Special Court,UNDER_TRIAL,6 months,"Kothrud, Pune","[""Abdul Chauhan"", ""Rekha Das""]"
+CR-00216,S0003,Kiran Qureshi,2022-03-15,EXTORTION,FIR-2023-76553,District Court,ACQUITTED,7 years,"Jubilee Hills, Hyderabad","[""Arjun Roy""]"
+CR-00217,S0003,Kiran Qureshi,2022-10-03,NARCOTICS,FIR-2024-85354,District Court,ON_BAIL,5 years,"Civil Lines, Lucknow",[]
+CR-00218,S0003,Kiran Qureshi,2020-05-15,CRIMINAL DAMAGE,FIR-2024-86874,High Court,ON_BAIL,7 years,"Jubilee Hills, Hyderabad","[""Mohan Das""]"
+CR-00219,S0052,Neha Reddy,2022-07-30,WEAPONS VIOLATION,FIR-2024-85746,District Court,PENDING,None,"Velachery, Chennai","[""Pooja Pandey""]"
+CR-00220,S0052,Neha Reddy,2021-06-23,CRIMINAL DAMAGE,FIR-2023-13256,High Court,UNDER_TRIAL,3 years,"Salt Lake, Kolkata","[""Ashok Saxena""]"
+CR-00221,S0059,Geeta Hernandez,2020-01-11,OTHER OFFENSE,FIR-2024-35038,Sessions Court,CONVICTED,7 years,"Sector 15, New Delhi","[""Imran Joshi""]"
+CR-00222,S0059,Geeta Hernandez,2018-01-13,ASSAULT,FIR-2024-38417,Metropolitan Magistrate,ON_BAIL,Community service,Abandoned Factory Block C,"[""Tariq Hernandez"", ""Hassan Qureshi""]"
+CR-00223,S0059,Geeta Hernandez,2020-05-10,NARCOTICS,FIR-2024-44847,High Court,ABSCONDING,10 years,45th Street Warehouse,"[""Sunil Hussain"", ""Arjun Shah""]"
+CR-00224,S0012,Prakash Shah,2023-11-16,BURGLARY,FIR-2023-84306,Metropolitan Magistrate,ABSCONDING,None,45th Street Warehouse,[]
+CR-00225,S0012,Prakash Shah,2021-01-10,MONEY LAUNDERING,FIR-2023-57586,Metropolitan Magistrate,PENDING,None,"Sector 15, New Delhi",[]
+CR-00226,S0012,Prakash Shah,2019-06-29,KIDNAPPING,FIR-2023-40468,District Court,CONVICTED,6 months,"Malviya Nagar, Jaipur","[""Anil Pandey""]"
+CR-00227,S0048,Abdul Garcia,2023-12-04,ROBBERY,FIR-2023-14844,District Court,PENDING,5 years,"Sector 15, New Delhi","[""Neha Reddy"", ""Abdul Joshi""]"
+CR-00228,S0048,Abdul Garcia,2019-01-09,EXTORTION,FIR-2024-90227,High Court,UNDER_TRIAL,1 year,"Connaught Place, New Delhi",[]
+CR-00229,S0048,Abdul Garcia,2020-05-31,ROBBERY,FIR-2023-66999,Special Court,ACQUITTED,"Fine ₹50,000","Sector 15, New Delhi",[]
+CR-00230,S0048,Abdul Garcia,2022-04-05,CRIMINAL DAMAGE,FIR-2024-41476,District Court,CONVICTED,1 year,"Andheri West, Mumbai",[]
+CR-00231,S0048,Abdul Garcia,2020-08-22,KIDNAPPING,FIR-2023-53876,Sessions Court,ABSCONDING,3 years,"Koregaon Park, Pune","[""Sanjay Ahmed""]"
+CR-00232,S0006,Sunil Hussain,2021-09-19,BATTERY,FIR-2024-23900,District Court,CASE_CLOSED,1 year,"Salt Lake, Kolkata",[]
+CR-00233,S0006,Sunil Hussain,2020-07-01,BATTERY,FIR-2024-60062,Special Court,PENDING,None,"Sector 15, New Delhi","[""Kiran Ali"", ""Saleem Thakur"", ""Ajay Agarwal""]"
+CR-00234,S0006,Sunil Hussain,2024-05-08,CRIMINAL DAMAGE,FIR-2024-80202,Special Court,CONVICTED,6 months,"Civil Lines, Lucknow","[""Hassan Qureshi""]"
+CR-00235,S0006,Sunil Hussain,2019-12-17,ROBBERY,FIR-2023-88929,Special Court,ACQUITTED,7 years,"Koregaon Park, Pune","[""Miguel Gupta""]"

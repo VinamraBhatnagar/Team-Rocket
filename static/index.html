@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-Powered Criminal Network Analysis System — Uncover hidden criminal networks with advanced AI, ML, NLP and Graph Analytics">
+    <title>CrimeNet AI — Criminal Network Analysis System</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <!-- vis.js Network -->
+    <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- ═══ Sidebar ═══ -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <div class="logo-icon">🔍</div>
+                    <div class="logo-text">
+                        <h1>CrimeNet AI</h1>
+                        <span>Network Intelligence</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Analysis</div>
+                <div class="nav-item active" data-tab="dashboard" id="nav-dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" data-tab="network" id="nav-network">
+                    <span class="nav-icon">🕸️</span>
+                    <span>Network Graph</span>
+                </div>
+                <div class="nav-item" data-tab="entities" id="nav-entities">
+                    <span class="nav-icon">👤</span>
+                    <span>Entity Explorer</span>
+                </div>
+                <div class="nav-item" data-tab="communities" id="nav-communities">
+                    <span class="nav-icon">🏘️</span>
+                    <span>Communities</span>
+                </div>
+
+                <div class="nav-section-title">Intelligence</div>
+                <div class="nav-item" data-tab="patterns" id="nav-patterns">
+                    <span class="nav-icon">⚠️</span>
+                    <span>Patterns & Alerts</span>
+                    <span class="nav-badge" id="pattern-badge">0</span>
+                </div>
+                <div class="nav-item" data-tab="influencers" id="nav-influencers">
+                    <span class="nav-icon">👑</span>
+                    <span>Key Influencers</span>
+                </div>
+
+                <div class="nav-section-title">Tools</div>
+                <div class="nav-item" data-tab="predict" id="nav-predict">
+                    <span class="nav-icon">🤖</span>
+                    <span>Prediction Console</span>
+                </div>
+                <div class="nav-item" data-tab="nlp" id="nav-nlp">
+                    <span class="nav-icon">📝</span>
+                    <span>NLP Analyzer</span>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <div class="status-dot"></div>
+                    <span>System Online</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ═══ Main Content ═══ -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <h2 id="page-title">Dashboard</h2>
+                    <span class="breadcrumb" id="page-breadcrumb">Overview & Analytics</span>
+                </div>
+                <div class="top-bar-right">
+                    <div class="search-box">
+                        <span class="search-icon">🔎</span>
+                        <input type="text" id="global-search" placeholder="Search suspects, organizations, locations...">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-area">
+
+                <!-- ═══ Dashboard Tab ═══ -->
+                <div class="tab-content active" id="tab-dashboard">
+                    <div class="kpi-grid" id="kpi-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div class="charts-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>📈 Crime Type Distribution</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-crime-types"></canvas>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>📅 Monthly Trend</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-monthly"></canvas>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>🎯 Risk Distribution</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-risk"></canvas>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>📍 Top Crime Locations</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="chart-locations"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ Network Graph Tab ═══ -->
+                <div class="tab-content" id="tab-network">
+                    <div class="network-controls">
+                        <button class="btn active" onclick="filterNetwork('all')">All Nodes</button>
+                        <button class="btn" onclick="filterNetwork('PERSON')">People Only</button>
+                        <button class="btn" onclick="filterNetwork('high-risk')">High Risk</button>
+                        <button class="btn" onclick="resetNetworkZoom()">Reset Zoom</button>
+                        <button class="btn" onclick="togglePhysics()">Toggle Physics</button>
+                    </div>
+                    <div class="network-legend">
+                        <div class="legend-item"><div class="legend-line" style="background:#FF6B6B"></div> Known Associate</div>
+                        <div class="legend-item"><div class="legend-line" style="background:#FF9800"></div> Co-Incident</div>
+                        <div class="legend-item"><div class="legend-line" style="background:#4ECDC4"></div> Communication</div>
+                        <div class="legend-item"><div class="legend-line" style="background:#FFD700"></div> Financial</div>
+                        <div class="legend-item"><div class="legend-line" style="background:#9B59B6"></div> Org Member</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#FFD700"></div> Organization</div>
+                    </div>
+                    <div id="network-container"></div>
+                </div>
+
+                <!-- ═══ Entity Explorer Tab ═══ -->
+                <div class="tab-content" id="tab-entities">
+                    <div class="card" style="margin-bottom:16px">
+                        <div class="card-header">
+                            <h3>👤 Suspect Database</h3>
+                            <span class="card-badge badge-low" id="entity-count">0 entities</span>
+                        </div>
+                        <div class="entities-scroll">
+                            <table class="entity-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>ID</th>
+                                        <th>Risk Level</th>
+                                        <th>Organization</th>
+                                        <th>Incidents</th>
+                                        <th>Calls</th>
+                                        <th>Criminal Records</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="entity-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ Communities Tab ═══ -->
+                <div class="tab-content" id="tab-communities">
+                    <div class="community-grid" id="communities-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- ═══ Patterns & Alerts Tab ═══ -->
+                <div class="tab-content" id="tab-patterns">
+                    <div class="pattern-filters" id="pattern-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="CRITICAL">🔴 Critical</button>
+                        <button class="filter-btn" data-filter="HIGH">🟠 High</button>
+                        <button class="filter-btn" data-filter="MEDIUM">🟡 Medium</button>
+                        <button class="filter-btn" data-filter="LOW">🟢 Low</button>
+                    </div>
+                    <div class="patterns-scroll" id="patterns-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- ═══ Key Influencers Tab ═══ -->
+                <div class="tab-content" id="tab-influencers">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>👑 Network Influencers — Ranked by Composite Centrality</h3>
+                        </div>
+                        <div class="entities-scroll">
+                            <table class="entity-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Name</th>
+                                        <th>Risk</th>
+                                        <th>Organization</th>
+                                        <th>Connections</th>
+                                        <th>Betweenness</th>
+                                        <th>PageRank</th>
+                                        <th>Composite Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="influencer-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ Prediction Console Tab ═══ -->
+                <div class="tab-content" id="tab-predict">
+                    <div class="prediction-grid">
+                        <!-- Crime Type Prediction -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>🔮 Crime Type Prediction</h3>
+                            </div>
+                            <form id="crime-predict-form" onsubmit="predictCrimeType(event)">
+                                <div class="form-group">
+                                    <label>Hour (0-23)</label>
+                                    <input type="number" id="pred-hour" min="0" max="23" value="14">
+                                </div>
+                                <div class="form-group">
+                                    <label>Day of Week (0=Mon, 6=Sun)</label>
+                                    <input type="number" id="pred-day" min="0" max="6" value="3">
+                                </div>
+                                <div class="form-group">
+                                    <label>Month (1-12)</label>
+                                    <input type="number" id="pred-month" min="1" max="12" value="6">
+                                </div>
+                                <div class="form-group">
+                                    <label>Beat</label>
+                                    <input type="number" id="pred-beat" value="1234">
+                                </div>
+                                <div class="form-group">
+                                    <label>District</label>
+                                    <input type="number" id="pred-district" value="11">
+                                </div>
+                                <div class="form-group">
+                                    <label>Community Area</label>
+                                    <input type="number" id="pred-community" value="28">
+                                </div>
+                                <div class="form-group">
+                                    <label>Location Description</label>
+                                    <select id="pred-location">
+                                        <option value="STREET">STREET</option>
+                                        <option value="RESIDENCE">RESIDENCE</option>
+                                        <option value="APARTMENT">APARTMENT</option>
+                                        <option value="SIDEWALK">SIDEWALK</option>
+                                        <option value="PARKING LOT">PARKING LOT</option>
+                                        <option value="ALLEY">ALLEY</option>
+                                        <option value="RESTAURANT">RESTAURANT</option>
+                                        <option value="COMMERCIAL BUILDING">COMMERCIAL BUILDING</option>
+                                        <option value="HOTEL">HOTEL</option>
+                                        <option value="GAS STATION">GAS STATION</option>
+                                        <option value="BANK">BANK</option>
+                                        <option value="SCHOOL">SCHOOL</option>
+                                        <option value="VEHICLE">VEHICLE</option>
+                                        <option value="WAREHOUSE">WAREHOUSE</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-primary">🔮 Predict Crime Type</button>
+                            </form>
+                            <div id="crime-prediction-result"></div>
+                        </div>
+
+                        <!-- Arrest Prediction -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>🚔 Arrest Probability</h3>
+                            </div>
+                            <form id="arrest-predict-form" onsubmit="predictArrest(event)">
+                                <div class="form-group">
+                                    <label>Hour (0-23)</label>
+                                    <input type="number" id="arrest-hour" min="0" max="23" value="14">
+                                </div>
+                                <div class="form-group">
+                                    <label>Day of Week (0=Mon, 6=Sun)</label>
+                                    <input type="number" id="arrest-day" min="0" max="6" value="3">
+                                </div>
+                                <div class="form-group">
+                                    <label>Month (1-12)</label>
+                                    <input type="number" id="arrest-month" min="1" max="12" value="6">
+                                </div>
+                                <div class="form-group">
+                                    <label>Beat</label>
+                                    <input type="number" id="arrest-beat" value="1234">
+                                </div>
+                                <div class="form-group">
+                                    <label>District</label>
+                                    <input type="number" id="arrest-district" value="11">
+                                </div>
+                                <div class="form-group">
+                                    <label>Community Area</label>
+                                    <input type="number" id="arrest-community" value="28">
+                                </div>
+                                <div class="form-group">
+                                    <label>Crime Type</label>
+                                    <select id="arrest-crime-type">
+                                        <option value="THEFT">THEFT</option>
+                                        <option value="BATTERY">BATTERY</option>
+                                        <option value="ASSAULT">ASSAULT</option>
+                                        <option value="CRIMINAL DAMAGE">CRIMINAL DAMAGE</option>
+                                        <option value="NARCOTICS">NARCOTICS</option>
+                                        <option value="BURGLARY">BURGLARY</option>
+                                        <option value="ROBBERY">ROBBERY</option>
+                                        <option value="MOTOR VEHICLE THEFT">MOTOR VEHICLE THEFT</option>
+                                        <option value="WEAPONS VIOLATION">WEAPONS VIOLATION</option>
+                                        <option value="DECEPTIVE PRACTICE">DECEPTIVE PRACTICE</option>
+                                        <option value="CRIMINAL TRESPASS">CRIMINAL TRESPASS</option>
+                                        <option value="OTHER OFFENSE">OTHER OFFENSE</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Location Description</label>
+                                    <select id="arrest-location">
+                                        <option value="STREET">STREET</option>
+                                        <option value="RESIDENCE">RESIDENCE</option>
+                                        <option value="APARTMENT">APARTMENT</option>
+                                        <option value="SIDEWALK">SIDEWALK</option>
+                                        <option value="PARKING LOT">PARKING LOT</option>
+                                        <option value="ALLEY">ALLEY</option>
+                                        <option value="RESTAURANT">RESTAURANT</option>
+                                        <option value="COMMERCIAL BUILDING">COMMERCIAL BUILDING</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-primary">🚔 Predict Arrest</button>
+                            </form>
+                            <div id="arrest-prediction-result"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ NLP Analyzer Tab ═══ -->
+                <div class="tab-content" id="tab-nlp">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>📝 NLP Text Analyzer — Extract Entities from Reports</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>Paste FIR / Intelligence Report / Surveillance Text</label>
+                            <textarea id="nlp-input" placeholder="Paste any unstructured criminal report text here. The AI will extract people, organizations, locations, phone numbers, vehicle plates, and more...
+
+Example: On 2024-03-15, suspect Rajesh Sharma was observed meeting Amit Verma at Connaught Place, New Delhi. The meeting lasted approximately 45 minutes. Vehicle with plate DL-12-AB-4567 was parked nearby. Contact phone +91-98765-43210 was intercepted. Both suspects are associated with Shadow Syndicate."></textarea>
+                        </div>
+                        <button class="btn-primary" onclick="analyzeText()">🔍 Analyze Text</button>
+                        <div id="nlp-results"></div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Entity Detail Modal -->
+    <div class="modal-overlay" id="entity-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Entity Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

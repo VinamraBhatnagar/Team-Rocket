@@ -1,0 +1,1459 @@
+[
+  {
+    "id": "S0001",
+    "name": "Manoj Sharma",
+    "age": 36,
+    "gender": "Male",
+    "phone": "+91-7731428289",
+    "phone2": "",
+    "known_associates": [
+      "S0005",
+      "S0011",
+      "S0007"
+    ],
+    "organization": "",
+    "address": "Abandoned Factory Block C",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0002",
+    "name": "Suresh Sharma",
+    "age": 24,
+    "gender": "Male",
+    "phone": "+91-7762376237",
+    "phone2": "",
+    "known_associates": [
+      "S0012",
+      "S0005"
+    ],
+    "organization": "",
+    "address": "Old Market Area",
+    "vehicles": [
+      {
+        "plate": "UP-01-FP-6574",
+        "type": "SUV",
+        "make": "Honda"
+      }
+    ],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0003",
+    "name": "Kiran Qureshi",
+    "age": 40,
+    "gender": "Male",
+    "phone": "+91-7303959797",
+    "phone2": "+91-9777055082",
+    "known_associates": [
+      "S0012",
+      "S0004",
+      "S0002"
+    ],
+    "organization": "",
+    "address": "Port District Dock 7",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0004",
+    "name": "Hassan Kumar",
+    "age": 43,
+    "gender": "Male",
+    "phone": "+91-8808948427",
+    "phone2": "",
+    "known_associates": [
+      "S0006"
+    ],
+    "organization": "",
+    "address": "Bus Terminal Underground",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0005",
+    "name": "Arjun Verma",
+    "age": 61,
+    "gender": "Male",
+    "phone": "+91-9533147930",
+    "phone2": "",
+    "known_associates": [
+      "S0001",
+      "S0011",
+      "S0007",
+      "S0003"
+    ],
+    "organization": "",
+    "address": "Bus Terminal Underground",
+    "vehicles": [
+      {
+        "plate": "GJ-82-MF-7065",
+        "type": "SUV",
+        "make": "Toyota"
+      }
+    ],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0006",
+    "name": "Sunil Hussain",
+    "age": 62,
+    "gender": "Male",
+    "phone": "+91-8996093227",
+    "phone2": "+91-9389242087",
+    "known_associates": [
+      "S0005"
+    ],
+    "organization": "Silver Line Transport",
+    "address": "Civil Lines, Lucknow",
+    "vehicles": [],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0007",
+    "name": "Vikram Chauhan",
+    "age": 21,
+    "gender": "Female",
+    "phone": "+91-8314545093",
+    "phone2": "+91-9992184341",
+    "known_associates": [
+      "S0008",
+      "S0003",
+      "S0004"
+    ],
+    "organization": "",
+    "address": "Banjara Hills, Hyderabad",
+    "vehicles": [],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0008",
+    "name": "Pooja Lopez",
+    "age": 60,
+    "gender": "Female",
+    "phone": "+91-7468144718",
+    "phone2": "+91-9441183579",
+    "known_associates": [
+      "S0010",
+      "S0006"
+    ],
+    "organization": "",
+    "address": "Railway Station Complex",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0009",
+    "name": "Pooja Pandey",
+    "age": 33,
+    "gender": "Male",
+    "phone": "+91-8669674686",
+    "phone2": "+91-7154324371",
+    "known_associates": [
+      "S0003",
+      "S0005",
+      "S0008"
+    ],
+    "organization": "Golden Circle Imports",
+    "address": "Port District Dock 7",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0010",
+    "name": "Kavita Thakur",
+    "age": 57,
+    "gender": "Female",
+    "phone": "+91-8733842953",
+    "phone2": "",
+    "known_associates": [
+      "S0006",
+      "S0002",
+      "S0008"
+    ],
+    "organization": "",
+    "address": "Sector 15, New Delhi",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0011",
+    "name": "Hassan Qureshi",
+    "age": 36,
+    "gender": "Female",
+    "phone": "+91-7365548469",
+    "phone2": "",
+    "known_associates": [
+      "S0003",
+      "S0007",
+      "S0035"
+    ],
+    "organization": "",
+    "address": "Railway Station Complex",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0012",
+    "name": "Prakash Shah",
+    "age": 25,
+    "gender": "Female",
+    "phone": "+91-9757993748",
+    "phone2": "",
+    "known_associates": [
+      "S0011",
+      "S0007"
+    ],
+    "organization": "Diamond Rock Mining",
+    "address": "Highway NH-48 Rest Stop",
+    "vehicles": [],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0013",
+    "name": "Tariq Hernandez",
+    "age": 19,
+    "gender": "Female",
+    "phone": "+91-8601012552",
+    "phone2": "+91-8189450306",
+    "known_associates": [
+      "S0015",
+      "S0020",
+      "S0014"
+    ],
+    "organization": "Iron Gate Security",
+    "address": "Abandoned Factory Block C",
+    "vehicles": [
+      {
+        "plate": "GJ-09-UE-3103",
+        "type": "Auto-rickshaw",
+        "make": "Mercedes"
+      }
+    ],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0014",
+    "name": "Yusuf Patel",
+    "age": 35,
+    "gender": "Female",
+    "phone": "+91-7694080686",
+    "phone2": "",
+    "known_associates": [
+      "S0022",
+      "S0015",
+      "S0017"
+    ],
+    "organization": "",
+    "address": "Old Market Area",
+    "vehicles": [
+      {
+        "plate": "HR-57-TR-2982",
+        "type": "Motorcycle",
+        "make": "Toyota"
+      }
+    ],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0015",
+    "name": "Arjun Mishra",
+    "age": 20,
+    "gender": "Male",
+    "phone": "+91-8928238864",
+    "phone2": "+91-9319492719",
+    "known_associates": [
+      "S0018",
+      "S0020",
+      "S0021"
+    ],
+    "organization": "Northern Alliance Network",
+    "address": "Abandoned Factory Block C",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0016",
+    "name": "Arjun Shah",
+    "age": 34,
+    "gender": "Female",
+    "phone": "+91-9192173624",
+    "phone2": "+91-7433584847",
+    "known_associates": [
+      "S0014",
+      "S0017",
+      "S0021"
+    ],
+    "organization": "",
+    "address": "Navrangpura, Ahmedabad",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0017",
+    "name": "Naveen Kumar",
+    "age": 25,
+    "gender": "Female",
+    "phone": "+91-8160965519",
+    "phone2": "",
+    "known_associates": [
+      "S0022"
+    ],
+    "organization": "",
+    "address": "Marine Drive, Mumbai",
+    "vehicles": [
+      {
+        "plate": "HR-14-HG-4116",
+        "type": "Truck",
+        "make": "Mercedes"
+      }
+    ],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0018",
+    "name": "Sanjay Agarwal",
+    "age": 30,
+    "gender": "Female",
+    "phone": "+91-8515942742",
+    "phone2": "",
+    "known_associates": [
+      "S0016",
+      "S0014",
+      "S0019"
+    ],
+    "organization": "Phantom Industries",
+    "address": "Park Street, Kolkata",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0019",
+    "name": "Hassan Rodriguez",
+    "age": 19,
+    "gender": "Male",
+    "phone": "+91-9469240982",
+    "phone2": "+91-8591373092",
+    "known_associates": [
+      "S0017",
+      "S0020",
+      "S0013",
+      "S0014"
+    ],
+    "organization": "Silver Line Transport",
+    "address": "Abandoned Factory Block C",
+    "vehicles": [
+      {
+        "plate": "DL-50-JR-5673",
+        "type": "Van",
+        "make": "Mercedes"
+      }
+    ],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0020",
+    "name": "Ajay Yadav",
+    "age": 37,
+    "gender": "Male",
+    "phone": "+91-7191685914",
+    "phone2": "",
+    "known_associates": [
+      "S0013",
+      "S0021"
+    ],
+    "organization": "Crescent Moon Foundation",
+    "address": "Marine Drive, Mumbai",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0021",
+    "name": "Saleem Hernandez",
+    "age": 52,
+    "gender": "Male",
+    "phone": "+91-7186376562",
+    "phone2": "+91-7608918981",
+    "known_associates": [
+      "S0020",
+      "S0014",
+      "S0013",
+      "S0048"
+    ],
+    "organization": "",
+    "address": "Industrial Zone B-12",
+    "vehicles": [],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0022",
+    "name": "Abdul Chauhan",
+    "age": 56,
+    "gender": "Male",
+    "phone": "+91-9029520745",
+    "phone2": "",
+    "known_associates": [
+      "S0021",
+      "S0015"
+    ],
+    "organization": "",
+    "address": "Gomti Nagar, Lucknow",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0023",
+    "name": "Kiran Ali",
+    "age": 39,
+    "gender": "Male",
+    "phone": "+91-7870361876",
+    "phone2": "+91-9115149321",
+    "known_associates": [
+      "S0027",
+      "S0026",
+      "S0028",
+      "S0030"
+    ],
+    "organization": "",
+    "address": "River Bridge Underpass",
+    "vehicles": [
+      {
+        "plate": "MH-10-UG-9288",
+        "type": "SUV",
+        "make": "Honda"
+      }
+    ],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0024",
+    "name": "Anita Lopez",
+    "age": 23,
+    "gender": "Male",
+    "phone": "+91-8210847353",
+    "phone2": "+91-9732081200",
+    "known_associates": [
+      "S0027",
+      "S0029"
+    ],
+    "organization": "",
+    "address": "Malviya Nagar, Jaipur",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0025",
+    "name": "Yusuf Joshi",
+    "age": 61,
+    "gender": "Male",
+    "phone": "+91-9877427601",
+    "phone2": "+91-9915424029",
+    "known_associates": [
+      "S0030"
+    ],
+    "organization": "",
+    "address": "Jubilee Hills, Hyderabad",
+    "vehicles": [
+      {
+        "plate": "TN-92-LG-5325",
+        "type": "Truck",
+        "make": "Mercedes"
+      }
+    ],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0026",
+    "name": "Ramesh Lopez",
+    "age": 22,
+    "gender": "Male",
+    "phone": "+91-9078465518",
+    "phone2": "",
+    "known_associates": [
+      "S0028",
+      "S0027",
+      "S0025",
+      "S0023"
+    ],
+    "organization": "Crescent Moon Foundation",
+    "address": "Highway NH-48 Rest Stop",
+    "vehicles": [],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0027",
+    "name": "Ramesh Patel",
+    "age": 47,
+    "gender": "Female",
+    "phone": "+91-8837911267",
+    "phone2": "+91-9893729536",
+    "known_associates": [
+      "S0024",
+      "S0026",
+      "S0029"
+    ],
+    "organization": "",
+    "address": "Airport Cargo Terminal",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0028",
+    "name": "Ajay Agarwal",
+    "age": 27,
+    "gender": "Male",
+    "phone": "+91-8010157795",
+    "phone2": "",
+    "known_associates": [
+      "S0030",
+      "S0025"
+    ],
+    "organization": "",
+    "address": "Bus Terminal Underground",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0029",
+    "name": "Kiran Ali",
+    "age": 34,
+    "gender": "Male",
+    "phone": "+91-8158983385",
+    "phone2": "",
+    "known_associates": [
+      "S0028"
+    ],
+    "organization": "Apex Trading LLC",
+    "address": "River Bridge Underpass",
+    "vehicles": [],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0030",
+    "name": "Prakash Lopez",
+    "age": 45,
+    "gender": "Male",
+    "phone": "+91-7587753540",
+    "phone2": "",
+    "known_associates": [
+      "S0027",
+      "S0028",
+      "S0025"
+    ],
+    "organization": "Iron Gate Security",
+    "address": "Civil Lines, Lucknow",
+    "vehicles": [],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0031",
+    "name": "Rahul Thakur",
+    "age": 21,
+    "gender": "Female",
+    "phone": "+91-7728836158",
+    "phone2": "",
+    "known_associates": [
+      "S0038"
+    ],
+    "organization": "",
+    "address": "Koregaon Park, Pune",
+    "vehicles": [
+      {
+        "plate": "TN-52-LJ-2137",
+        "type": "SUV",
+        "make": "Tata"
+      }
+    ],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0032",
+    "name": "Saleem Thakur",
+    "age": 62,
+    "gender": "Female",
+    "phone": "+91-7090425118",
+    "phone2": "",
+    "known_associates": [
+      "S0035",
+      "S0033",
+      "S0039"
+    ],
+    "organization": "Falcon Express Logistics",
+    "address": "Marine Drive, Mumbai",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0033",
+    "name": "Anita Malik",
+    "age": 39,
+    "gender": "Female",
+    "phone": "+91-8986477033",
+    "phone2": "+91-9947485574",
+    "known_associates": [
+      "S0042"
+    ],
+    "organization": "Red Lotus Gang",
+    "address": "Old Market Area",
+    "vehicles": [
+      {
+        "plate": "TN-47-PC-6409",
+        "type": "Truck",
+        "make": "Tata"
+      }
+    ],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0034",
+    "name": "Manoj Malik",
+    "age": 38,
+    "gender": "Female",
+    "phone": "+91-9185263528",
+    "phone2": "",
+    "known_associates": [
+      "S0042",
+      "S0045"
+    ],
+    "organization": "",
+    "address": "Satellite, Ahmedabad",
+    "vehicles": [
+      {
+        "plate": "RJ-87-FW-5930",
+        "type": "Van",
+        "make": "Maruti"
+      }
+    ],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0035",
+    "name": "Mohan Joshi",
+    "age": 32,
+    "gender": "Female",
+    "phone": "+91-9574786019",
+    "phone2": "",
+    "known_associates": [
+      "S0031",
+      "S0028"
+    ],
+    "organization": "Nighthawk Operations",
+    "address": "Andheri West, Mumbai",
+    "vehicles": [],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0036",
+    "name": "Ravi Ali",
+    "age": 24,
+    "gender": "Female",
+    "phone": "+91-8689097012",
+    "phone2": "",
+    "known_associates": [
+      "S0034",
+      "S0033",
+      "S0041"
+    ],
+    "organization": "Iron Gate Security",
+    "address": "Industrial Zone B-12",
+    "vehicles": [
+      {
+        "plate": "TN-19-AB-5011",
+        "type": "Van",
+        "make": "Hyundai"
+      }
+    ],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0037",
+    "name": "Suman Agarwal",
+    "age": 59,
+    "gender": "Male",
+    "phone": "+91-9353860328",
+    "phone2": "",
+    "known_associates": [
+      "S0032",
+      "S0044"
+    ],
+    "organization": "Shadow Syndicate",
+    "address": "Abandoned Factory Block C",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0038",
+    "name": "Ashok Patel",
+    "age": 52,
+    "gender": "Female",
+    "phone": "+91-7164583060",
+    "phone2": "+91-9779825906",
+    "known_associates": [
+      "S0041",
+      "S0034"
+    ],
+    "organization": "",
+    "address": "Port District Dock 7",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0039",
+    "name": "Yusuf Khan",
+    "age": 39,
+    "gender": "Female",
+    "phone": "+91-9007576162",
+    "phone2": "",
+    "known_associates": [
+      "S0036",
+      "S0044"
+    ],
+    "organization": "",
+    "address": "Andheri West, Mumbai",
+    "vehicles": [],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0040",
+    "name": "Farooq Saxena",
+    "age": 35,
+    "gender": "Male",
+    "phone": "+91-9752093579",
+    "phone2": "+91-9548278327",
+    "known_associates": [
+      "S0044",
+      "S0041",
+      "S0042"
+    ],
+    "organization": "",
+    "address": "Navrangpura, Ahmedabad",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0041",
+    "name": "Anil Chauhan",
+    "age": 36,
+    "gender": "Female",
+    "phone": "+91-8047680798",
+    "phone2": "+91-7494240311",
+    "known_associates": [
+      "S0035"
+    ],
+    "organization": "Apex Trading LLC",
+    "address": "Old Market Area",
+    "vehicles": [
+      {
+        "plate": "RJ-43-UR-7812",
+        "type": "Car",
+        "make": "Toyota"
+      }
+    ],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0042",
+    "name": "Rekha Thakur",
+    "age": 56,
+    "gender": "Male",
+    "phone": "+91-9807385456",
+    "phone2": "",
+    "known_associates": [
+      "S0033",
+      "S0039"
+    ],
+    "organization": "Diamond Rock Mining",
+    "address": "Koregaon Park, Pune",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0043",
+    "name": "Rekha Das",
+    "age": 53,
+    "gender": "Male",
+    "phone": "+91-8599838760",
+    "phone2": "+91-8591313804",
+    "known_associates": [
+      "S0044",
+      "S0033",
+      "S0032"
+    ],
+    "organization": "Silver Line Transport",
+    "address": "Railway Station Complex",
+    "vehicles": [],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0044",
+    "name": "Sanjay Khan",
+    "age": 53,
+    "gender": "Male",
+    "phone": "+91-9971861645",
+    "phone2": "",
+    "known_associates": [
+      "S0033"
+    ],
+    "organization": "",
+    "address": "MG Road, Bangalore",
+    "vehicles": [
+      {
+        "plate": "GJ-24-BJ-7211",
+        "type": "SUV",
+        "make": "Toyota"
+      }
+    ],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0045",
+    "name": "Suman Mishra",
+    "age": 40,
+    "gender": "Female",
+    "phone": "+91-7911765255",
+    "phone2": "+91-7268371644",
+    "known_associates": [
+      "S0036"
+    ],
+    "organization": "Phantom Industries",
+    "address": "Marine Drive, Mumbai",
+    "vehicles": [
+      {
+        "plate": "MH-84-BA-5051",
+        "type": "Motorcycle",
+        "make": "Maruti"
+      }
+    ],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0046",
+    "name": "Miguel Gupta",
+    "age": 34,
+    "gender": "Male",
+    "phone": "+91-8551797747",
+    "phone2": "+91-7714270952",
+    "known_associates": [
+      "S0051",
+      "S0049"
+    ],
+    "organization": "",
+    "address": "Highway NH-48 Rest Stop",
+    "vehicles": [
+      {
+        "plate": "MH-21-KD-1420",
+        "type": "SUV",
+        "make": "BMW"
+      }
+    ],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0047",
+    "name": "Pooja Hussain",
+    "age": 31,
+    "gender": "Male",
+    "phone": "+91-8940192213",
+    "phone2": "+91-9284549529",
+    "known_associates": [
+      "S0048"
+    ],
+    "organization": "",
+    "address": "Malviya Nagar, Jaipur",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0048",
+    "name": "Abdul Garcia",
+    "age": 21,
+    "gender": "Female",
+    "phone": "+91-8745666148",
+    "phone2": "",
+    "known_associates": [
+      "S0046",
+      "S0047",
+      "S0050"
+    ],
+    "organization": "Crescent Moon Foundation",
+    "address": "Sector 15, New Delhi",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0049",
+    "name": "Rahul Agarwal",
+    "age": 42,
+    "gender": "Female",
+    "phone": "+91-9317730052",
+    "phone2": "",
+    "known_associates": [
+      "S0052",
+      "S0054"
+    ],
+    "organization": "",
+    "address": "45th Street Warehouse",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0050",
+    "name": "Hassan Qureshi",
+    "age": 49,
+    "gender": "Female",
+    "phone": "+91-8427287656",
+    "phone2": "+91-9790842177",
+    "known_associates": [
+      "S0049"
+    ],
+    "organization": "",
+    "address": "MG Road, Bangalore",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0051",
+    "name": "Vinod Qureshi",
+    "age": 48,
+    "gender": "Female",
+    "phone": "+91-8102313761",
+    "phone2": "",
+    "known_associates": [
+      "S0048",
+      "S0050",
+      "S0046",
+      "S0047"
+    ],
+    "organization": "Zenith Capital Group",
+    "address": "Aundh, Pune",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0052",
+    "name": "Neha Reddy",
+    "age": 57,
+    "gender": "Female",
+    "phone": "+91-8821211330",
+    "phone2": "",
+    "known_associates": [
+      "S0050",
+      "S0046"
+    ],
+    "organization": "Iron Gate Security",
+    "address": "Railway Station Complex",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0053",
+    "name": "Vinod Hussain",
+    "age": 49,
+    "gender": "Female",
+    "phone": "+91-8468512260",
+    "phone2": "+91-7726163005",
+    "known_associates": [
+      "S0057",
+      "S0054",
+      "S0058"
+    ],
+    "organization": "",
+    "address": "Koregaon Park, Pune",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0054",
+    "name": "Tariq Pandey",
+    "age": 46,
+    "gender": "Female",
+    "phone": "+91-8152869473",
+    "phone2": "+91-7823740217",
+    "known_associates": [
+      "S0057",
+      "S0058",
+      "S0056",
+      "S0053"
+    ],
+    "organization": "Bluestone Holdings",
+    "address": "Banjara Hills, Hyderabad",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0055",
+    "name": "Prakash Yadav",
+    "age": 32,
+    "gender": "Female",
+    "phone": "+91-7906087278",
+    "phone2": "",
+    "known_associates": [
+      "S0057",
+      "S0053",
+      "S0058",
+      "S0054"
+    ],
+    "organization": "",
+    "address": "Koregaon Park, Pune",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0056",
+    "name": "Anil Chauhan",
+    "age": 42,
+    "gender": "Male",
+    "phone": "+91-7990411854",
+    "phone2": "",
+    "known_associates": [
+      "S0053",
+      "S0054"
+    ],
+    "organization": "Red Lotus Gang",
+    "address": "Marine Drive, Mumbai",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0057",
+    "name": "Sanjay Ahmed",
+    "age": 50,
+    "gender": "Male",
+    "phone": "+91-9859711607",
+    "phone2": "",
+    "known_associates": [
+      "S0058",
+      "S0055",
+      "S0054"
+    ],
+    "organization": "",
+    "address": "Andheri West, Mumbai",
+    "vehicles": [
+      {
+        "plate": "DL-33-SD-2070",
+        "type": "Van",
+        "make": "Mercedes"
+      }
+    ],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0058",
+    "name": "Arjun Roy",
+    "age": 59,
+    "gender": "Male",
+    "phone": "+91-7497129555",
+    "phone2": "",
+    "known_associates": [
+      "S0056",
+      "S0057",
+      "S0053"
+    ],
+    "organization": "",
+    "address": "MG Road, Bangalore",
+    "vehicles": [
+      {
+        "plate": "RJ-78-WW-4697",
+        "type": "Truck",
+        "make": "BMW"
+      }
+    ],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0059",
+    "name": "Geeta Hernandez",
+    "age": 47,
+    "gender": "Female",
+    "phone": "+91-9818587139",
+    "phone2": "",
+    "known_associates": [
+      "S0061",
+      "S0044"
+    ],
+    "organization": "Red Lotus Gang",
+    "address": "Malviya Nagar, Jaipur",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0060",
+    "name": "Kiran Ahmed",
+    "age": 32,
+    "gender": "Female",
+    "phone": "+91-9164020641",
+    "phone2": "+91-7569582350",
+    "known_associates": [
+      "S0063",
+      "S0059",
+      "S0061",
+      "S0062"
+    ],
+    "organization": "Shadow Syndicate",
+    "address": "Connaught Place, New Delhi",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0061",
+    "name": "Farooq Joshi",
+    "age": 21,
+    "gender": "Male",
+    "phone": "+91-7944047056",
+    "phone2": "",
+    "known_associates": [
+      "S0063",
+      "S0060",
+      "S0059",
+      "S0062"
+    ],
+    "organization": "",
+    "address": "Industrial Zone B-12",
+    "vehicles": [],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0062",
+    "name": "Rizwan Ali",
+    "age": 31,
+    "gender": "Female",
+    "phone": "+91-7376081376",
+    "phone2": "+91-7488244816",
+    "known_associates": [
+      "S0061",
+      "S0063",
+      "S0060",
+      "S0059"
+    ],
+    "organization": "",
+    "address": "MG Road, Bangalore",
+    "vehicles": [
+      {
+        "plate": "UP-77-VK-8195",
+        "type": "Car",
+        "make": "Mercedes"
+      }
+    ],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0063",
+    "name": "Mohan Hussain",
+    "age": 44,
+    "gender": "Female",
+    "phone": "+91-8639980776",
+    "phone2": "",
+    "known_associates": [
+      "S0062",
+      "S0059",
+      "S0078"
+    ],
+    "organization": "Red Lotus Gang",
+    "address": "Abandoned Factory Block C",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0064",
+    "name": "Carlos Reddy",
+    "age": 20,
+    "gender": "Male",
+    "phone": "+91-7750198381",
+    "phone2": "",
+    "known_associates": [
+      "S0065"
+    ],
+    "organization": "",
+    "address": "Sector 15, New Delhi",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0065",
+    "name": "Prakash Mehta",
+    "age": 52,
+    "gender": "Female",
+    "phone": "+91-7911433788",
+    "phone2": "",
+    "known_associates": [
+      "S0066"
+    ],
+    "organization": "Zenith Capital Group",
+    "address": "MG Road, Bangalore",
+    "vehicles": [
+      {
+        "plate": "HR-42-YD-3634",
+        "type": "SUV",
+        "make": "BMW"
+      }
+    ],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0066",
+    "name": "Imran Joshi",
+    "age": 61,
+    "gender": "Female",
+    "phone": "+91-9665882102",
+    "phone2": "+91-7288551224",
+    "known_associates": [
+      "S0067",
+      "S0015"
+    ],
+    "organization": "Metro Finance Corp",
+    "address": "Highway NH-48 Rest Stop",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0067",
+    "name": "Rajesh Ali",
+    "age": 53,
+    "gender": "Female",
+    "phone": "+91-8354117104",
+    "phone2": "+91-8185491609",
+    "known_associates": [
+      "S0065",
+      "S0064",
+      "S0066"
+    ],
+    "organization": "",
+    "address": "45th Street Warehouse",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0068",
+    "name": "Kiran Reddy",
+    "age": 54,
+    "gender": "Male",
+    "phone": "+91-7943867424",
+    "phone2": "",
+    "known_associates": [
+      "S0069",
+      "S0070",
+      "S0028"
+    ],
+    "organization": "",
+    "address": "Sector 15, New Delhi",
+    "vehicles": [],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0069",
+    "name": "Mohan Das",
+    "age": 19,
+    "gender": "Female",
+    "phone": "+91-7305439451",
+    "phone2": "",
+    "known_associates": [
+      "S0070",
+      "S0068"
+    ],
+    "organization": "",
+    "address": "Andheri West, Mumbai",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0070",
+    "name": "Ajay Mehta",
+    "age": 37,
+    "gender": "Female",
+    "phone": "+91-8361473242",
+    "phone2": "",
+    "known_associates": [
+      "S0069",
+      "S0068"
+    ],
+    "organization": "Phantom Industries",
+    "address": "Jubilee Hills, Hyderabad",
+    "vehicles": [
+      {
+        "plate": "KA-09-JP-6568",
+        "type": "Truck",
+        "make": "Mahindra"
+      }
+    ],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0071",
+    "name": "Rajesh Joshi",
+    "age": 38,
+    "gender": "Female",
+    "phone": "+91-9835229476",
+    "phone2": "",
+    "known_associates": [
+      "S0080"
+    ],
+    "organization": "",
+    "address": "Banjara Hills, Hyderabad",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0072",
+    "name": "Priya Martinez",
+    "age": 31,
+    "gender": "Male",
+    "phone": "+91-8873660196",
+    "phone2": "+91-9541363841",
+    "known_associates": [
+      "S0074",
+      "S0079"
+    ],
+    "organization": "Zenith Capital Group",
+    "address": "Old Market Area",
+    "vehicles": [
+      {
+        "plate": "KA-64-BE-9229",
+        "type": "Truck",
+        "make": "Tata"
+      }
+    ],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0073",
+    "name": "Rahul Martinez",
+    "age": 47,
+    "gender": "Male",
+    "phone": "+91-8723469890",
+    "phone2": "+91-7472363736",
+    "known_associates": [
+      "S0072",
+      "S0077"
+    ],
+    "organization": "",
+    "address": "Jubilee Hills, Hyderabad",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0074",
+    "name": "Ramesh Mishra",
+    "age": 58,
+    "gender": "Female",
+    "phone": "+91-9129320527",
+    "phone2": "",
+    "known_associates": [
+      "S0072",
+      "S0076",
+      "S0079"
+    ],
+    "organization": "",
+    "address": "Bus Terminal Underground",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  },
+  {
+    "id": "S0075",
+    "name": "Imran Martinez",
+    "age": 53,
+    "gender": "Male",
+    "phone": "+91-9023218968",
+    "phone2": "+91-9242647667",
+    "known_associates": [
+      "S0078",
+      "S0071"
+    ],
+    "organization": "",
+    "address": "Railway Station Complex",
+    "vehicles": [],
+    "risk_level": "LOW"
+  },
+  {
+    "id": "S0076",
+    "name": "Rahul Qureshi",
+    "age": 59,
+    "gender": "Male",
+    "phone": "+91-8453831805",
+    "phone2": "",
+    "known_associates": [
+      "S0071",
+      "S0073",
+      "S0079"
+    ],
+    "organization": "",
+    "address": "Marine Drive, Mumbai",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0077",
+    "name": "Anil Pandey",
+    "age": 42,
+    "gender": "Female",
+    "phone": "+91-7477042007",
+    "phone2": "",
+    "known_associates": [
+      "S0076",
+      "S0080",
+      "S0071"
+    ],
+    "organization": "",
+    "address": "Port District Dock 7",
+    "vehicles": [
+      {
+        "plate": "MH-79-NW-4945",
+        "type": "Van",
+        "make": "Honda"
+      }
+    ],
+    "risk_level": "MEDIUM"
+  },
+  {
+    "id": "S0078",
+    "name": "Ashok Saxena",
+    "age": 59,
+    "gender": "Female",
+    "phone": "+91-8505943466",
+    "phone2": "",
+    "known_associates": [
+      "S0073",
+      "S0077"
+    ],
+    "organization": "",
+    "address": "Andheri West, Mumbai",
+    "vehicles": [],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0079",
+    "name": "Ravi Singh",
+    "age": 47,
+    "gender": "Female",
+    "phone": "+91-8925349210",
+    "phone2": "",
+    "known_associates": [
+      "S0073"
+    ],
+    "organization": "Falcon Express Logistics",
+    "address": "Andheri West, Mumbai",
+    "vehicles": [
+      {
+        "plate": "RJ-62-DH-7248",
+        "type": "Truck",
+        "make": "Tata"
+      }
+    ],
+    "risk_level": "HIGH"
+  },
+  {
+    "id": "S0080",
+    "name": "Abdul Joshi",
+    "age": 37,
+    "gender": "Male",
+    "phone": "+91-9719896275",
+    "phone2": "",
+    "known_associates": [
+      "S0072",
+      "S0007"
+    ],
+    "organization": "Red Lotus Gang",
+    "address": "River Bridge Underpass",
+    "vehicles": [],
+    "risk_level": "CRITICAL"
+  }
+]
