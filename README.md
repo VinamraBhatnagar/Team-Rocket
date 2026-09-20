@@ -44,7 +44,15 @@ A transparent, comprehensive breakdown of what has been built and delivered in t
   - 235 Criminal History & Prior Conviction Records (`data/criminal_history.csv`).
 - [x] **Data Normalization & Unified Indexer** (`modules/data_processor.py`): Ingests all heterogeneous data sources and builds an in-memory unified entity index linking suspects, phones, accounts, vehicles, and organizations.
 
-#### 2. Graph Intelligence & Social Network Analysis (SNA)
+#### 2. Dynamic Criminal & Crime Ingestion Engine (Live Graph Injection)
+- [x] **Live Criminal Registration (`POST /api/suspects/add`)**:
+  - Dynamically registers new suspect profiles with legal name, risk classification (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`), demographics, syndicate affiliation, phone number, known associates, base address, and prior conviction history.
+  - Automatically generates sequential suspect IDs (`SUSP_xxx`), injects nodes into the **NetworkX** graph, updates search indexes, and recalculates system KPIs on the fly with zero server downtime.
+- [x] **Live Crime Incident / FIR Logging (`POST /api/incidents/add`)**:
+  - Logs fresh FIR incidents with crime type (Armed Robbery, Narcotics, Homicide, Extortion, Cyber Crime), datetime, street location, primary suspect, accomplice suspect, and narrative.
+  - Automatically assigns incident IDs (`INC_xxxx`), links suspects via `CO_INCIDENT` graph edges, updates chronological timelines, and triggers real-time graph re-renders.
+
+#### 3. Graph Intelligence & Social Network Analysis (SNA)
 - [x] **Multi-Relational Knowledge Graph** (`modules/graph_engine.py`): Built with **NetworkX**, modeling 5 distinct relationship types:
   - `KNOWN_ASSOCIATE` (prior intelligence links)
   - `CO_INCIDENT` (shared crime events/FIRs)
@@ -55,28 +63,30 @@ A transparent, comprehensive breakdown of what has been built and delivered in t
 - [x] **Multi-Metric Centrality Scoring**: Evaluates suspects across Degree, Betweenness, Closeness Centrality, and PageRank to identify key kingpins and communication brokers.
 - [x] **Shortest Path Analysis**: Calculates multi-hop connection chains and degrees of separation between any two selected entities.
 
-#### 3. Machine Learning Crime & Arrest Prediction Engine
+#### 4. Machine Learning Crime & Arrest Prediction Engine
 - [x] **ML Inference Engine** (`modules/prediction_engine.py`):
   - Pre-trained **Random Forest Classifiers** trained on historical Chicago Crime data (predicting 15 crime categories and arrest likelihood).
   - Feature engineering pipeline matching spatiotemporal features (location description, hour, day, month, domestic flags, district/ward).
   - Robust heuristic fallback engine providing instant predictions even when multi-gigabyte model weights are not loaded locally.
 
-#### 4. Natural Language Processing (NLP) Entity & FIR Parser
+#### 5. Natural Language Processing (NLP) Entity & FIR Parser
 - [x] **NLP Extraction Pipeline** (`modules/nlp_engine.py`):
   - Powered by **spaCy** Named Entity Recognition (`en_core_web_sm`) combined with custom regex pattern matchers.
   - Extracts `PERSON`, `ORGANIZATION`, `LOCATION`, `PHONE`, and `VEHICLE_PLATE` from unstructured FIR narratives.
   - Threat severity keyword scoring (firearms, narcotics, smuggling, extortion).
   - Co-occurrence relation extraction between co-mentioned suspects and locations.
 
-#### 5. Pattern & Anomaly Detection System
+#### 6. Pattern & Anomaly Detection System & Stateful Triage
 - [x] **Multi-Domain Anomaly Detector** (`modules/pattern_detector.py`):
   - **Behavioral Patterns**: Identifies high-frequency repeat offenders and escalation of charges.
   - **Financial Anomalies**: Detects structuring (smurfing below reporting thresholds) and rapid large-sum transfers.
   - **Communication Bursts**: Detects sudden spikes in call volume preceding major incidents.
   - **Geographic Clusters**: Flags high-density crime location hotspots.
   - **Network Brokers**: Highlights bridge nodes connecting otherwise disjoint criminal factions.
+- [x] **Stateful Severity Filter Engine (Bug Fix)**:
+  - Preserves immutable in-memory master pattern repository across all filter transitions (`All` ↔ `Critical` ↔ `High` ↔ `Medium` ↔ `Low`), completely resolving the disappearing pattern issue and adding severity-matched glowing indicator chips.
 
-#### 6. Investigator Command Center UI
+#### 7. Investigator Command Center UI
 - [x] **Cyber-Forensics Tactical Intelligence Command Theme (Default)** with **Light Mode Toggle**:
   - Purpose-built tactical HUD aesthetics reflecting modern cyber crime labs and national intelligence operations.
   - Deep obsidian canvas (`#060a14`), glowing cyber cyan (`#00f0ff`), radar emerald (`#10b981`), alert amber (`#ffb703`), and hazard crimson (`#ff2e5b`).
@@ -93,7 +103,7 @@ A transparent, comprehensive breakdown of what has been built and delivered in t
   8. **Prediction Console**: Form to test hypothetical crime scenarios against the ML models.
   9. **NLP Analyzer**: Live text area to paste FIR reports and visualize extracted entities instantly.
 
-#### 7. REST API & Architecture
+#### 8. REST API & Architecture
 - [x] **15 REST API Endpoints** in Flask (`app.py`) with structured JSON contracts (including live suspect & incident ingestion).
 - [x] Complete test suite verification across all endpoints and data pipelines.
 - [x] GitHub repository synchronization and `.gitignore` setup preventing large model binary bloat.
@@ -162,11 +172,11 @@ While CrimeNet AI provides a functional prototype and intelligence platform, the
 │  │   Multi-Domain Pattern & Anomaly Detector (modules/pattern_detector) │  │
 │  └──────────────────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────┬──────────────────────────────────────┘
-                                      │ REST API (13 Endpoints)
+                                      │ REST API (15 Endpoints)
                                       ▼
 ┌────────────────────────────────────────────────────────────────────────────┐
-│            Investigator Command Center UI (Vibrant Bright / Dark)          │
-│    Dashboard │ Network Graph │ Entities │ Communities │ Alerts │ NLP Tool  │
+│         Investigator Command Center UI (Cyber-Forensics Tactical HUD)      │
+│  Dashboard │ Network Graph │ Entities │ Communities │ Alerts │ Ingest │ NLP │
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
