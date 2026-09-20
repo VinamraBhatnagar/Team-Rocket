@@ -8,13 +8,50 @@ let networkInstance = null;
 let allNetworkData = null;
 let physicsEnabled = true;
 let chartInstances = {};
+let lastDashboardData = null;
+let currentTheme = localStorage.getItem('crimenet-theme') || 'bright';
 
 // ═══ Initialize ═══════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
     setupNavigation();
     setupSearch();
     loadDashboard();
 });
+
+// ═══ Theme Management ════════════════════════════════════════
+function initTheme() {
+    applyTheme(currentTheme);
+    const toggleBtn = document.getElementById('theme-toggle-btn');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            currentTheme = (currentTheme === 'bright') ? 'dark' : 'bright';
+            localStorage.setItem('crimenet-theme', currentTheme);
+            applyTheme(currentTheme);
+            if (lastDashboardData) {
+                renderCharts(lastDashboardData);
+            }
+            if (networkInstance && allNetworkData) {
+                renderNetwork(allNetworkData);
+            }
+        });
+    }
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const icon = document.getElementById('theme-toggle-icon');
+    const text = document.getElementById('theme-toggle-text');
+    if (icon && text) {
+        if (theme === 'bright') {
+            icon.textContent = '🌙';
+            text.textContent = 'Dark Mode';
+        } else {
+            icon.textContent = '☀️';
+            text.textContent = 'Bright Mode';
+        }
+    }
+}
 
 // ═══ Navigation ═══════════════════════════════════════════════
 function setupNavigation() {
@@ -109,6 +146,7 @@ async function loadDashboard() {
     try {
         const res = await fetch(`${API}/api/dashboard`);
         const data = await res.json();
+        lastDashboardData = data;
         renderKPIs(data);
         renderCharts(data);
 
@@ -177,11 +215,16 @@ function formatAmount(amount) {
 
 function renderCharts(data) {
     const s = data.stats;
+    const isBright = currentTheme === 'bright';
     const chartColors = [
-        '#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#ef4444',
+        '#2563eb', '#06b6d4', '#10b981', '#f59e0b', '#ef4444',
         '#8b5cf6', '#ec4899', '#14b8a6', '#f97316', '#6366f1',
         '#84cc16', '#e11d48', '#0891b2', '#7c3aed', '#d946ef'
     ];
+    const textColor = isBright ? '#334155' : '#94a3b8';
+    const tickColor = isBright ? '#475569' : '#64748b';
+    const gridColor = isBright ? 'rgba(0, 0, 0, 0.06)' : 'rgba(148, 163, 184, 0.06)';
+    const donutBorder = isBright ? '#ffffff' : '#0a0e17';
 
     // Destroy existing charts
     Object.values(chartInstances).forEach(c => c?.destroy());
@@ -198,7 +241,7 @@ function renderCharts(data) {
                 datasets: [{
                     data: values,
                     backgroundColor: chartColors.slice(0, labels.length),
-                    borderColor: '#0a0e17',
+                    borderColor: donutBorder,
                     borderWidth: 2
                 }]
             },
@@ -208,7 +251,7 @@ function renderCharts(data) {
                 plugins: {
                     legend: {
                         position: 'right',
-                        labels: { color: '#94a3b8', font: { size: 11 }, padding: 8 }
+                        labels: { color: textColor, font: { size: 11, family: 'Inter' }, padding: 8 }
                     }
                 },
                 cutout: '55%'
@@ -228,13 +271,13 @@ function renderCharts(data) {
                 datasets: [{
                     label: 'Incidents',
                     data: values,
-                    borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderColor: '#2563eb',
+                    backgroundColor: isBright ? 'rgba(37, 99, 235, 0.08)' : 'rgba(59, 130, 246, 0.1)',
                     fill: true,
                     tension: 0.4,
                     pointRadius: 4,
-                    pointBackgroundColor: '#3b82f6',
-                    pointBorderColor: '#0a0e17',
+                    pointBackgroundColor: '#2563eb',
+                    pointBorderColor: donutBorder,
                     pointBorderWidth: 2
                 }]
             },
@@ -246,12 +289,12 @@ function renderCharts(data) {
                 },
                 scales: {
                     x: {
-                        ticks: { color: '#64748b', font: { size: 10 } },
-                        grid: { color: 'rgba(148,163,184,0.06)' }
+                        ticks: { color: tickColor, font: { size: 10, family: 'Inter' } },
+                        grid: { color: gridColor }
                     },
                     y: {
-                        ticks: { color: '#64748b', font: { size: 10 } },
-                        grid: { color: 'rgba(148,163,184,0.06)' }
+                        ticks: { color: tickColor, font: { size: 10, family: 'Inter' } },
+                        grid: { color: gridColor }
                     }
                 }
             }
@@ -271,7 +314,7 @@ function renderCharts(data) {
                 datasets: [{
                     label: 'Suspects',
                     data: values,
-                    backgroundColor: labels.map(l => riskColors[l] || '#3b82f6'),
+                    backgroundColor: labels.map(l => riskColors[l] || '#2563eb'),
                     borderRadius: 6,
                     barThickness: 40
                 }]
@@ -283,8 +326,8 @@ function renderCharts(data) {
                     legend: { display: false }
                 },
                 scales: {
-                    x: { ticks: { color: '#64748b' }, grid: { display: false } },
-                    y: { ticks: { color: '#64748b' }, grid: { color: 'rgba(148,163,184,0.06)' } }
+                    x: { ticks: { color: tickColor, font: { family: 'Inter' } }, grid: { display: false } },
+                    y: { ticks: { color: tickColor, font: { family: 'Inter' } }, grid: { color: gridColor } }
                 }
             }
         });
@@ -302,8 +345,8 @@ function renderCharts(data) {
                 datasets: [{
                     label: 'Incidents',
                     data: values,
-                    backgroundColor: 'rgba(6, 182, 212, 0.6)',
-                    borderColor: '#06b6d4',
+                    backgroundColor: isBright ? 'rgba(2, 132, 199, 0.75)' : 'rgba(6, 182, 212, 0.6)',
+                    borderColor: isBright ? '#0284c7' : '#06b6d4',
                     borderWidth: 1,
                     borderRadius: 4,
                     barThickness: 20
@@ -315,11 +358,11 @@ function renderCharts(data) {
                 indexAxis: 'y',
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { ticks: { color: '#64748b' }, grid: { color: 'rgba(148,163,184,0.06)' } },
+                    x: { ticks: { color: tickColor, font: { family: 'Inter' } }, grid: { color: gridColor } },
                     y: {
                         ticks: {
-                            color: '#94a3b8',
-                            font: { size: 10 },
+                            color: textColor,
+                            font: { size: 10, family: 'Inter' },
                             callback: function(val) {
                                 const label = this.getLabelForValue(val);
                                 return label.length > 25 ? label.substr(0, 22) + '...' : label;
@@ -354,18 +397,23 @@ function renderNetwork(data) {
     const container = document.getElementById('network-container');
     container.innerHTML = '';
 
+    const isBright = currentTheme === 'bright';
+    const fontColor = isBright ? '#0f172a' : '#e2e8f0';
+    const strokeColor = isBright ? '#ffffff' : '#0a0e17';
+    const edgeFontColor = isBright ? '#475569' : '#64748b';
+
     const nodes = new vis.DataSet(data.nodes);
     const edges = new vis.DataSet(data.edges);
 
     const options = {
         nodes: {
-            font: { color: '#e2e8f0', size: 11, face: 'Inter' },
+            font: { color: fontColor, size: 11, face: 'Inter', strokeWidth: 3, strokeColor: strokeColor },
             borderWidth: 2,
-            shadow: { enabled: true, color: 'rgba(0,0,0,0.3)', size: 8 }
+            shadow: { enabled: true, color: isBright ? 'rgba(15,23,42,0.12)' : 'rgba(0,0,0,0.3)', size: 6 }
         },
         edges: {
             smooth: { type: 'continuous' },
-            font: { color: '#64748b', size: 9 }
+            font: { color: edgeFontColor, size: 9, strokeWidth: 2, strokeColor: strokeColor }
         },
         physics: {
             enabled: true,
