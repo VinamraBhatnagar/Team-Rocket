@@ -217,7 +217,7 @@ function renderCharts(data) {
     const s = data.stats;
     const isBright = currentTheme === 'bright';
     const chartColors = [
-        '#2563eb', '#06b6d4', '#10b981', '#f59e0b', '#ef4444',
+        '#2563eb', '#059669', '#10b981', '#f59e0b', '#ef4444',
         '#8b5cf6', '#ec4899', '#14b8a6', '#f97316', '#6366f1',
         '#84cc16', '#e11d48', '#0891b2', '#7c3aed', '#d946ef'
     ];
@@ -345,8 +345,8 @@ function renderCharts(data) {
                 datasets: [{
                     label: 'Incidents',
                     data: values,
-                    backgroundColor: isBright ? 'rgba(2, 132, 199, 0.75)' : 'rgba(6, 182, 212, 0.6)',
-                    borderColor: isBright ? '#0284c7' : '#06b6d4',
+                    backgroundColor: isBright ? 'rgba(5, 150, 105, 0.75)' : 'rgba(16, 185, 129, 0.65)',
+                    borderColor: isBright ? '#059669' : '#10b981',
                     borderWidth: 1,
                     borderRadius: 4,
                     barThickness: 20

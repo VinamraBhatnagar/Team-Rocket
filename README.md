@@ -78,7 +78,7 @@ A transparent, comprehensive breakdown of what has been built and delivered in t
 
 #### 6. Investigator Command Center UI
 - [x] **Vibrant Bright Color Theme (Default)** with dynamic **Dark Mode Toggle**:
-  - Crisp, modern high-contrast design with clean white cards, soft borders (`#e2e8f0`), deep obsidian text (`#0f172a`), and vivid electric blue/cyan accents (`#2563eb`, `#0284c7`).
+  - Crisp, modern high-contrast design with clean white cards, soft borders (`#e2e8f0`), deep obsidian text (`#0f172a`), and vivid electric blue and elegant emerald green accents (`#2563eb`, `#059669`).
   - Interactive Theme Toggle in top bar persisting user preference in `localStorage`.
 - [x] **8 Specialized Intelligence Tabs**:
   1. **Dashboard**: Executive KPIs, monthly crime trend line, risk level distribution, and crime type doughnut chart.

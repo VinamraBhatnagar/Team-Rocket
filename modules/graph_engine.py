@@ -156,7 +156,7 @@ class GraphEngine:
 
         # Color palette for communities
         community_colors = [
-            "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7",
+            "#FF6B6B", "#059669", "#45B7D1", "#96CEB4", "#FFEAA7",
             "#DDA0DD", "#98D8C8", "#F7DC6F", "#BB8FCE", "#85C1E9",
             "#F0B27A", "#AED6F1", "#A3E4D7", "#FAD7A0", "#D2B4DE",
             "#A9CCE3", "#A9DFBF", "#F9E79F", "#FADBD8", "#D5F5E3"
@@ -221,7 +221,7 @@ class GraphEngine:
             edge_colors = {
                 "KNOWN_ASSOCIATE": "#FF6B6B",
                 "CO_INCIDENT": "#FF9800",
-                "COMMUNICATION": "#4ECDC4",
+                "COMMUNICATION": "#059669",
                 "FINANCIAL": "#FFD700",
                 "MEMBER_OF": "#9B59B6",
             }
