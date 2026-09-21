@@ -10,6 +10,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <!-- vis.js Network -->
     <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+    <!-- Leaflet.js for Geospatial Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -31,6 +34,10 @@
                     <span class="nav-icon">📊</span>
                     <span>Dashboard</span>
                 </div>
+                <div class="nav-item" data-tab="geomap" id="nav-geomap">
+                    <span class="nav-icon">🗺️</span>
+                    <span>Crime Geo Map</span>
+                </div>
                 <div class="nav-item" data-tab="network" id="nav-network">
                     <span class="nav-icon">🕸️</span>
                     <span>Network Graph</span>
@@ -45,6 +52,10 @@
                 </div>
 
                 <div class="nav-section-title">Intelligence</div>
+                <div class="nav-item" data-tab="dossier" id="nav-dossier">
+                    <span class="nav-icon">🗂️</span>
+                    <span>Person Dossier (PDF)</span>
+                </div>
                 <div class="nav-item" data-tab="patterns" id="nav-patterns">
                     <span class="nav-icon">⚠️</span>
                     <span>Patterns & Alerts</span>
@@ -142,6 +153,197 @@
                     </div>
                 </div>
 
+                <!-- ═══ Crime Geospatial Map Tab ═══ -->
+                <div class="tab-content" id="tab-geomap">
+                    <!-- Search & Upload Row -->
+                    <div class="geo-toolbar">
+                        <div class="geo-search-wrapper">
+                            <span class="geo-search-icon">🔎</span>
+                            <input type="text" id="geo-search-input" class="geo-search-input" placeholder="Search State / City / District...">
+                            <button id="geo-search-btn" class="geo-search-btn">Search</button>
+                            <div id="geo-search-results" class="geo-search-results"></div>
+                        </div>
+                        <div class="geo-toolbar-right">
+                            <button id="geo-mappls-btn" class="geo-mappls-btn" title="MapmyIndia (Mappls) Web SDK Settings">
+                                <span class="geo-mappls-icon">📍</span>
+                                <span id="geo-mappls-btn-label">MapmyIndia SDK</span>
+                                <span id="geo-mappls-badge" class="geo-mappls-badge">Key</span>
+                            </button>
+                            <button id="geo-upload-btn" class="geo-upload-btn">
+                                <span class="geo-upload-icon">📁</span> Upload Crime CSV
+                            </button>
+                            <input type="file" id="geo-csv-input" accept=".csv" style="display:none">
+                            <div class="geo-source-toggle">
+                                <label class="geo-radio-label">
+                                    <input type="radio" name="geo-source" id="geo-source-existing" value="existing" checked>
+                                    <span>Existing Dataset</span>
+                                </label>
+                                <label class="geo-radio-label">
+                                    <input type="radio" name="geo-source" id="geo-source-uploaded" value="uploaded" disabled>
+                                    <span>Uploaded CSV</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="geo-upload-error" class="geo-upload-error" style="display:none"></div>
+
+                    <!-- Stats Cards -->
+                    <div class="geo-stats-row">
+                        <div class="geo-stat-card">
+                            <div class="geo-stat-icon">📋</div>
+                            <div class="geo-stat-info">
+                                <div class="geo-stat-label">Total Crimes</div>
+                                <div class="geo-stat-value" id="geo-stat-total">0</div>
+                            </div>
+                        </div>
+                        <div class="geo-stat-card">
+                            <div class="geo-stat-icon">🏛️</div>
+                            <div class="geo-stat-info">
+                                <div class="geo-stat-label">States Affected</div>
+                                <div class="geo-stat-value" id="geo-stat-locations">0</div>
+                            </div>
+                        </div>
+                        <div class="geo-stat-card">
+                            <div class="geo-stat-icon">🏙️</div>
+                            <div class="geo-stat-info">
+                                <div class="geo-stat-label">Cities / Districts</div>
+                                <div class="geo-stat-value" id="geo-stat-cities">0</div>
+                            </div>
+                        </div>
+                        <div class="geo-stat-card">
+                            <div class="geo-stat-icon">🔍</div>
+                            <div class="geo-stat-info">
+                                <div class="geo-stat-label">Most Common Crime</div>
+                                <div class="geo-stat-value geo-stat-text" id="geo-stat-common">—</div>
+                            </div>
+                        </div>
+                        <div class="geo-stat-card">
+                            <div class="geo-stat-icon">📍</div>
+                            <div class="geo-stat-info">
+                                <div class="geo-stat-label">Highest Crime Location</div>
+                                <div class="geo-stat-value geo-stat-text" id="geo-stat-highest">—</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filters Row -->
+                    <div class="geo-filters-row">
+                        <div class="geo-filter-group">
+                            <label>Crime Type</label>
+                            <select id="geo-filter-crime" class="geo-filter-select">
+                                <option value="All">All Crimes</option>
+                            </select>
+                        </div>
+                        <div class="geo-filter-group" id="geo-year-filter-group" style="display:none">
+                            <label>Year</label>
+                            <select id="geo-filter-year" class="geo-filter-select">
+                                <option value="All">All Years</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Map Container -->
+                    <div class="geo-map-wrapper">
+                        <div id="geomap-container" class="geo-map-container"></div>
+                        <!-- Loading Overlay -->
+                        <div id="geo-loading-overlay" class="geo-loading-overlay">
+                            <div class="spinner"></div>
+                            <div class="geo-loading-text">Loading...</div>
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="geo-legend">
+                        <span class="geo-legend-label" id="geo-legend-min">0</span>
+                        <div class="geo-legend-bar" id="geo-legend-bar"></div>
+                        <span class="geo-legend-label" id="geo-legend-max">0</span>
+                        <span class="geo-legend-title">Crime Intensity</span>
+                    </div>
+                </div>
+
+                <!-- Geo Map Preview Modal -->
+                <div class="modal-overlay" id="geo-preview-modal">
+                    <div class="modal geo-preview-modal-inner">
+                        <div class="modal-header">
+                            <h3>📊 CSV Preview</h3>
+                            <button class="modal-close" id="geo-preview-close">&times;</button>
+                        </div>
+                        <div class="geo-preview-content">
+                            <div class="geo-preview-info-grid">
+                                <div class="geo-preview-info-item">
+                                    <span class="geo-preview-label">Uploaded File</span>
+                                    <span class="geo-preview-val" id="geo-preview-filename">—</span>
+                                </div>
+                                <div class="geo-preview-info-item">
+                                    <span class="geo-preview-label">Rows</span>
+                                    <span class="geo-preview-val" id="geo-preview-rows">0</span>
+                                </div>
+                                <div class="geo-preview-info-item">
+                                    <span class="geo-preview-label">Columns</span>
+                                    <span class="geo-preview-val" id="geo-preview-cols">0</span>
+                                </div>
+                                <div class="geo-preview-info-item">
+                                    <span class="geo-preview-label">Mapped Records</span>
+                                    <span class="geo-preview-val" style="color:var(--accent-emerald)" id="geo-preview-mapped">0</span>
+                                </div>
+                                <div class="geo-preview-info-item">
+                                    <span class="geo-preview-label">Unmatched Records</span>
+                                    <span class="geo-preview-val" style="color:var(--accent-amber)" id="geo-preview-unmatched">0</span>
+                                </div>
+                            </div>
+
+                            <h4 style="margin:16px 0 8px;font-size:0.9rem">Detected Columns</h4>
+                            <div id="geo-preview-detected" class="geo-preview-detected"></div>
+
+                            <div id="geo-preview-warnings" class="geo-preview-warnings" style="display:none"></div>
+                            <div id="geo-preview-unmatched-list" class="geo-unmatched-list" style="display:none"></div>
+
+                            <h4 style="margin:16px 0 8px;font-size:0.9rem">Data Preview</h4>
+                            <div class="entities-scroll" style="max-height:200px">
+                                <div id="geo-preview-table"></div>
+                            </div>
+
+                            <button id="geo-use-dataset-btn" class="btn-primary" style="margin-top:16px;width:100%">
+                                ✅ Use This Dataset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MapmyIndia (Mappls) SDK Settings Modal -->
+                <div class="modal-overlay" id="geo-mappls-modal">
+                    <div class="modal geo-mappls-modal-inner">
+                        <div class="modal-header">
+                            <h3>📍 MapmyIndia (Mappls) Web SDK Configuration</h3>
+                            <button class="modal-close" id="geo-mappls-close">&times;</button>
+                        </div>
+                        <div class="geo-mappls-content">
+                            <div class="geo-mappls-banner">
+                                <p>
+                                    Integrate with the <strong>MapmyIndia Places &amp; Directions Web SDK</strong>
+                                    (<a href="https://github.com/mappls-api/mapmyindia-places-n-directions-web-sdk" target="_blank" rel="noopener" style="color:var(--accent-cyan);text-decoration:underline">GitHub SDK</a>).
+                                    Enables nationwide location auto-suggest, precision Indian reverse geocoding, and Survey of India compliant base maps.
+                                </p>
+                            </div>
+                            <div class="form-group" style="margin-top:16px">
+                                <label for="geo-mappls-key-input">MapmyIndia / Mappls API Key or Access Token</label>
+                                <input type="text" id="geo-mappls-key-input" class="geo-search-input" style="width:100%;font-family:monospace;font-size:0.85rem" placeholder="Paste your MapmyIndia API Key / Token here...">
+                                <small style="display:block;margin-top:6px;color:var(--text-muted);font-size:0.75rem">
+                                    🔑 Don't have a key? Generate one at <a href="https://apis.mappls.com/console/" target="_blank" rel="noopener" style="color:var(--accent-cyan);text-decoration:underline">Mappls API Console</a>. If left blank, the system runs with the built-in offline geocoder and CartoDB/OpenStreetMap.
+                                </small>
+                            </div>
+                            <div class="geo-mappls-status-box" id="geo-mappls-status-box">
+                                <span class="geo-status-dot" id="geo-status-dot"></span>
+                                <span id="geo-status-text">Status: Fallback mode active (No key configured)</span>
+                            </div>
+                            <div style="display:flex;gap:10px;margin-top:20px;justify-content:flex-end">
+                                <button id="geo-mappls-clear-btn" class="btn" style="background:var(--card-border);color:var(--text-primary)">Clear Key</button>
+                                <button id="geo-mappls-save-btn" class="btn-primary">Save &amp; Connect SDK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- ═══ Network Graph Tab ═══ -->
                 <div class="tab-content" id="tab-network">
                     <div class="network-controls">
@@ -183,11 +385,286 @@
                                         <th>Incidents</th>
                                         <th>Calls</th>
                                         <th>Criminal Records</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody id="entity-table-body">
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ Person Dossier (PDF) Tab ═══ -->
+                <div class="tab-content" id="tab-dossier">
+                    <!-- Top Search & Selector Card -->
+                    <div class="card" style="margin-bottom:20px">
+                        <div class="card-header">
+                            <div>
+                                <h3>🗂️ Subject Dossier & Life Record Generator</h3>
+                                <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:2px">
+                                    Search any person by name, ID, or syndicate to inspect their complete lifetime activity records and download an official forensic PDF dossier.
+                                </p>
+                            </div>
+                            <span class="card-badge badge-critical">Official Record Export</span>
+                        </div>
+
+                        <!-- Search and Filter Bar -->
+                        <div class="dossier-search-bar-wrap">
+                            <div class="dossier-search-box">
+                                <span class="dossier-search-icon">🔍</span>
+                                <input type="text" id="dossier-search-input" placeholder="Search person by name (e.g. Manoj Sharma, Rajesh, Vikram), ID (e.g. S0001), or phone..." autocomplete="off">
+                                <button class="dossier-search-clear" id="dossier-search-clear" title="Clear search" style="display:none">&times;</button>
+                                <!-- Autocomplete dropdown -->
+                                <div id="dossier-autocomplete-dropdown" class="dossier-dropdown" style="display:none"></div>
+                            </div>
+                            <div class="dossier-filter-pills" id="dossier-risk-pills">
+                                <button class="dossier-pill active" data-risk="ALL">All Subjects</button>
+                                <button class="dossier-pill" data-risk="CRITICAL">🔴 Critical</button>
+                                <button class="dossier-pill" data-risk="HIGH">🟠 High</button>
+                                <button class="dossier-pill" data-risk="MEDIUM">🟡 Medium</button>
+                                <button class="dossier-pill" data-risk="LOW">🟢 Low</button>
+                            </div>
+                        </div>
+
+                        <!-- Quick Suspect Carousel / Grid -->
+                        <div style="margin-top:14px">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                                <span style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted)">
+                                    Quick Select Suspect (<span id="dossier-suspect-count">0</span> tracked)
+                                </span>
+                                <span style="font-size:0.75rem;color:var(--text-muted)">Click any card to load full life record</span>
+                            </div>
+                            <div class="dossier-quick-scroll" id="dossier-quick-list">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dossier Main Content Container -->
+                    <div id="dossier-main-view">
+                        <!-- Default Empty State -->
+                        <div class="dossier-empty-state" id="dossier-empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <h3>No Subject Selected</h3>
+                            <p>Type a name in the search box above or click any suspect card to preview their life activity record and download their official intelligence PDF dossier.</p>
+                        </div>
+
+                        <!-- Selected Profile Dossier (Initially Hidden) -->
+                        <div id="dossier-profile-card" style="display:none">
+                            <!-- Hero Subject Header -->
+                            <div class="dossier-hero-card">
+                                <div class="dossier-hero-left">
+                                    <div class="dossier-avatar" id="dossier-avatar">MS</div>
+                                    <div class="dossier-hero-info">
+                                        <div class="dossier-name-row">
+                                            <h2 id="dossier-hero-name">Manoj Sharma</h2>
+                                            <span class="badge badge-critical" id="dossier-hero-risk">CRITICAL RISK</span>
+                                            <span class="badge" style="background:rgba(2,132,199,0.15);color:var(--accent-blue);border:1px solid rgba(2,132,199,0.3)" id="dossier-hero-id">S0001</span>
+                                        </div>
+                                        <div class="dossier-meta-row">
+                                            <span id="dossier-hero-org">🏛️ Silver Line Transport</span>
+                                            <span id="dossier-hero-phone">📞 +91-7731428289</span>
+                                            <span id="dossier-hero-age">🎂 36 yrs / Male</span>
+                                            <span id="dossier-hero-address">📍 Abandoned Factory Block C</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dossier-hero-actions">
+                                    <button class="btn-primary btn-dossier-download" id="dossier-download-btn" onclick="triggerDossierPDFDownload()">
+                                        <span class="btn-icon">📥</span>
+                                        <span>Download Official PDF Dossier</span>
+                                    </button>
+                                    <button class="btn" id="dossier-print-btn" style="background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-primary)" onclick="openDossierPrintView()">
+                                        <span class="btn-icon">🖨️</span>
+                                        <span>Print / Preview PDF</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Statistical KPI Metrics Row -->
+                            <div class="dossier-kpi-grid">
+                                <div class="dossier-kpi red">
+                                    <div class="dossier-kpi-icon">🚨</div>
+                                    <div class="dossier-kpi-info">
+                                        <div class="dossier-kpi-val" id="d-stat-incidents">0</div>
+                                        <div class="dossier-kpi-lbl">Criminal FIR Cases</div>
+                                    </div>
+                                </div>
+                                <div class="dossier-kpi crimson">
+                                    <div class="dossier-kpi-icon">⚖️</div>
+                                    <div class="dossier-kpi-info">
+                                        <div class="dossier-kpi-val" id="d-stat-convictions">0</div>
+                                        <div class="dossier-kpi-lbl">Court Convictions</div>
+                                    </div>
+                                </div>
+                                <div class="dossier-kpi blue">
+                                    <div class="dossier-kpi-icon">📞</div>
+                                    <div class="dossier-kpi-info">
+                                        <div class="dossier-kpi-val" id="d-stat-calls">0</div>
+                                        <div class="dossier-kpi-lbl">Intercepted Calls (CDR)</div>
+                                    </div>
+                                </div>
+                                <div class="dossier-kpi emerald">
+                                    <div class="dossier-kpi-icon">💸</div>
+                                    <div class="dossier-kpi-info">
+                                        <div class="dossier-kpi-val" id="d-stat-sent">₹0</div>
+                                        <div class="dossier-kpi-lbl">Total Funds Moved</div>
+                                    </div>
+                                </div>
+                                <div class="dossier-kpi amber">
+                                    <div class="dossier-kpi-icon">⚠️</div>
+                                    <div class="dossier-kpi-info">
+                                        <div class="dossier-kpi-val" id="d-stat-suspicious">0</div>
+                                        <div class="dossier-kpi-lbl">Suspicious Hawala Txns</div>
+                                    </div>
+                                </div>
+                                <div class="dossier-kpi purple">
+                                    <div class="dossier-kpi-icon">👥</div>
+                                    <div class="dossier-kpi-info">
+                                        <div class="dossier-kpi-val" id="d-stat-associates">0</div>
+                                        <div class="dossier-kpi-lbl">Known Accomplices</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dossier Navigation Tabs -->
+                            <div class="dossier-tabs-nav">
+                                <button class="dossier-nav-btn active" data-section="timeline">⏱️ Life Chronology & Activity</button>
+                                <button class="dossier-nav-btn" data-section="incidents">🚨 FIRs & Crime Incidents</button>
+                                <button class="dossier-nav-btn" data-section="cdr">📞 Intercepted Communications</button>
+                                <button class="dossier-nav-btn" data-section="financial">💳 Financial & Hawala Audit</button>
+                                <button class="dossier-nav-btn" data-section="history">📜 Court Convictions</button>
+                                <button class="dossier-nav-btn" data-section="network">👥 Syndicate & Associates</button>
+                            </div>
+
+                            <!-- Panel 1: Life Chronology & Activity Timeline -->
+                            <div class="dossier-section-panel active" id="d-section-timeline">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>⏱️ Master Chronological Life Record (<span id="d-timeline-count">0</span> Events)</h4>
+                                        <span style="font-size:0.75rem;color:var(--text-muted)">All lifetime FIRs, court convictions, intercepted calls & Hawala flows ordered chronologically</span>
+                                    </div>
+                                    <div class="dossier-timeline" id="dossier-timeline-list">
+                                        <!-- Populated by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Panel 2: FIRs & Crime Incidents -->
+                            <div class="dossier-section-panel" id="d-section-incidents" style="display:none">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>🚨 Logged Police Incidents & FIRs (<span id="d-incidents-count">0</span>)</h4>
+                                    </div>
+                                    <div class="entities-scroll">
+                                        <table class="entity-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Incident ID</th>
+                                                    <th>Crime Type</th>
+                                                    <th>Date & Time</th>
+                                                    <th>Location</th>
+                                                    <th>Accomplices / Co-Accused</th>
+                                                    <th>Arrest Status</th>
+                                                    <th>Narrative Summary</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="d-incidents-table-body"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Panel 3: Intercepted Communications (CDR) -->
+                            <div class="dossier-section-panel" id="d-section-cdr" style="display:none">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>📞 Call Detail Records (CDR) & Tower Surveillance (<span id="d-cdr-count">0</span>)</h4>
+                                    </div>
+                                    <div class="entities-scroll">
+                                        <table class="entity-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>CDR ID</th>
+                                                    <th>Date & Time</th>
+                                                    <th>Direction</th>
+                                                    <th>Call Type</th>
+                                                    <th>Target Contact / Phone</th>
+                                                    <th>Duration</th>
+                                                    <th>Cell Tower Location</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="d-cdr-table-body"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Panel 4: Financial & Hawala Audit -->
+                            <div class="dossier-section-panel" id="d-section-financial" style="display:none">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>💳 Money Movement & Hawala Audit Trail (<span id="d-tx-count">0</span>)</h4>
+                                    </div>
+                                    <div class="entities-scroll">
+                                        <table class="entity-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Transaction ID</th>
+                                                    <th>Date & Time</th>
+                                                    <th>Type</th>
+                                                    <th>Direction</th>
+                                                    <th>Amount (INR)</th>
+                                                    <th>Counterparty</th>
+                                                    <th>Bank & Account</th>
+                                                    <th>Suspicious Flag</th>
+                                                    <th>Remarks</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="d-tx-table-body"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Panel 5: Court Convictions -->
+                            <div class="dossier-section-panel" id="d-section-history" style="display:none">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>📜 Judicial Convictions & Charges (<span id="d-hist-count">0</span>)</h4>
+                                    </div>
+                                    <div class="entities-scroll">
+                                        <table class="entity-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Record ID</th>
+                                                    <th>Case FIR</th>
+                                                    <th>Offense</th>
+                                                    <th>Date</th>
+                                                    <th>Court Jurisdiction</th>
+                                                    <th>Legal Status</th>
+                                                    <th>Sentence</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="d-history-table-body"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Panel 6: Syndicate & Associates -->
+                            <div class="dossier-section-panel" id="d-section-network" style="display:none">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>👥 Known Syndicate Ties & Associates (<span id="d-assoc-count">0</span>)</h4>
+                                    </div>
+                                    <div class="dossier-associates-grid" id="d-associates-grid">
+                                        <!-- Populated by JS -->
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -508,12 +985,18 @@ Example: On 2024-03-15, suspect Rajesh Sharma was observed meeting Amit Verma at
         <div class="modal">
             <div class="modal-header">
                 <h3 id="modal-title">Entity Details</h3>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <button class="btn-primary" id="modal-dossier-pdf-btn" style="padding:5px 14px;font-size:0.75rem;border-radius:6px;display:flex;align-items:center;gap:6px" onclick="downloadCurrentModalDossier()">
+                        <span>📥 Download PDF Dossier</span>
+                    </button>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
             </div>
             <div id="modal-content"></div>
         </div>
     </div>
 
     <script src="/js/app.js"></script>
+    <script src="/js/geomap.js"></script>
 </body>
 </html>

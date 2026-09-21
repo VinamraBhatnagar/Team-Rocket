@@ -6,7 +6,14 @@ Main Flask Application
 
 import os
 import sys
-from flask import Flask, jsonify, request, send_from_directory
+
+# Ensure UTF-8 output on Windows terminals
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
+from flask import Flask, jsonify, request, send_from_directory, send_file
 from flask_cors import CORS
 
 # Add project root to path
@@ -17,6 +24,8 @@ from modules.nlp_engine import NLPEngine
 from modules.graph_engine import GraphEngine
 from modules.prediction_engine import PredictionEngine
 from modules.pattern_detector import PatternDetector
+from modules.geo_engine import GeoEngine
+from modules.dossier_pdf import DossierPDFGenerator
 
 # ── Flask App ─────────────────────────────────────────────────
 app = Flask(__name__, static_folder="static", static_url_path="")
@@ -32,6 +41,7 @@ nlp_engine = NLPEngine()
 graph_engine = GraphEngine()
 prediction_engine = PredictionEngine(models_dir="models", models2_dir="models 2")
 pattern_detector = PatternDetector()
+geo_engine = GeoEngine(data_processor)
 
 # Load data and build graph
 data_processor.load_all()
@@ -138,6 +148,73 @@ def api_entity_detail(entity_id):
         "transactions": transactions[:50],
         "criminal_history": history,
     })
+
+
+# ── Dossier & PDF Export API ─────────────────────────────────
+@app.route("/api/dossier/search")
+def api_dossier_search():
+    """Search suspects for dossier generation."""
+    query = request.args.get("q", "")
+    results = data_processor.search_suspects(query)
+    return jsonify({"results": results, "query": query, "count": len(results)})
+
+
+@app.route("/api/dossier/preview/<person_id>")
+def api_dossier_preview(person_id):
+    """Retrieve full aggregated dossier & life record for UI presentation."""
+    dossier = data_processor.get_person_dossier_data(person_id)
+    if not dossier:
+        return jsonify({"error": f"Person '{person_id}' not found"}), 404
+    return jsonify(dossier)
+
+
+@app.route("/api/dossier/pdf/<person_id>")
+def api_dossier_pdf(person_id):
+    """Generate and stream a law-enforcement grade PDF dossier for a person."""
+    dossier = data_processor.get_person_dossier_data(person_id)
+    if not dossier:
+        return jsonify({"error": f"Person '{person_id}' not found"}), 404
+
+    person = dossier["entity"]
+    buffer = DossierPDFGenerator.generate_dossier(
+        person=person,
+        incidents=dossier["incidents"],
+        cdr_records=dossier["cdr_records"],
+        transactions=dossier["transactions"],
+        criminal_history=dossier["criminal_history"],
+        resolved_associates=dossier["resolved_associates"],
+        timeline=dossier["life_timeline"]
+    )
+
+    clean_name = "".join(c if c.isalnum() else "_" for c in person.get("name", person_id))
+    filename = f"DOSSIER_{person.get('id', person_id)}_{clean_name}.pdf"
+
+    return send_file(
+        buffer,
+        mimetype="application/pdf",
+        as_attachment=True,
+        download_name=filename
+    )
+
+
+@app.route("/api/dossier/pdf")
+def api_dossier_pdf_by_query():
+    """Download PDF dossier by searching name or id."""
+    person_id = request.args.get("id", "").strip()
+    name_query = request.args.get("name", "").strip()
+
+    target_id = None
+    if person_id:
+        target_id = person_id
+    elif name_query:
+        matches = data_processor.search_suspects(name_query)
+        if matches:
+            target_id = matches[0]["id"]
+
+    if not target_id or not data_processor.get_person(target_id):
+        return jsonify({"error": "Person not found for the specified query"}), 404
+
+    return api_dossier_pdf(target_id)
 
 
 # ── Add Suspect / Crime Ingestion API ─────────────────────────
@@ -269,6 +346,81 @@ def api_extracted_entities():
 @app.route("/api/models")
 def api_models():
     return jsonify({"models": prediction_engine.get_model_info()})
+
+
+# ── Geospatial Crime Map API ──────────────────────────────────
+@app.route("/api/geo/existing")
+def api_geo_existing():
+    """Get aggregated crime geodata from the existing incidents dataset."""
+    crime_type = request.args.get("crime_type", None)
+    year = request.args.get("year", None)
+    location_query = request.args.get("location", None)
+    result = geo_engine.get_existing_crime_geodata(
+        crime_type=crime_type, year=year, location_query=location_query
+    )
+    return jsonify(result)
+
+
+@app.route("/api/geo/upload", methods=["POST"])
+def api_geo_upload():
+    """Upload and process a crime CSV file."""
+    if "file" not in request.files:
+        return jsonify({"status": "error", "message": "No file uploaded."}), 400
+
+    file = request.files["file"]
+    if not file.filename:
+        return jsonify({"status": "error", "message": "No file selected."}), 400
+
+    try:
+        file_content = file.read()
+        file_size = len(file_content)
+        content_str = file_content.decode("utf-8", errors="replace")
+        result = geo_engine.process_uploaded_csv(content_str, file.filename, file_size)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"status": "error", "message": f"Error processing file: {str(e)}"}), 500
+
+
+@app.route("/api/geo/uploaded/filter")
+def api_geo_uploaded_filter():
+    """Re-filter the uploaded CSV data with new parameters."""
+    crime_type = request.args.get("crime_type", None)
+    year = request.args.get("year", None)
+    location_query = request.args.get("location", None)
+    result = geo_engine.get_uploaded_filtered(
+        crime_type=crime_type, year=year, location_query=location_query
+    )
+    if result is None:
+        return jsonify({"status": "error", "message": "No uploaded dataset found."}), 404
+    return jsonify(result)
+
+
+@app.route("/api/geo/search")
+def api_geo_search():
+    """Search locations for autocomplete."""
+    query = request.args.get("q", "")
+    results = geo_engine.search_locations(query)
+    return jsonify({"results": results})
+
+
+# Store runtime MapmyIndia / Mappls key
+_runtime_geo_config = {
+    "mappls_api_key": os.environ.get("MAPPLS_API_KEY") or os.environ.get("MAPMYINDIA_API_KEY", "17bb1b3a5395fece49cb440e65590f22")
+}
+
+
+@app.route("/api/geo/config", methods=["GET", "POST"])
+def api_geo_config():
+    """Get or set MapmyIndia (Mappls) SDK API key."""
+    if request.method == "POST":
+        data = request.get_json(silent=True) or {}
+        key = data.get("mappls_api_key", "").strip()
+        _runtime_geo_config["mappls_api_key"] = key
+        return jsonify({"status": "success", "mappls_api_key": key})
+    return jsonify({
+        "status": "success",
+        "mappls_api_key": _runtime_geo_config.get("mappls_api_key", "")
+    })
 
 
 # ── Run ───────────────────────────────────────────────────────
