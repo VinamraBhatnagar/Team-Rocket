@@ -309,6 +309,183 @@ class DataProcessor:
         events.sort(key=lambda x: f"{x['date']} {x['time']}")
         return events[:200]
 
+    def search_suspects(self, query=""):
+        """Search suspects with rich details for dossier selection."""
+        query = (query or "").lower().strip()
+        results = []
+        for pid, p in self.entity_index["persons"].items():
+            name = p.get("name", "")
+            phone = p.get("phone", "")
+            org = p.get("organization", "")
+            address = p.get("address", "")
+            if not query or query in name.lower() or query in pid.lower() or query in phone.lower() or query in org.lower() or query in address.lower():
+                results.append({
+                    "id": pid,
+                    "name": name,
+                    "risk_level": p.get("risk_level", "LOW"),
+                    "organization": org,
+                    "phone": phone,
+                    "incidents_count": len(p.get("incidents", [])),
+                    "calls_count": (p.get("calls_made", 0) + p.get("calls_received", 0)),
+                    "records_count": p.get("criminal_records", 0),
+                    "address": address,
+                    "age": p.get("age", ""),
+                    "gender": p.get("gender", ""),
+                })
+        risk_weights = {"CRITICAL": 4, "HIGH": 3, "MEDIUM": 2, "LOW": 1}
+        results.sort(key=lambda x: (risk_weights.get(x["risk_level"], 0), x["incidents_count"]), reverse=True)
+        return results[:50]
+
+    def get_person_life_record(self, person_id):
+        """
+        Compile a complete chronological life record and activity log for a person,
+        including judicial court cases, crime incidents, phone intercepts, and financial events.
+        """
+        events = []
+        pid_str = str(person_id)
+
+        # 1. Judicial Records & Prior History
+        history = self.get_history_for_person(pid_str)
+        for h in history:
+            events.append({
+                "date": str(h.get("date", "2020-01-01")),
+                "time": "09:00:00",
+                "type": "JUDICIAL_RECORD",
+                "badge": "COURT",
+                "title": f"Charge: {h.get('crime_type', 'Offense')} ({h.get('case_id', '')})",
+                "description": f"Jurisdiction: {h.get('court', 'Court')}. Disposition: {h.get('status', 'PENDING')}. Sentence: {h.get('sentence', 'N/A')}.",
+                "location": h.get("location", ""),
+                "severity": "CRITICAL" if h.get("status") == "CONVICTED" else "HIGH",
+                "entities": [h.get("suspect_name", "")]
+            })
+
+        # 2. Crime Incidents (FIRs)
+        incidents = self.get_incidents_for_person(pid_str)
+        for inc in incidents:
+            co_accused = []
+            if inc.get("suspect1_name") and str(inc.get("suspect1_id")) != pid_str:
+                co_accused.append(inc.get("suspect1_name"))
+            if inc.get("suspect2_name") and str(inc.get("suspect2_id")) != pid_str:
+                co_accused.append(inc.get("suspect2_name"))
+
+            arrest_note = "Arrested at scene." if inc.get("arrest") in [True, "True", "true", 1, "1"] else "Suspect fled / warrant active."
+            events.append({
+                "date": str(inc.get("date", "")),
+                "time": str(inc.get("time", "12:00:00")),
+                "type": "CRIME_INCIDENT",
+                "badge": "FIR",
+                "title": f"{inc.get('crime_type', 'Incident')} ({inc.get('incident_id', '')})",
+                "description": f"{inc.get('narrative', '')[:220]} [{arrest_note}]",
+                "location": inc.get("location", ""),
+                "severity": "CRITICAL" if inc.get("crime_type") in ["HOMICIDE", "ARMED ROBBERY", "NARCOTICS TRAFFICKING", "WEAPONS VIOLATION"] else "HIGH",
+                "entities": co_accused
+            })
+
+        # 3. Major / Suspicious Financial Transactions
+        transactions = self.get_transactions_for_person(pid_str)
+        for tx in transactions:
+            is_sender = str(tx.get("sender_id")) == pid_str
+            flow = "Sent" if is_sender else "Received"
+            counterparty = tx.get("receiver_name") if is_sender else tx.get("sender_name")
+            is_susp = tx.get("is_suspicious") in [True, "True", "true", 1, "1"]
+
+            events.append({
+                "date": str(tx.get("date", "")),
+                "time": str(tx.get("time", "14:00:00")),
+                "type": "FINANCIAL_TRANSACTION",
+                "badge": "HAWALA" if tx.get("transaction_type") == "HAWALA" else "TXN",
+                "title": f"₹{float(tx.get('amount', 0)):,.0f} {tx.get('transaction_type', 'Transfer')} ({flow})",
+                "description": f"{flow} ₹{float(tx.get('amount', 0)):,.0f} {'to' if is_sender else 'from'} {counterparty} via {tx.get('bank')}. Remarks: {tx.get('remarks') or 'None'}",
+                "location": tx.get("bank", ""),
+                "severity": "CRITICAL" if is_susp else "MEDIUM",
+                "entities": [counterparty] if counterparty else []
+            })
+
+        # 4. Telecommunication Intercepts (Top 30 representative calls)
+        cdr = self.get_cdr_for_person(pid_str)
+        for c in cdr[:30]:
+            is_caller = str(c.get("caller_id")) == pid_str
+            dir_str = "Outbound call to" if is_caller else "Inbound call from"
+            other_phone = c.get("receiver_phone") if is_caller else c.get("caller_phone")
+            events.append({
+                "date": str(c.get("date", "")),
+                "time": str(c.get("time", "18:00:00")),
+                "type": "TELECOM_INTERCEPT",
+                "badge": "CDR",
+                "title": f"{c.get('call_type', 'VOICE')} Intercept ({c.get('duration_seconds', 0)}s)",
+                "description": f"{dir_str} {other_phone} registered at Cell Tower '{c.get('cell_tower_location', 'Unknown')}'.",
+                "location": c.get("cell_tower_location", ""),
+                "severity": "LOW",
+                "entities": [other_phone] if other_phone else []
+            })
+
+        events.sort(key=lambda x: f"{x['date']} {x['time']}", reverse=True)
+        return events
+
+    def get_person_dossier_data(self, person_id):
+        """
+        Aggregate complete intelligence data for rendering and exporting a suspect dossier.
+        """
+        person = self.get_person(person_id)
+        if not person:
+            return None
+
+        incidents = self.get_incidents_for_person(person_id)
+        cdr = self.get_cdr_for_person(person_id)
+        transactions = self.get_transactions_for_person(person_id)
+        history = self.get_history_for_person(person_id)
+        timeline = self.get_person_life_record(person_id)
+
+        # Resolve associates
+        resolved_associates = []
+        for aid in person.get("known_associates", []):
+            assoc_person = self.get_person(aid)
+            if assoc_person:
+                resolved_associates.append({
+                    "id": assoc_person.get("id"),
+                    "name": assoc_person.get("name"),
+                    "risk_level": assoc_person.get("risk_level", "LOW"),
+                    "organization": assoc_person.get("organization", ""),
+                    "phone": assoc_person.get("phone", "")
+                })
+            else:
+                resolved_associates.append({
+                    "id": aid,
+                    "name": aid,
+                    "risk_level": "UNKNOWN",
+                    "organization": "",
+                    "phone": ""
+                })
+
+        # Statistics
+        total_sent = sum(float(t.get("amount", 0)) for t in transactions if str(t.get("sender_id")) == person_id)
+        total_received = sum(float(t.get("amount", 0)) for t in transactions if str(t.get("receiver_id")) == person_id)
+        suspicious_txns = sum(1 for t in transactions if t.get("is_suspicious") in [True, "True", "true", 1, "1"])
+        calls_made = sum(1 for c in cdr if str(c.get("caller_id")) == person_id)
+        calls_received = sum(1 for c in cdr if str(c.get("receiver_id")) == person_id)
+
+        return {
+            "entity": person,
+            "incidents": incidents,
+            "cdr_records": cdr,
+            "transactions": transactions,
+            "criminal_history": history,
+            "resolved_associates": resolved_associates,
+            "life_timeline": timeline,
+            "stats": {
+                "total_incidents": len(incidents),
+                "total_cdr": len(cdr),
+                "calls_made": calls_made,
+                "calls_received": calls_received,
+                "total_transactions": len(transactions),
+                "total_sent": total_sent,
+                "total_received": total_received,
+                "suspicious_transactions": suspicious_txns,
+                "total_criminal_records": len(history),
+                "total_associates": len(resolved_associates)
+            }
+        }
+
     def add_suspect(self, data):
         """Dynamically add a new suspect to the dataset and update the index."""
         # Determine unique ID

@@ -79,8 +79,10 @@ function switchTab(tab) {
     // Update title
     const titles = {
         dashboard: ['Dashboard', 'Overview & Analytics'],
+        geomap: ['Crime Geo Map', 'Geospatial Crime Analysis & Mapping'],
         network: ['Network Graph', 'Criminal Relationship Visualization'],
         entities: ['Entity Explorer', 'Suspect & Organization Database'],
+        dossier: ['Person Dossier (PDF)', 'Criminal Intelligence Dossier & Life Record Generator'],
         communities: ['Communities', 'Detected Criminal Clusters'],
         patterns: ['Patterns & Alerts', 'Suspicious Activity Detection'],
         influencers: ['Key Influencers', 'Network Centrality Analysis'],
@@ -94,8 +96,10 @@ function switchTab(tab) {
 
     // Lazy-load tab data
     switch (tab) {
+        case 'geomap': loadGeoMap(); break;
         case 'network': loadNetwork(); break;
         case 'entities': loadEntities(); break;
+        case 'dossier': loadDossierTab(); break;
         case 'communities': loadCommunities(); break;
         case 'patterns': loadPatterns(); break;
         case 'influencers': loadInfluencers(); break;
@@ -135,12 +139,21 @@ function renderSearchResults(results) {
     tbody.innerHTML = results.map(r => `
         <tr onclick="showEntityDetail('${r.id}')">
             <td>${r.name}</td>
-            <td>${r.id}</td>
+            <td style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--text-muted)">${r.id}</td>
             <td><span class="badge badge-${r.risk_level?.toLowerCase() || 'low'}">${r.risk_level || r.type}</span></td>
             <td>${r.type}</td>
             <td>—</td>
             <td>—</td>
             <td>—</td>
+            <td style="white-space:nowrap">
+                ${r.type === 'PERSON' ? `
+                <button class="btn-sm" style="padding:3px 8px;font-size:0.75rem;background:rgba(2,132,199,0.15);color:var(--accent-blue);border:1px solid rgba(2,132,199,0.3);border-radius:4px;cursor:pointer" onclick="event.stopPropagation(); downloadDossierDirect('${r.id}', '${escapeQuotes(r.name)}')">
+                    📄 PDF
+                </button>
+                <button class="btn-sm" style="padding:3px 8px;font-size:0.75rem;background:rgba(16,185,129,0.15);color:var(--accent-green);border:1px solid rgba(16,185,129,0.3);border-radius:4px;cursor:pointer;margin-left:4px" onclick="event.stopPropagation(); openPersonDossier('${r.id}')">
+                    🗂️ Dossier
+                </button>` : '—'}
+            </td>
         </tr>
     `).join('');
     document.getElementById('entity-count').textContent = `${results.length} results`;
@@ -533,11 +546,22 @@ function renderEntities(data) {
             <td>${(p.incidents || []).length}</td>
             <td>${(p.calls_made || 0) + (p.calls_received || 0)}</td>
             <td>${p.criminal_records || 0}</td>
+            <td style="white-space:nowrap">
+                <button class="btn-sm" style="padding:3px 8px;font-size:0.75rem;background:rgba(2,132,199,0.15);color:var(--accent-blue);border:1px solid rgba(2,132,199,0.3);border-radius:4px;cursor:pointer" onclick="event.stopPropagation(); downloadDossierDirect('${p.id}', '${escapeQuotes(p.name)}')">
+                    📄 PDF
+                </button>
+                <button class="btn-sm" style="padding:3px 8px;font-size:0.75rem;background:rgba(16,185,129,0.15);color:var(--accent-green);border:1px solid rgba(16,185,129,0.3);border-radius:4px;cursor:pointer;margin-left:4px" onclick="event.stopPropagation(); openPersonDossier('${p.id}')">
+                    🗂️ Dossier
+                </button>
+            </td>
         </tr>`;
     }).join('');
 }
 
 // ═══ Entity Detail Modal ══════════════════════════════════════
+let currentModalEntityId = null;
+let currentModalEntityName = null;
+
 async function showEntityDetail(entityId) {
     try {
         const res = await fetch(`${API}/api/entity/${entityId}`);
@@ -549,6 +573,8 @@ async function showEntityDetail(entityId) {
         }
 
         const e = data.entity;
+        currentModalEntityId = entityId;
+        currentModalEntityName = e.name || entityId;
         const modal = document.getElementById('entity-modal');
         document.getElementById('modal-title').textContent = e.name || entityId;
 
@@ -1128,6 +1154,518 @@ async function handleAddIncident(e) {
     } finally {
         btn.disabled = false;
         btn.innerHTML = '<span>🚨 Log Crime & Link Accomplices</span>';
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ═══ Person Dossier & PDF Generator Module ═════════════════════
+// ═══════════════════════════════════════════════════════════════
+
+let currentDossierPersonId = null;
+let currentDossierData = null;
+let allDossierSuspects = [];
+let currentDossierRiskFilter = 'ALL';
+let dossierListenersInitialized = false;
+
+function escapeQuotes(str) {
+    if (!str) return '';
+    return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+function formatAmount(amount) {
+    const num = parseFloat(amount || 0);
+    if (isNaN(num)) return '0';
+    if (num >= 10000000) return (num / 10000000).toFixed(2) + ' Cr';
+    if (num >= 100000) return (num / 100000).toFixed(2) + ' Lakh';
+    return num.toLocaleString('en-IN');
+}
+
+function downloadCurrentModalDossier() {
+    if (currentModalEntityId) {
+        downloadDossierDirect(currentModalEntityId, currentModalEntityName);
+    }
+}
+
+function downloadDossierDirect(personId, personName) {
+    if (!personId) return;
+    const cleanName = (personName || personId).replace(/[^a-zA-Z0-9]/g, '_');
+    const downloadUrl = `${API}/api/dossier/pdf/${encodeURIComponent(personId)}`;
+
+    // Create a temporary hidden link to trigger direct browser file download
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.setAttribute('download', `DOSSIER_${personId}_${cleanName}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+function openPersonDossier(personId) {
+    switchTab('dossier');
+    selectDossierPerson(personId);
+}
+
+function openDossierPrintView() {
+    if (!currentDossierPersonId) return;
+    const previewUrl = `${API}/api/dossier/pdf/${encodeURIComponent(currentDossierPersonId)}`;
+    window.open(previewUrl, '_blank');
+}
+
+async function loadDossierTab() {
+    setupDossierListeners();
+
+    try {
+        const res = await fetch(`${API}/api/dossier/search?q=`);
+        const data = await res.json();
+        allDossierSuspects = data.results || [];
+        document.getElementById('dossier-suspect-count').textContent = allDossierSuspects.length;
+
+        applyDossierRiskFilter();
+
+        // If no suspect is selected, auto-select the first one so the user has immediate rich content
+        if (!currentDossierPersonId && allDossierSuspects.length > 0) {
+            selectDossierPerson(allDossierSuspects[0].id);
+        } else if (currentDossierPersonId) {
+            highlightActiveQuickCard(currentDossierPersonId);
+        }
+    } catch (e) {
+        console.error('Failed to load dossier suspects:', e);
+    }
+}
+
+function setupDossierListeners() {
+    if (dossierListenersInitialized) return;
+    dossierListenersInitialized = true;
+
+    // Search input with debounce
+    const searchInput = document.getElementById('dossier-search-input');
+    const clearBtn = document.getElementById('dossier-search-clear');
+    let searchTimeout;
+
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            const q = searchInput.value.trim();
+            if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
+
+            searchTimeout = setTimeout(() => {
+                searchDossierSuspects(q);
+            }, 250);
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('dossier-autocomplete-dropdown');
+            if (dropdown && !dropdown.contains(e.target) && e.target !== searchInput) {
+                dropdown.style.display = 'none';
+            }
+        });
+    }
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            clearBtn.style.display = 'none';
+            document.getElementById('dossier-autocomplete-dropdown').style.display = 'none';
+            searchDossierSuspects('');
+        });
+    }
+
+    // Risk Filter Pills
+    document.querySelectorAll('#dossier-risk-pills .dossier-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+            document.querySelectorAll('#dossier-risk-pills .dossier-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            currentDossierRiskFilter = pill.dataset.risk || 'ALL';
+            applyDossierRiskFilter();
+        });
+    });
+
+    // Sub-Section Navigation Tabs
+    document.querySelectorAll('.dossier-nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.dossier-nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const section = btn.dataset.section;
+            document.querySelectorAll('.dossier-section-panel').forEach(p => p.style.display = 'none');
+            const targetPanel = document.getElementById(`d-section-${section}`);
+            if (targetPanel) targetPanel.style.display = 'block';
+        });
+    });
+}
+
+function applyDossierRiskFilter() {
+    let filtered = allDossierSuspects;
+    if (currentDossierRiskFilter !== 'ALL') {
+        filtered = allDossierSuspects.filter(s => (s.risk_level || '').toUpperCase() === currentDossierRiskFilter);
+    }
+    renderDossierQuickList(filtered);
+}
+
+async function searchDossierSuspects(query) {
+    const dropdown = document.getElementById('dossier-autocomplete-dropdown');
+    if (!query) {
+        if (dropdown) dropdown.style.display = 'none';
+        applyDossierRiskFilter();
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API}/api/dossier/search?q=${encodeURIComponent(query)}`);
+        const data = await res.json();
+        const results = data.results || [];
+
+        // Render quick carousel with results
+        renderDossierQuickList(results);
+
+        // Render Autocomplete Dropdown
+        if (dropdown) {
+            if (results.length === 0) {
+                dropdown.innerHTML = '<div class="dossier-dropdown-empty">No matching suspects found</div>';
+                dropdown.style.display = 'block';
+            } else {
+                dropdown.innerHTML = results.slice(0, 8).map(s => `
+                    <div class="dossier-dropdown-item" onclick="selectDossierPerson('${s.id}')">
+                        <div class="dossier-dropdown-avatar">${getInitials(s.name)}</div>
+                        <div class="dossier-dropdown-info">
+                            <div class="dossier-dropdown-title">
+                                <strong>${s.name}</strong>
+                                <span class="badge badge-${(s.risk_level || 'low').toLowerCase()}">${s.risk_level || 'LOW'}</span>
+                            </div>
+                            <div class="dossier-dropdown-sub">
+                                <span style="font-family:'JetBrains Mono',monospace">${s.id}</span> • 
+                                ${s.organization || 'Independent'} • 
+                                ${s.phone || 'No phone'}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                dropdown.style.display = 'block';
+            }
+        }
+    } catch (e) {
+        console.error('Error searching dossier suspects:', e);
+    }
+}
+
+function renderDossierQuickList(suspects) {
+    const container = document.getElementById('dossier-quick-list');
+    if (!container) return;
+
+    if (!suspects || suspects.length === 0) {
+        container.innerHTML = '<div style="color:var(--text-muted);font-size:0.8rem;padding:8px 0">No suspects match the selected criteria.</div>';
+        return;
+    }
+
+    container.innerHTML = suspects.map(s => {
+        const riskClass = (s.risk_level || 'low').toLowerCase();
+        const isActive = s.id === currentDossierPersonId ? 'active' : '';
+        const initials = getInitials(s.name);
+        return `
+            <div class="dossier-quick-card ${isActive}" id="quick-card-${s.id}" onclick="selectDossierPerson('${s.id}')">
+                <div class="quick-card-top">
+                    <div class="quick-avatar ${riskClass}">${initials}</div>
+                    <span class="badge badge-${riskClass}">${s.risk_level || 'LOW'}</span>
+                </div>
+                <div class="quick-card-name" title="${s.name}">${s.name}</div>
+                <div class="quick-card-meta">
+                    <span style="font-family:'JetBrains Mono',monospace">${s.id}</span> • ${s.organization || 'Independent'}
+                </div>
+                <div class="quick-card-stats">
+                    <span>🚨 ${s.incidents_count || 0} FIRs</span>
+                    <span>📞 ${s.calls_count || 0} calls</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    if (currentDossierPersonId) {
+        highlightActiveQuickCard(currentDossierPersonId);
+    }
+}
+
+function highlightActiveQuickCard(personId) {
+    document.querySelectorAll('.dossier-quick-card').forEach(c => c.classList.remove('active'));
+    const target = document.getElementById(`quick-card-${personId}`);
+    if (target) {
+        target.classList.add('active');
+        target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+}
+
+function getInitials(name) {
+    if (!name) return '??';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+}
+
+async function selectDossierPerson(personId) {
+    if (!personId) return;
+
+    // Close autocomplete dropdown
+    const dropdown = document.getElementById('dossier-autocomplete-dropdown');
+    if (dropdown) dropdown.style.display = 'none';
+
+    try {
+        const res = await fetch(`${API}/api/dossier/preview/${encodeURIComponent(personId)}`);
+        if (!res.ok) {
+            alert(`Could not load dossier for ${personId}`);
+            return;
+        }
+
+        const data = await res.json();
+        currentDossierData = data;
+        currentDossierPersonId = personId;
+
+        // Reveal dossier profile and hide empty state
+        document.getElementById('dossier-empty-state').style.display = 'none';
+        document.getElementById('dossier-profile-card').style.display = 'block';
+
+        highlightActiveQuickCard(personId);
+        renderDossierView(data);
+    } catch (e) {
+        console.error('Failed to load dossier preview:', e);
+    }
+}
+
+function renderDossierView(data) {
+    const p = data.entity || {};
+    const stats = data.stats || {};
+    const riskClass = (p.risk_level || 'low').toLowerCase();
+
+    // ── Hero Banner ──
+    const avatar = document.getElementById('dossier-avatar');
+    if (avatar) {
+        avatar.textContent = getInitials(p.name);
+        avatar.className = `dossier-avatar ${riskClass}`;
+    }
+
+    document.getElementById('dossier-hero-name').textContent = p.name || 'Unknown Subject';
+    const riskBadge = document.getElementById('dossier-hero-risk');
+    riskBadge.textContent = `${p.risk_level || 'LOW'} RISK`;
+    riskBadge.className = `badge badge-${riskClass}`;
+    document.getElementById('dossier-hero-id').textContent = p.id || '';
+    document.getElementById('dossier-hero-org').textContent = p.organization ? `🏛️ ${p.organization}` : '🏛️ Independent / Unaffiliated';
+    document.getElementById('dossier-hero-phone').textContent = p.phone ? `📞 ${p.phone}${p.phone2 ? ' (Alt: ' + p.phone2 + ')' : ''}` : '📞 No registered phone';
+    document.getElementById('dossier-hero-age').textContent = `🎂 ${p.age || '—'} yrs / ${p.gender || '—'}`;
+    document.getElementById('dossier-hero-address').textContent = p.address ? `📍 ${p.address}` : '📍 Base location unverified';
+
+    // ── KPI Stats ──
+    document.getElementById('d-stat-incidents').textContent = stats.total_incidents || 0;
+    document.getElementById('d-stat-convictions').textContent = stats.total_criminal_records || 0;
+    document.getElementById('d-stat-calls').textContent = `${stats.total_cdr || 0} (${stats.calls_made || 0}↑/${stats.calls_received || 0}↓)`;
+    document.getElementById('d-stat-sent').textContent = `₹${formatAmount(stats.total_sent + stats.total_received)}`;
+    document.getElementById('d-stat-suspicious').textContent = stats.suspicious_transactions || 0;
+    document.getElementById('d-stat-associates').textContent = stats.total_associates || 0;
+
+    // ── 1. Master Life Chronology Timeline ──
+    const timeline = data.life_timeline || [];
+    document.getElementById('d-timeline-count').textContent = timeline.length;
+    const timelineContainer = document.getElementById('dossier-timeline-list');
+    if (timeline.length === 0) {
+        timelineContainer.innerHTML = '<div class="dossier-empty-sub">No chronological activity records logged for this person.</div>';
+    } else {
+        timelineContainer.innerHTML = timeline.map(evt => {
+            let icon = '📌';
+            let badgeClass = 'badge-low';
+            if (evt.badge === 'FIR' || evt.type === 'CRIME_INCIDENT') {
+                icon = '🚨';
+                badgeClass = 'badge-critical';
+            } else if (evt.badge === 'COURT' || evt.type === 'JUDICIAL_RECORD') {
+                icon = '⚖️';
+                badgeClass = 'badge-high';
+            } else if (evt.badge === 'HAWALA') {
+                icon = '⚠️';
+                badgeClass = 'badge-high';
+            } else if (evt.type === 'FINANCIAL_TRANSACTION') {
+                icon = '💸';
+                badgeClass = 'badge-medium';
+            } else if (evt.badge === 'CDR' || evt.type === 'TELECOM_INTERCEPT') {
+                icon = '📞';
+                badgeClass = 'badge-low';
+            }
+
+            return `
+                <div class="dossier-timeline-item">
+                    <div class="timeline-dot ${badgeClass}"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <span class="timeline-time">${evt.date} ${evt.time ? evt.time : ''}</span>
+                            <span class="badge ${badgeClass}">${evt.badge || evt.type}</span>
+                        </div>
+                        <div class="timeline-title">${icon} ${evt.title}</div>
+                        <div class="timeline-desc">${evt.description}</div>
+                        ${evt.location ? `<div class="timeline-meta">📍 ${evt.location}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ── 2. FIRs & Crime Incidents ──
+    const incidents = data.incidents || [];
+    document.getElementById('d-incidents-count').textContent = incidents.length;
+    const incTbody = document.getElementById('d-incidents-table-body');
+    if (incidents.length === 0) {
+        incTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:16px">No FIR incident records logged.</td></tr>';
+    } else {
+        incTbody.innerHTML = incidents.map(inc => {
+            const isArrest = inc.arrest in [true, "True", "true", 1, "1"];
+            const co = [];
+            if (inc.suspect1_name && String(inc.suspect1_id) !== String(p.id)) co.push(inc.suspect1_name);
+            if (inc.suspect2_name && String(inc.suspect2_id) !== String(p.id)) co.push(inc.suspect2_name);
+            const coStr = co.length > 0 ? co.join(', ') : 'Solo / Unidentified';
+
+            return `
+                <tr>
+                    <td style="font-family:'JetBrains Mono',monospace">${inc.incident_id || '—'}</td>
+                    <td><strong>${inc.crime_type || '—'}</strong></td>
+                    <td>${inc.date || ''} ${inc.time || ''}</td>
+                    <td>${inc.location || '—'}</td>
+                    <td>${coStr}</td>
+                    <td><span class="badge badge-${isArrest ? 'low' : 'critical'}">${isArrest ? 'Arrested' : 'Fled / Wanted'}</span></td>
+                    <td style="max-width:280px;font-size:0.75rem;color:var(--text-secondary)">${inc.narrative ? (inc.narrative.slice(0, 140) + '...') : '—'}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // ── 3. Intercepted Communications (CDR) ──
+    const cdr = data.cdr_records || [];
+    document.getElementById('d-cdr-count').textContent = cdr.length;
+    const cdrTbody = document.getElementById('d-cdr-table-body');
+    if (cdr.length === 0) {
+        cdrTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:16px">No CDR telecommunication intercepts logged.</td></tr>';
+    } else {
+        cdrTbody.innerHTML = cdr.slice(0, 40).map(c => {
+            const isCaller = String(c.caller_id) === String(p.id);
+            const dirBadge = isCaller ?
+                '<span class="badge" style="background:rgba(2,132,199,0.15);color:var(--accent-blue)">Outbound ↑</span>' :
+                '<span class="badge" style="background:rgba(16,185,129,0.15);color:var(--accent-green)">Inbound ↓</span>';
+            const targetPhone = isCaller ? (c.receiver_phone || c.receiver_id) : (c.caller_phone || c.caller_id);
+
+            return `
+                <tr>
+                    <td style="font-family:'JetBrains Mono',monospace">${c.cdr_id || '—'}</td>
+                    <td>${c.date || ''} ${c.time || ''}</td>
+                    <td>${dirBadge}</td>
+                    <td>${c.call_type || 'VOICE'}</td>
+                    <td>${targetPhone || 'Unknown'}</td>
+                    <td>${c.duration_seconds ? c.duration_seconds + 's' : '0s (SMS)'}</td>
+                    <td>${c.cell_tower_location || '—'}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // ── 4. Financial & Hawala Audit ──
+    const txns = data.transactions || [];
+    document.getElementById('d-tx-count').textContent = txns.length;
+    const txTbody = document.getElementById('d-tx-table-body');
+    if (txns.length === 0) {
+        txTbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-muted);padding:16px">No financial transaction records found.</td></tr>';
+    } else {
+        txTbody.innerHTML = txns.slice(0, 40).map(tx => {
+            const isSender = String(tx.sender_id) === String(p.id);
+            const flow = isSender ?
+                '<span class="badge badge-medium">Sent</span>' :
+                '<span class="badge badge-low">Received</span>';
+            const counterparty = isSender ? (tx.receiver_name || tx.receiver_id) : (tx.sender_name || tx.sender_id);
+            const isSusp = tx.is_suspicious in [true, "True", "true", 1, "1"];
+
+            return `
+                <tr>
+                    <td style="font-family:'JetBrains Mono',monospace">${tx.txn_id || '—'}</td>
+                    <td>${tx.date || ''} ${tx.time || ''}</td>
+                    <td><strong>${tx.transaction_type || '—'}</strong></td>
+                    <td>${flow}</td>
+                    <td style="font-weight:600;color:var(--accent-emerald)">₹${formatAmount(tx.amount)}</td>
+                    <td>${counterparty || '—'}</td>
+                    <td>${tx.bank || '—'} <small style="color:var(--text-muted)">(${tx.sender_account || tx.receiver_account || '—'})</small></td>
+                    <td><span class="badge badge-${isSusp ? 'critical' : 'low'}">${isSusp ? 'SUSPICIOUS' : 'Normal'}</span></td>
+                    <td style="font-size:0.75rem;color:var(--text-secondary)">${tx.remarks || '—'}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // ── 5. Court Convictions ──
+    const history = data.criminal_history || [];
+    document.getElementById('d-hist-count').textContent = history.length;
+    const histTbody = document.getElementById('d-history-table-body');
+    if (history.length === 0) {
+        histTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:16px">No prior judicial convictions on record.</td></tr>';
+    } else {
+        histTbody.innerHTML = history.map(h => {
+            const statusClass = h.status === 'CONVICTED' ? 'critical' : h.status === 'PENDING' ? 'medium' : 'low';
+            return `
+                <tr>
+                    <td style="font-family:'JetBrains Mono',monospace">${h.record_id || '—'}</td>
+                    <td>${h.case_id || '—'}</td>
+                    <td><strong>${h.crime_type || '—'}</strong></td>
+                    <td>${h.date || '—'}</td>
+                    <td>${h.court || '—'}</td>
+                    <td><span class="badge badge-${statusClass}">${h.status || '—'}</span></td>
+                    <td>${h.sentence || 'None'}</td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // ── 6. Syndicate & Associates ──
+    const associates = data.resolved_associates || [];
+    document.getElementById('d-assoc-count').textContent = associates.length;
+    const assocGrid = document.getElementById('d-associates-grid');
+    if (associates.length === 0) {
+        assocGrid.innerHTML = '<div class="dossier-empty-sub">No known syndicate accomplices or criminal associates recorded.</div>';
+    } else {
+        assocGrid.innerHTML = associates.map(a => {
+            const aRiskClass = (a.risk_level || 'low').toLowerCase();
+            return `
+                <div class="dossier-assoc-card" onclick="openPersonDossier('${a.id}')">
+                    <div class="assoc-card-top">
+                        <div class="assoc-avatar ${aRiskClass}">${getInitials(a.name)}</div>
+                        <span class="badge badge-${aRiskClass}">${a.risk_level || 'LOW'}</span>
+                    </div>
+                    <div class="assoc-name">${a.name || a.id}</div>
+                    <div class="assoc-meta" style="font-family:'JetBrains Mono',monospace">${a.id}</div>
+                    <div class="assoc-org">${a.organization || 'Independent Associate'}</div>
+                    <button class="btn-sm" style="margin-top:8px;width:100%;background:rgba(2,132,199,0.15);color:var(--accent-blue);border:1px solid rgba(2,132,199,0.3);border-radius:4px;cursor:pointer">
+                        🗂️ View Dossier
+                    </button>
+                </div>
+            `;
+        }).join('');
+    }
+}
+
+async function triggerDossierPDFDownload() {
+    if (!currentDossierPersonId) return;
+    const btn = document.getElementById('dossier-download-btn');
+    const originalText = btn ? btn.innerHTML : '';
+
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner" style="width:14px;height:14px;border-width:2px;display:inline-block;vertical-align:middle;margin-right:6px"></span><span>Generating PDF Dossier...</span>';
+    }
+
+    try {
+        const personName = currentDossierData?.entity?.name || currentDossierPersonId;
+        downloadDossierDirect(currentDossierPersonId, personName);
+    } catch (e) {
+        console.error('PDF download error:', e);
+        alert('Failed to initiate PDF download. Please try again.');
+    } finally {
+        setTimeout(() => {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }, 1200);
     }
 }
 
