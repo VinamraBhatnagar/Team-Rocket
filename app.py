@@ -68,6 +68,13 @@ def index():
     return send_from_directory("static", "index.html")
 
 
+@app.route("/data/<path:filename>")
+def serve_data_file(filename):
+    """Explicitly serve static data files such as india_states.geojson."""
+    data_dir = os.path.join(app.static_folder, "data")
+    return send_from_directory(data_dir, filename)
+
+
 # ── Dashboard API ─────────────────────────────────────────────
 @app.route("/api/dashboard")
 def api_dashboard():

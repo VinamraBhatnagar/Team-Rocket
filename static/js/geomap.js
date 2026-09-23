@@ -48,28 +48,65 @@ const GeoMap = (() => {
         container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading Crime Geospatial Map...</p></div>';
 
         try {
-            // Load GeoJSON
-            const geoRes = await fetch('/data/india_states.geojson');
-            indiaGeoJSON = await geoRes.json();
-
-            // Init map
+            // 1. Initialize map first so Leaflet canvas is ready
             container.innerHTML = '';
             initMap(container);
 
-            // Load existing data
-            await loadExistingData();
-
-            // Setup event listeners
+            // 2. Setup event listeners
             setupEventListeners();
 
-            // Initialize MapmyIndia SDK
+            // 3. Load GeoJSON with fallback
+            await loadGeoJSON();
+
+            // 4. Load existing data & render
+            await loadExistingData();
+
+            // 5. Initialize MapmyIndia SDK
             await initMapplsSDK();
 
             initialized = true;
         } catch (e) {
-            container.innerHTML = '<div class="loading"><p style="color:var(--accent-red)">❌ Failed to load map data</p></div>';
             console.error('GeoMap init error:', e);
+            if (!map) {
+                container.innerHTML = '<div class="loading"><p style="color:var(--accent-red)">❌ Failed to load map: ' + (e.message || 'Unknown error') + '</p></div>';
+            }
         }
+    }
+
+    async function loadGeoJSON() {
+        // Try local static route first
+        try {
+            const geoRes = await fetch('/data/india_states.geojson');
+            if (geoRes.ok) {
+                indiaGeoJSON = await geoRes.json();
+                console.log('✅ Loaded India GeoJSON from local data store');
+                return;
+            }
+            console.warn(`Local GeoJSON returned status ${geoRes.status}, trying fallback CDN...`);
+        } catch (err) {
+            console.warn('Local GeoJSON fetch failed, trying fallback CDN...', err);
+        }
+
+        // Fallback CDN if local static file is missing or blocked on serverless host
+        const fallbackUrls = [
+            'https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@master/geojson/india.geojson',
+            'https://raw.githubusercontent.com/udit-001/india-maps-data/master/geojson/india.geojson'
+        ];
+
+        for (const url of fallbackUrls) {
+            try {
+                const res = await fetch(url);
+                if (res.ok) {
+                    indiaGeoJSON = await res.json();
+                    console.log('✅ Loaded India GeoJSON from CDN fallback:', url);
+                    return;
+                }
+            } catch (cdnErr) {
+                console.warn('CDN fallback attempt failed:', url, cdnErr);
+            }
+        }
+
+        console.warn('⚠️ State boundary GeoJSON could not be loaded; point markers and analytics will still render.');
     }
 
     function initMap(container) {
@@ -148,7 +185,7 @@ const GeoMap = (() => {
 
     // ── Map Rendering ────────────────────────────────────────────
     function updateMap(data) {
-        if (!map || !indiaGeoJSON) return;
+        if (!map) return;
 
         // Clear existing layers
         if (geojsonLayer) {
@@ -170,32 +207,33 @@ const GeoMap = (() => {
             if (sd.crime_count > maxCount) maxCount = sd.crime_count;
         }
 
-        // Render choropleth
-        geojsonLayer = L.geoJSON(indiaGeoJSON, {
-            style: (feature) => {
-                const stateName = feature.properties.ST_NM;
-                const sd = stateData[stateName];
-                const count = sd ? sd.crime_count : 0;
-                return {
-                    fillColor: getColor(count, maxCount),
-                    weight: 1.5,
-                    opacity: 1,
-                    color: getStrokColor(),
-                    fillOpacity: 0.75,
-                };
-            },
-            onEachFeature: (feature, layer) => {
-                const stateName = feature.properties.ST_NM;
-                const sd = stateData[stateName];
-                const count = sd ? sd.crime_count : 0;
+        // Render choropleth if GeoJSON is available
+        if (indiaGeoJSON) {
+            geojsonLayer = L.geoJSON(indiaGeoJSON, {
+                style: (feature) => {
+                    const stateName = (feature.properties && (feature.properties.ST_NM || feature.properties.NAME_1 || feature.properties.state_name || feature.properties.st_nm || feature.properties.name)) || '';
+                    const sd = stateData[stateName];
+                    const count = sd ? sd.crime_count : 0;
+                    return {
+                        fillColor: getColor(count, maxCount),
+                        weight: 1.5,
+                        opacity: 1,
+                        color: getStrokColor(),
+                        fillOpacity: 0.75,
+                    };
+                },
+                onEachFeature: (feature, layer) => {
+                    const stateName = (feature.properties && (feature.properties.ST_NM || feature.properties.NAME_1 || feature.properties.state_name || feature.properties.st_nm || feature.properties.name)) || 'Unknown State';
+                    const sd = stateData[stateName];
+                    const count = sd ? sd.crime_count : 0;
 
-                // Tooltip
-                let tooltipContent = `<div class="geo-tooltip">
-                    <div class="geo-tooltip-title">${sanitize(stateName)}</div>
-                    <div class="geo-tooltip-value">Total Crimes: ${count.toLocaleString()}</div>`;
+                    // Tooltip
+                    let tooltipContent = `<div class="geo-tooltip">
+                        <div class="geo-tooltip-title">${sanitize(stateName)}</div>
+                        <div class="geo-tooltip-value">Total Crimes: ${count.toLocaleString()}</div>`;
 
-                if (sd && sd.crime_types) {
-                    const topCrimes = Object.entries(sd.crime_types)
+                    if (sd && sd.crime_types) {
+                        const topCrimes = Object.entries(sd.crime_types)
                         .sort((a, b) => b[1] - a[1])
                         .slice(0, 3);
                     if (topCrimes.length > 0) {
