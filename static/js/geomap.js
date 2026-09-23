@@ -38,7 +38,9 @@ const GeoMap = (() => {
     // ── Initialize ───────────────────────────────────────────────
     async function init() {
         if (initialized && map) {
-            map.invalidateSize();
+            setTimeout(() => {
+                if (map) map.invalidateSize();
+            }, 100);
             return;
         }
 
@@ -65,6 +67,10 @@ const GeoMap = (() => {
             await initMapplsSDK();
 
             initialized = true;
+
+            setTimeout(() => {
+                if (map) map.invalidateSize();
+            }, 200);
         } catch (e) {
             console.error('GeoMap init error:', e);
             if (!map) {
@@ -87,10 +93,10 @@ const GeoMap = (() => {
             console.warn('Local GeoJSON fetch failed, trying fallback CDN...', err);
         }
 
-        // Fallback CDN if local static file is missing or blocked on serverless host
+        // Fallback CDN — state-level boundary files
         const fallbackUrls = [
-            'https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@master/geojson/india.geojson',
-            'https://raw.githubusercontent.com/udit-001/india-maps-data/master/geojson/india.geojson'
+            'https://cdn.jsdelivr.net/gh/adarshbiradar/maps-geojson@master/india.json',
+            'https://raw.githubusercontent.com/adarshbiradar/maps-geojson/master/india.json'
         ];
 
         for (const url of fallbackUrls) {
@@ -98,6 +104,18 @@ const GeoMap = (() => {
                 const res = await fetch(url);
                 if (res.ok) {
                     indiaGeoJSON = await res.json();
+                    // Normalize property keys: CDN may use st_nm (lowercase),
+                    // our code looks for ST_NM first
+                    if (indiaGeoJSON && indiaGeoJSON.features && indiaGeoJSON.features.length > 0) {
+                        const sample = indiaGeoJSON.features[0].properties || {};
+                        if (sample.st_nm && !sample.ST_NM) {
+                            indiaGeoJSON.features.forEach(f => {
+                                if (f.properties && f.properties.st_nm) {
+                                    f.properties.ST_NM = f.properties.st_nm;
+                                }
+                            });
+                        }
+                    }
                     console.log('✅ Loaded India GeoJSON from CDN fallback:', url);
                     return;
                 }
@@ -119,17 +137,20 @@ const GeoMap = (() => {
             scrollWheelZoom: true,
         });
 
-        // Tile layer — use CartoDB dark/light based on theme
-        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-        const tileUrl = isDark
-            ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-            : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-
-        L.tileLayer(tileUrl, {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-            subdomains: 'abcd',
+        // Tile layer — OpenStreetMap (free, no API key, works on all hosts)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 19,
         }).addTo(map);
+
+        // Dark-mode styling: invert the tile pane via CSS
+        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+        if (isDark) {
+            const tilePane = map.getPane('tilePane');
+            if (tilePane) {
+                tilePane.style.filter = 'invert(1) hue-rotate(180deg) brightness(0.8) contrast(1.2)';
+            }
+        }
 
         // Init layer groups
         markersLayer = L.layerGroup().addTo(map);
@@ -207,7 +228,7 @@ const GeoMap = (() => {
             if (sd.crime_count > maxCount) maxCount = sd.crime_count;
         }
 
-        // Render choropleth if GeoJSON is available
+        // Render choropleth if GeoJSON boundary data is available
         if (indiaGeoJSON) {
             geojsonLayer = L.geoJSON(indiaGeoJSON, {
                 style: (feature) => {
@@ -227,47 +248,45 @@ const GeoMap = (() => {
                     const sd = stateData[stateName];
                     const count = sd ? sd.crime_count : 0;
 
-                    // Tooltip
                     let tooltipContent = `<div class="geo-tooltip">
                         <div class="geo-tooltip-title">${sanitize(stateName)}</div>
                         <div class="geo-tooltip-value">Total Crimes: ${count.toLocaleString()}</div>`;
 
                     if (sd && sd.crime_types) {
                         const topCrimes = Object.entries(sd.crime_types)
-                        .sort((a, b) => b[1] - a[1])
-                        .slice(0, 3);
-                    if (topCrimes.length > 0) {
-                        tooltipContent += '<div class="geo-tooltip-breakdown">';
-                        topCrimes.forEach(([type, cnt]) => {
-                            tooltipContent += `<span>${sanitize(type)}: ${cnt}</span>`;
-                        });
-                        tooltipContent += '</div>';
+                            .sort((a, b) => b[1] - a[1])
+                            .slice(0, 3);
+                        if (topCrimes.length > 0) {
+                            tooltipContent += '<div class="geo-tooltip-breakdown">';
+                            topCrimes.forEach(([type, cnt]) => {
+                                tooltipContent += `<span>${sanitize(type)}: ${cnt}</span>`;
+                            });
+                            tooltipContent += '</div>';
+                        }
                     }
-                }
-                tooltipContent += '</div>';
+                    tooltipContent += '</div>';
 
-                layer.bindTooltip(tooltipContent, {
-                    sticky: true,
-                    className: 'geo-tooltip-container',
-                });
+                    layer.bindTooltip(tooltipContent, {
+                        sticky: true,
+                        className: 'geo-tooltip-container',
+                    });
 
-                // Click — zoom in
-                layer.on('click', () => {
-                    map.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 8 });
-                });
+                    layer.on('click', () => {
+                        map.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 8 });
+                    });
 
-                // Hover highlight
-                layer.on('mouseover', () => {
-                    layer.setStyle({ weight: 3, fillOpacity: 0.9 });
-                    layer.bringToFront();
-                });
-                layer.on('mouseout', () => {
-                    geojsonLayer.resetStyle(layer);
-                });
-            },
-        }).addTo(map);
+                    layer.on('mouseover', () => {
+                        layer.setStyle({ weight: 3, fillOpacity: 0.9 });
+                        layer.bringToFront();
+                    });
+                    layer.on('mouseout', () => {
+                        geojsonLayer.resetStyle(layer);
+                    });
+                },
+            }).addTo(map);
+        } // ← close if (indiaGeoJSON)
 
-        // Add city/location markers
+        // Add city/location markers (renders regardless of GeoJSON boundaries)
         if (geodata.length > 0 && geodata.length <= 1000) {
             geodata.forEach((point) => {
                 if (!point.lat || !point.lng || point.lat === 0) return;
@@ -313,8 +332,7 @@ const GeoMap = (() => {
                     heatPoints.push([point.lat, point.lng, point.crime_count]);
                 }
             });
-            // Render as aggregated circle markers
-            const gridSize = 0.5; // degrees
+            const gridSize = 0.5;
             const grid = {};
             heatPoints.forEach(([lat, lng, count]) => {
                 const key = `${Math.round(lat / gridSize) * gridSize}_${Math.round(lng / gridSize) * gridSize}`;

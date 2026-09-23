@@ -28,7 +28,8 @@ from modules.geo_engine import GeoEngine
 from modules.dossier_pdf import DossierPDFGenerator
 
 # ── Flask App ─────────────────────────────────────────────────
-app = Flask(__name__, static_folder="static", static_url_path="")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+app = Flask(__name__, static_folder=os.path.join(BASE_DIR, "static"), static_url_path="")
 CORS(app)
 
 # ── Initialize Engines ────────────────────────────────────────
@@ -36,10 +37,13 @@ print("=" * 60)
 print("🔍 AI-Powered Criminal Network Analysis System")
 print("=" * 60)
 
-data_processor = DataProcessor(data_dir="data")
+data_processor = DataProcessor(data_dir=os.path.join(BASE_DIR, "data"))
 nlp_engine = NLPEngine()
 graph_engine = GraphEngine()
-prediction_engine = PredictionEngine(models_dir="models", models2_dir="models 2")
+prediction_engine = PredictionEngine(
+    models_dir=os.path.join(BASE_DIR, "models"),
+    models2_dir=os.path.join(BASE_DIR, "models 2")
+)
 pattern_detector = PatternDetector()
 geo_engine = GeoEngine(data_processor)
 
@@ -65,14 +69,15 @@ print("=" * 60)
 # ── Serve Frontend ────────────────────────────────────────────
 @app.route("/")
 def index():
-    return send_from_directory("static", "index.html")
+    return send_from_directory(app.static_folder, "index.html")
 
 
 @app.route("/data/<path:filename>")
 def serve_data_file(filename):
     """Explicitly serve static data files such as india_states.geojson."""
     data_dir = os.path.join(app.static_folder, "data")
-    return send_from_directory(data_dir, filename)
+    mimetype = "application/json" if filename.endswith((".geojson", ".json")) else None
+    return send_from_directory(data_dir, filename, mimetype=mimetype)
 
 
 # ── Dashboard API ─────────────────────────────────────────────
